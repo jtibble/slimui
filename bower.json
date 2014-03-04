@@ -1,0 +1,8 @@
+{
+    "name": "SLIMUI",
+    "version": "0.1.0",
+    "dependencies": {
+        "angularjs": "1.2.14",
+        "underscore": "*"
+    }
+}

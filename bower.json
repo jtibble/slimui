@@ -1,8 +1,16 @@
 {
-    "name": "SLIMUI",
-    "version": "0.1.0",
+    "name": "SlimUI",
+    "version": "0.0.1",
+	"authors": [
+		"John Tibble"
+	],
+	"description": "SlimUI framework for building web applications",
+	"private": true,
     "dependencies": {
-        "angularjs": "1.2.14",
+		"requirejs": "*",
+		"requirejs-text": "*",
+        "angular": "1.2.14",
+        "angular-ui-router": "0.2.8",
         "underscore": "*"
     }
 }

@@ -1,16 +1,21 @@
 {
-    "name": "SlimUI",
-    "version": "0.0.1",
-	"authors": [
-		"John Tibble"
-	],
-	"description": "SlimUI framework for building web applications",
-	"private": true,
-    "dependencies": {
-		"requirejs": "*",
-		"requirejs-text": "*",
-        "angular": "1.2.14",
-        "angular-ui-router": "0.2.8",
-        "underscore": "*"
-    }
+  "name": "slimui",
+  "version": "0.0.1",
+  "description": "Slim UI framework for GECA EF IT",
+  "main": "main.js",
+  "keywords": [
+    "framework"
+  ],
+  "authors": [
+    "John Tibble"
+  ],
+  "license": "GE",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }

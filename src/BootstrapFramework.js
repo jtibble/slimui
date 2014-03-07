@@ -1,7 +1,7 @@
 // Tell our script-loader about the location of the text-loading plugin
 require.config({
 	paths: {
-		text: '../../../shared/libs/requirejs/text'
+		text: 'bower_components/requirejs-text/text'
 	}
 });
 

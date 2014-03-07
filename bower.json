@@ -1,14 +1,21 @@
 {
   "name": "slimui",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Slim UI framework for GECA EF IT",
-  "main": "main.js",
+  "main": "slim.js",
   "keywords": [
     "framework"
   ],
   "authors": [
     "John Tibble"
   ],
+  "dependencies": {
+    "angular": "~1.2.14",
+    "angular-ui-router": "~0.2.9",
+    "requirejs": "*",
+    "requirejs-text": "*",
+    "underscore": "*"
+  },
   "license": "GE",
   "private": true,
   "ignore": [

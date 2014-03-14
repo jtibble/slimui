@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>SlimUI Sample Application</title>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="sample_application/CSS/sample-application.css"/>
+				
+		<script src="bower_components/angular/angular.min.js"></script>
+		<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+		
+		<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+		
+		<script src="bower_components/underscore/underscore.js"></script>
+		<script src="bower_components/requirejs/require.js"></script>
+		
+		<script src="src/Framework.js"></script>
+		<script src="src/Services.js"></script>
+		<script src="src/BootstrapFramework.js"></script>
+		
+	</head>
+	
+	<body>
+		<div>
+			<div Header></div>
+			<div ui-view autoscroll='false' class="container"></div>
+		</div>
+		
+	</body>
+</html>

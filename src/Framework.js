@@ -6,7 +6,6 @@
  */
 var framework = angular.module('Framework', ['ui.router',
 											 'ui.bootstrap',
-									   		'ngSanitize',
 									   		'Framework.Services']);
 
 
@@ -140,20 +139,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		
 		return {
 			url: '/' + route,
-			template: '<div ' + screenComponentName + '></div>',
-			resolve: {
-				// TODO Check this logic for URL parameters! It is highly suspect.
-				
-				
-				clearParameters: function(Router){
-					Router.storeStateParameters( {} );
-				},
-				storeParameters: function(clearParameters, Router, $stateParams){
-					Router.storeStateParameters( $stateParams );
-					return true;
-				}
-			}
-
+			template: '<div ' + screenComponentName + '></div>'
 		};
 	};
 	
@@ -184,7 +170,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 	var defaultURL = defaultView.url;
 	
-	RouterProvider.setHomeAndLogoutRoutes( defaultURL );
+	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){
 		console.log('Invalid location \'' + $location.$$url + '\', going to default route \'' + defaultURL + '\'');

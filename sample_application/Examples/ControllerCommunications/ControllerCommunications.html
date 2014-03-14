@@ -1,0 +1,42 @@
+<h3 class="voice-brand">Controller Communication</h3>
+
+The SlimUI Framework provides a service that lets controllers communicate on a shared channel.
+
+Include the ControllerCommunication service as a parameter in your controller to begin using it:
+<pre>
+var FunctionName = function(Context, ControllerCommunication){
+</pre>
+
+The ControllerCommunication service has four methods available:
+<pre>
+ControllerCommunication.registerCallback(channel, callback);
+ControllerCommunication.notifyObservers(channel);
+ControllerCommunication.get(channel);
+ControllerCommunication.set(channel, data);
+</pre>
+
+<p>
+get(channel) retrieves the data associated with a particular 'channel'.
+</p>
+
+<p>
+set(channel, data) sets the data on a particular channel and then calls notifyObservers() to alert all listeners to the changed data.
+</p>
+
+<p>
+registerCallback(channel, callback) associates a function in your controller with a ControllerCommunication 'channel'. When the data associated with that channel changes, this callback function will be invoked.
+</p>
+
+<p>
+notifyObservers(channel) notifies all listeners on a given 'channel' that the data has changed. Calling ControllerCommunication.set() calls this automatically.
+</p>
+<hr>
+
+<p>
+	Example:<br>
+
+	<div class="btn btn-primary" ng-click="actions.changeSharedData()">Set New Number</div>
+	<p>
+		<div ControllerCommunicationListener></div>
+	</p>
+</p>

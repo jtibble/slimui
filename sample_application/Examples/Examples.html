@@ -1,0 +1,20 @@
+<div class="row-fluid">
+	<div class="title row-fluid" id="title">
+			<h2 class="voice-brand">Examples</h2>
+	</div>
+	<div class="row-fluid">
+		<div class="col-md-8 container" ui-view>
+			Choose an example from the menu
+		</div>
+		<div class="col-md-4 container">
+			<h3 class="voice-brand">Menu</h3>
+			<ul>
+				<li ng-repeat="item in model.examplesList">
+					<a href="" ng-click="actions.goTo(item.url)">{{item.text}}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+

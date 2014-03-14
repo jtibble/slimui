@@ -1,6 +1,6 @@
 {
   "name": "slimui",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Slim UI framework for GECA EF IT",
   "main": "slim.js",
   "keywords": [
@@ -12,6 +12,7 @@
   "dependencies": {
     "angular": "~1.2.14",
     "angular-ui-router": "~0.2.9",
+    "angular-bootstrap": "~0.10.0",
     "requirejs": "*",
     "requirejs-text": "*",
     "underscore": "*"

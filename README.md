@@ -1,8 +1,15 @@
-This is the SLIM UI framework developed by John Tibble as part of the GECA EF IT group.
+##SlimUI Framework
 
-This informational document should be expanded in the future.
+Thank you for trying out the SlimUI framework. 
 
-Direct your questions and comments to John Tibble at John.Tibble@ge.com
+Some of the project goals:
+- Simplify the process of developing web applications
+- Abstract-away the web technology stack
+- Allow developers of all skill levels to add and modify application-specific functionality in a framework-agnostic way
 
-Thanks,
-John
+
+##Sample Application
+A sample application is included with this repository. To try it out, follow these steps:
+
+1. Install NodeJS, NPM, and Bower, and run 'bower install' in the project root. This will fetch all of SlimUI's dependencies.
+2. Host the /sample-application.html file, and open it up in a web browser. More documentation is provided in the sample application.

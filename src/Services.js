@@ -1,16 +1,8 @@
-
 var framework = angular.module('Framework.Services', []);
 
 
 /**
- * @name LSApplication.LSRouter
- * @requires $state
- * @description 
- * LSRouter is a LeasingSource-branded wrapper around the Angular-UI-Router from https://github.com/angular-ui/ui-router.
- * It provides a configurable message and one method, 'go' which writes a message to the log before activating a new route.
- *
- * Inject it into your controller as 'LSRouter', and call it with LSRouter.go( [route] ); Be sure to pass the route with a 
- * preceding slash like '/DMC'.
+ * @name Router
  */
 framework.provider('Router', function(){
 	
@@ -41,19 +33,10 @@ framework.provider('Router', function(){
 				goToHome: function(){
 					console.log( strings.routingHome + homeRoute);
 					$state.go( homeRoute );
-				}, 
-				goToLogOff: function(){
-					window.location.href = window.location.href.replace('app','login').replace(/#.*/, '')
-				},
-				storeStateParameters: function( params ){
-					stateParameters = params;	
-				},
-				getStateParameters: function(){
-					return stateParameters;	
 				}
 			};
 		},
-		setHomeAndLogoutRoutes: function( newHomeRoute ){
+		setHomeRoute: function( newHomeRoute ){
 			homeRoute = newHomeRoute;
 		}
 	};
@@ -62,11 +45,7 @@ framework.provider('Router', function(){
 
 
 /**
- * @name LSApplication.ControllerCommunication
- * @description 
- * Provides communication mechanism between two or more controllers listening to a channel. 
- * Inject into controller, and then register callback.
- * Get and Set the model, and your changes will go out to all other controllers listening on that channel.
+ * @name ControllerCommunication
  */
 framework.provider('ControllerCommunication', function(){
 	
@@ -98,8 +77,8 @@ framework.provider('ControllerCommunication', function(){
 					console.log('ControllerCommunication Error: no channel \'' + channel + '\' existing to return data');
 					return false;
 				},
-				set: function(channel, newModel){
-					models[channel] = newModel;
+				set: function(channel, data){
+					models[channel] = data;
 					this.notifyObservers(channel);
 				}
 			};
@@ -109,40 +88,23 @@ framework.provider('ControllerCommunication', function(){
 
 
 /**
- * @name LSApplication.PostRequest
+ * @name FrameworkAJAX
  * @description 
- * Provides HTTP POST communication mechanism for developer-written controllers.
+ * Provides HTTP AJAX communication mechanism for developer-written controllers.
+ * Expects 'request' to contain properties 'method': GET/POST/PUT, 'url', and 'data'
  */
-framework.provider('FrameworkPOST', function(){
+framework.provider('FrameworkAJAX', function(){
 	return {
 		$get: function( $http ){
 			return {
-				sendRequest: function(url, data, successCallback, errorCallback){
-					var config = {
-						method: 'POST',
-						url: url,
-						data: data
-					};
-					$http( config ).success( successCallback ).error( errorCallback );
-				}
-			};
-		}		
-	};
-});
-
-
-/**
-* @name Framework.Session
-* @description
-* Will provide mechanism for getting information about what user is signed in.
-*/
-framework.provider('Session', function(){
-	return {
-		$get: function( Router ){
-			return {
-				logOff: function(){
-					console.log('Session Ended');
-					Router.goToLogOff();
+				sendRequest: function(request, successCallback, errorCallback){
+					
+					if( !request.method || !request.url || !request.data ){
+						console.log('Error making AJAX request: missing method, url, or data.');
+						return;
+					}
+					
+					$http( request ).success( successCallback ).error( errorCallback );
 				}
 			};
 		}		

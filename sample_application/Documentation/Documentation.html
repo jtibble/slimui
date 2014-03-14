@@ -1,0 +1,23 @@
+<div class="">
+	<div class="row-fluid title " id="title">
+			<h2 class="voice-brand span12">Documentation</h2>
+	</div>
+	<div ng-repeat="section in model.docs">
+		<h3>{{section.title}}</h3>
+		<div class="row-fluid container">		
+			<accordion class="span12">
+				<accordion-group ng-repeat="lesson in section.subSections">
+					<accordion-heading>{{lesson.title}}</accordion-heading>
+					<div ng-repeat="step in lesson.steps">
+						<div ng-if="step.content">
+							<p>{{step.content}}</p>
+						</div>
+						<div ng-if="step.code">
+							<pre>{{step.code}}</pre>
+						</div>
+					</div>
+				</accordion-group>
+			</accordion>
+		</div>
+	</div>
+</div>

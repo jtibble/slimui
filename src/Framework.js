@@ -186,62 +186,172 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
  */
 framework.run( function($q){
 	
-	// Create application-level components (directives)
-	var DirectiveFactory = function( componentName, templatePath, controllerPath ) {
+	// Create application-level directives
+	var DirectiveFactory = function( componentName, paths ){		//templatePath, controllerPath ) {
 		var directiveName = componentName.toLowerCase();
 		
 		framework.directive( directiveName, function($http, $controller, $compile, $templateCache, $injector, $stateParams){
 			function link( $scope, element, attributes ){
-				var templateText, controllerText, templateScope, controllerTemplate;
+				
+				var templateText, templateScope;
+				
 				var templatePromise = $q.defer();
+				
+				var modelPromise = $q.defer();
+				var modelbuilderPromise = $q.defer();
+				var actionsPromise = $q.defer();
 				var controllerPromise = $q.defer();
 				
-				require( ['text!' + templatePath], function( template ){
+				// Attempt to load the (required) template
+				require( ['text!' + paths.template], function( template ){
 					templateText = template;
 					templatePromise.resolve();
 				});
 				
-				require( [controllerPath], function(){
-					controllerPromise.resolve();
-				});
+				if( paths.model ){
+					require( [paths.model], function(){
+						modelPromise.resolve();
+					});
+				} else {
+					modelPromise.resolve();
+				}
 				
-				$q.all([ templatePromise.promise, 
+				if( paths.modelbuilder ){ 
+					require( [paths.modelbuilder], function(){
+						modelbuilderPromise.resolve();
+					});
+				} else { 
+					modelbuilderPromise.resolve(); 
+				}
+				
+				if( paths.actions ){ 
+					require( [paths.actions], function(){
+						actionsPromise.resolve();
+					});
+				} else {
+					actionsPromise.resolve();
+				}
+				
+				if( paths.controller ){ 
+					require( [paths.controller], function(){
+						controllerPromise.resolve();
+					});
+				} else {
+					controllerPromise.resolve();
+				}
+				
+				// Wait for all files to be loaded into global window scope
+				$q.all([ templatePromise.promise,
+						 modelbuilderPromise.promise,
+						 modelPromise.promise,
+						 actionsPromise.promise,
 						 controllerPromise.promise ]).then( function() {
+					
+					// Create new scope for view
 					templateScope = $scope.$new();
 					
-					if( !window[componentName] ){
-						var error = 'Can\'t create directive \'' + componentName + '\':\n\tCheck that the expected controller name matches the name in the provided file';
-						console.log(error);
+					var modelName = componentName + 'Model';
+					var modelbuilderName = componentName + 'Modelbuilder';
+					var actionsName = componentName + 'Actions';
+					var controllerName = componentName + 'Controller';
+					var jsLoadingError = false;
+					
+					// Check that the files loaded correctly
+					if( (paths.model && !window[modelName])){
+						console.log('Couldn\'t correctly load model named \'' + modelName + '\'.');
+						jsLoadingError = true;
+					}
+					if( (paths.model && !window[modelName])){
+						console.log('Couldn\'t correctly load modelbuilder named \'' + modelbuilderName + '\'.');
+						jsLoadingError = true;	
+					}
+					if( (paths.model && !window[modelName])){
+						console.log('Couldn\'t correctly load actions named \'' + actionsName + '\'.');
+						jsLoadingError = true;	
+					}
+					if( (paths.model && !window[modelName])){
+						console.log('Couldn\'t correctly load controller named \'' + controllerName + '\'.');
+						jsLoadingError = true;
+					}
+					
+					if( jsLoadingError ){
+						console.log('Check spelling in file and config.json. Aborting creation of \'' + componentName + '\'');
 						return;
 					}
-
-					var injectionsList = $injector.annotate( window[componentName]);
-					var neededInjections = [];
 					
-					for( var i in injectionsList ){
-						var injectionName = injectionsList[i];
-						try{
-							$injector.get( injectionName );
-						}catch(exception){
-							// 'Context' is injected manually, below, so disregard injector complaint
-							if( injectionName != 'Context' ){
+					// Helper to validate that all dependencies are ready for injection
+					var checkInjections = function( globalFunctionName ){
+						var injectionsList = $injector.annotate( window[globalFunctionName]);
+						var neededInjections = [];
+						
+						for( var i in injectionsList ){
+							var injectionName = injectionsList[i];
+							
+							if( injectionName == 'Context' ||
+							    injectionName == 'Actions' ||
+							    injectionName == 'Model' ||
+							    injectionName == 'Modelbuilder' ||
+							    injectionName == 'StateParameters' ){
+								continue;   
+						   }
+							
+							try{
+								$injector.get( injectionName );
+							}catch(exception){
 								neededInjections.push( injectionName );
 							}
 						}
+						
+						if( neededInjections.length ){
+							console.log('Warning: Not all injections have been provided for \'' + globalFunctionName + '\':\n\t' + neededInjections.toString());
+						}
+					};
+
+					// Check all javascript-files' injections to make sure they're ready for injection
+					//checkInjections( modelName );
+					if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
+					if( paths.actions ){ checkInjections( actionsName ); }
+					if( paths.controller ){ checkInjections( controllerName ); }
+					
+					// Inject model into modelbuilder
+					try{
+						var additionalModelbuilderInjections = {
+							Model: window[modelName]	
+						};
+						var injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
+						
+					} catch(e){
+						console.log('Could not inject model into modelbuilder. Exception e: \'' + e.message + '\'');
 					}
 					
-					if( neededInjections.length > 1){
-						console.log('Warning: Not all injections have been provided.\n\tHave all new services been declared in config.json?');
-						console.log('Missing injections:\n\t' + neededInjections.toString());
+					// Inject context into actions
+					try{
+						var actionsInjections = {
+							Context: templateScope,
+							Model: injectedModelbuilder,
+						};
+						var injectedActions = $controller( window[actionsName] , actionsInjections);	
+					} catch(e){
+						console.log('Could not inject context into actions. Exception e: \'' + e.message + '\'');
 					}
 					
 					try{
-						controllerTemplate = $controller( window[componentName] , { Context: templateScope, StateParameters: $stateParams.parameters } );
+						
+						var controllerInjections = {
+							Context: templateScope,
+							Actions: injectedActions,
+							Model: injectedModelbuilder,
+							StateParameters: $stateParams.parameters
+						};
+						
+						var injectedController = $controller( window[controllerName], controllerInjections );
+						
 					} catch(e){
-						console.log('Error injecting dependencies into controller:\n\tPlease check the controller\'s dependencies for typos');	
+						console.log('Could not inject dependencies into controller. Exception e: \'' + e.message + '\'');	
 					}
+					
 					element.html( templateText );
-					element.children().data('$ngControllerController', controllerTemplate);
+					element.children().data('$ngControllerController', injectedController);
 					$compile( element.contents() )( templateScope );
 				});
 			};
@@ -259,17 +369,28 @@ framework.run( function($q){
 	};
 	
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
-		var directiveJSPath = applicationConfig.properties.jsPaths[ directiveObject.controller ];
-		var directiveTemplatePath = applicationConfig.properties.templatePaths[ directiveObject.template ];
-				
-		if( directiveJSPath && directiveTemplatePath ){		
-			DirectiveFactory(directiveName, directiveTemplatePath, directiveJSPath);	
-		} else if( directiveTemplatePath ){	
-			directiveName = directiveName.toLowerCase();
-			framework.directive( directiveName, TemplateDirectiveFactory( directiveTemplatePath ) );
-		} else {
-			console.log('Component/View \'' + directiveName + '\' is malformed:\n\t The template \'' + directiveObject.template + '\' is misconfigured in config.json');
+		var paths = {
+			template: applicationConfig.properties.templatePaths[ directiveObject.template ],
+			model: applicationConfig.properties.jsPaths[ directiveObject.model ],
+			modelbuilder: applicationConfig.properties.jsPaths[ directiveObject.modelbuilder ],
+			actions: applicationConfig.properties.jsPaths[ directiveObject.actions ],
+			controller: applicationConfig.properties.jsPaths[ directiveObject.controller ]
+		}; 
+		
+		if( !paths.template ){
+			console.log('Component/View \'' + directiveName + '\' is malformed:\n\tThe (required) template is missing or misconfigured in config.json. (Aborting)');
+			return;
 		}
+		
+		if( paths.model || paths.modelbuilder || paths.actions || paths.controller ){
+			// generate a complex directive
+			DirectiveFactory( directiveName, paths );
+		} else {
+			// generate simple directive (just template)
+			directiveName = directiveName.toLowerCase();
+			framework.directive( directiveName, TemplateDirectiveFactory( paths.template ) );
+		}
+		
 	};
 	
 	

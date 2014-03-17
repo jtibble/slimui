@@ -5,7 +5,11 @@
             "jsPaths": {
 				"DocumentationController": "sample_application/Documentation/Documentation.js",
 				
-				"ExamplesController": "sample_application/Examples/Examples.js",
+				"ExamplesController": "sample_application/Examples/ExamplesController.js",
+				"ExamplesModelbuilder": "sample_application/Examples/ExamplesModelbuilder.js",
+				"ExamplesActions": "sample_application/Examples/ExamplesActions.js",
+				
+				
 				"AJAXExampleController": "sample_application/Examples/AJAX/AJAX.js",
 				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunications.js",
 				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.js",
@@ -52,7 +56,10 @@
 			"Examples": {
 				"url": "Examples",
 				"template": "ExamplesTemplate",
+				"modelbuilder": "ExamplesModelbuilder",
+				"actions": "ExamplesActions",
 				"controller": "ExamplesController",
+				
 				"regions": [
 					"Routing",
 					"AJAX",

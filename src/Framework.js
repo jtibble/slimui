@@ -152,9 +152,9 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 			$stateProvider.state( view.url, routeSettings );
 		}
 		
-		if( view.regions ){
-			for( var r in view.regions ){
-				var regionName = view.regions[r];
+		if( view.subroutes ){
+			for( var r in view.subroutes ){
+				var regionName = view.subroutes[r];
 				var regionView = applicationConfig.views[ regionName ];
 				var route = view.url + '.' + regionName;
 				

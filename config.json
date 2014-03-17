@@ -38,8 +38,9 @@
 			}
         },
         "views": {
+			
 			"LandingPage": {
-				"url": "LandingPage",
+				"url": "/",
 				"template": "LandingPageTemplate"
 			},
 			
@@ -81,7 +82,6 @@
 				"template": "ServicesExampleTemplate",
 				"controller": "ServicesExampleController"
 			}
-			
         },
         "services": {
             "existing": {

@@ -6,15 +6,22 @@
 				"DocumentationController": "sample_application/Documentation/Documentation.js",
 				
 				"ExamplesController": "sample_application/Examples/ExamplesController.js",
+				"ExamplesModel": "sample_application/Examples/ExamplesModel.js",
 				"ExamplesModelbuilder": "sample_application/Examples/ExamplesModelbuilder.js",
 				"ExamplesActions": "sample_application/Examples/ExamplesActions.js",
+				
+				"SimpleModel": "sample_application/Examples/SimpleScreen/SimpleModel.js",
+				"SimpleModelbuilder": "sample_application/Examples/SimpleScreen/SimpleModelbuilder.js",
+				"SimpleActions": "sample_application/Examples/SimpleScreen/SimpleActions.js",
+				"SimpleController": "sample_application/Examples/SimpleScreen/SimpleController.js",
 				
 				
 				"AJAXExampleController": "sample_application/Examples/AJAX/AJAX.js",
 				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunications.js",
 				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.js",
 				"ParameterPassingExampleController": "sample_application/Examples/ParameterPassing/ParameterPassing.js",
-				"RoutingExampleController": "sample_application/Examples/Routing/Routing.js",
+				"RoutingExampleController": "sample_application/Examples/Routing/RoutingController.js",
+				"RoutingExampleActions": "sample_application/Examples/Routing/RoutingActions.js",
 				"ServicesExampleController": "sample_application/Examples/Services/Services.js"
             },
             "templatePaths": {
@@ -22,6 +29,8 @@
 				"LandingPageTemplate": "sample_application/LandingPage/LandingPage.html",
 				
 				"DocumentationTemplate": "sample_application/Documentation/Documentation.html",
+				
+				"SimpleTemplate": "sample_application/Examples/SimpleScreen/Simple.html",
 				
 				"ExamplesTemplate": "sample_application/Examples/Examples.html",
 				"AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
@@ -56,11 +65,13 @@
 			"Examples": {
 				"url": "Examples",
 				"template": "ExamplesTemplate",
+				"model": "ExamplesModel",
 				"modelbuilder": "ExamplesModelbuilder",
 				"actions": "ExamplesActions",
 				"controller": "ExamplesController",
 				
 				"regions": [
+					"Simple",
 					"Routing",
 					"AJAX",
 					"ControllerCommunications",
@@ -68,9 +79,17 @@
 					"Services"
 				]
 			},
+			"Simple": {
+				"template": "SimpleTemplate",
+				"model": "SimpleModel",
+				"modelbuilder": "SimpleModelbuilder",
+				"actions": "SimpleActions",
+				"controller": "SimpleController"
+			},
 			"Routing": {
 				"template": "RoutingExampleTemplate",
-				"controller": "RoutingExampleController"
+				"controller": "RoutingExampleController",
+				"actions": "RoutingExampleActions"
 			},
 			"AJAX": {
 				"template": "AJAXExampleTemplate",

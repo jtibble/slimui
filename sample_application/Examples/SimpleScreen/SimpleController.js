@@ -4,6 +4,6 @@
 //   Modelbuilder (which is invoked to get a model to display)
 
 var SimpleController = function( Context, Modelbuilder, Actions ){
-	Context.Actions= Actions;
-	Context.Model= Modelbuilder();
+	Context.Actions = Actions;
+	Context.Model = Modelbuilder();
 };

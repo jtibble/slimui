@@ -1,7 +1,5 @@
-var Routing = function(Context, Router){
-	Context.model = {};
-	
-	Context.actions = {
+var RoutingActions = function(Router){
+	return {
 		goToExamples: function(){
 			Router.goTo('Examples');	
 		},
@@ -17,5 +15,5 @@ var Routing = function(Context, Router){
 		goToHome: function(){
 			Router.goToHome();
 		}
-	};
+	}
 };

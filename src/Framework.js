@@ -304,7 +304,7 @@ framework.run( function($q){
 						}
 						
 						if( neededInjections.length ){
-							console.log('Error! Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and loaded correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the name in the dependency\'s file.');
+							console.log('Error! Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
 						}
 					};
 
@@ -314,6 +314,8 @@ framework.run( function($q){
 					if( paths.controller ){ checkInjections( controllerName ); }
 					
 					var injectedModelbuilder;
+					var injectedActions;
+					
 					// Inject model into modelbuilder (if provided)
 					if( window[modelName] ){
 						try{
@@ -322,10 +324,9 @@ framework.run( function($q){
 							};
 							injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
 						} catch(e){
-							console.log('Could not inject model into modelbuilder. Exception e: \'' + e.message + '\'');
+							console.log('Error: Could not inject model into modelbuilder. Exception: \n\t' + e.message);
 						}
 					}
-					
 					
 					// Inject context and modelbuilder into actions
 					try{
@@ -334,31 +335,40 @@ framework.run( function($q){
 						};
 						
 						//Inject modelbinder if provided
-						if( window[modelName] ){
+						if( injectedModelbuilder ){
 							actionsInjections.Modelbuilder = injectedModelbuilder;
 						}
 						
-						var injectedActions = $controller( window[actionsName] , actionsInjections);	
+						injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
-						console.log('Could not inject context into actions. Exception e: \'' + e.message + '\'');
+						console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
 					}
 					
-					// Inject context, actions
+					// Inject context, state parameters, modelbuilder, and actions into controller
 					try{
 						
 						var controllerInjections = {
 							Context: templateScope,
-							Actions: injectedActions,
-							Modelbuilder: injectedModelbuilder,
 							StateParameters: $stateParams.parameters
 						};
+						
+						// Inject modelbinder if provided
+						if( injectedModelbuilder ){
+							controllerInjections.Modelbuilder = injectedModelbuilder;
+						}
+						
+						// Inject actions if provided
+						if( injectedActions ){
+							controllerInjections.Actions = injectedActions;	
+						}
 						
 						var injectedController = $controller( window[controllerName], controllerInjections );
 						
 					} catch(e){
-						console.log('Could not inject dependencies into controller. Exception e: \'' + e.message + '\'');	
+						console.log('Error: Could not inject dependencies into controller. Exception: \n\t' + e.message);	
 					}
 					
+					// Render template, and bind/compile controller to it
 					element.html( templateText );
 					element.children().data('$ngControllerController', injectedController);
 					$compile( element.contents() )( templateScope );
@@ -402,21 +412,17 @@ framework.run( function($q){
 		
 	};
 	
-	
-	
+	// Generate directives for all components
 	for( var i in this.applicationConfig.components ){
 		var component = applicationConfig.components[i];
 		MakeDirectivesHelper( i, component );
 	}
 	
+	// Generate directives for all views
 	for( var i in this.applicationConfig.views ){
 		var screen = applicationConfig.views[i];
 		MakeDirectivesHelper( i, screen );
 	}
-	
-	
-	
-	
 	
 	
 	// Create services to inject during component-initialization

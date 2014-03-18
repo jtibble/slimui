@@ -187,7 +187,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 framework.run( function($q){
 	
 	// Create application-level directives
-	var DirectiveFactory = function( componentName, paths ){		//templatePath, controllerPath ) {
+	var DirectiveFactory = function( componentName, paths ){
 		var directiveName = componentName.toLowerCase();
 		
 		framework.directive( directiveName, function($http, $controller, $compile, $templateCache, $injector, $stateParams){
@@ -287,6 +287,7 @@ framework.run( function($q){
 						for( var i in injectionsList ){
 							var injectionName = injectionsList[i];
 							
+							// Injections provided by this framework should not be counted
 							if( injectionName == 'Context' ||
 							    injectionName == 'Actions' ||
 							    injectionName == 'Model' ||
@@ -303,44 +304,52 @@ framework.run( function($q){
 						}
 						
 						if( neededInjections.length ){
-							console.log('Warning: Not all injections have been provided for \'' + globalFunctionName + '\':\n\t' + neededInjections.toString());
+							console.log('Error! Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and loaded correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the name in the dependency\'s file.');
 						}
 					};
 
-					// Check all javascript-files' injections to make sure they're ready for injection
-					//checkInjections( modelName );
+					// Check all injections to make sure they're ready
 					if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
 					if( paths.actions ){ checkInjections( actionsName ); }
 					if( paths.controller ){ checkInjections( controllerName ); }
 					
-					// Inject model into modelbuilder
-					try{
-						var additionalModelbuilderInjections = {
-							Model: window[modelName]	
-						};
-						var injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
-						
-					} catch(e){
-						console.log('Could not inject model into modelbuilder. Exception e: \'' + e.message + '\'');
+					var injectedModelbuilder;
+					// Inject model into modelbuilder (if provided)
+					if( window[modelName] ){
+						try{
+							var additionalModelbuilderInjections = {
+								Model: window[modelName]()
+							};
+							injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
+						} catch(e){
+							console.log('Could not inject model into modelbuilder. Exception e: \'' + e.message + '\'');
+						}
 					}
 					
-					// Inject context into actions
+					
+					// Inject context and modelbuilder into actions
 					try{
 						var actionsInjections = {
-							Context: templateScope,
-							Model: injectedModelbuilder,
+							Context: templateScope
 						};
+						
+						//Inject modelbinder if provided
+						if( window[modelName] ){
+							actionsInjections.Modelbuilder = injectedModelbuilder;
+						}
+						
 						var injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
 						console.log('Could not inject context into actions. Exception e: \'' + e.message + '\'');
 					}
 					
+					// Inject context, actions
 					try{
 						
 						var controllerInjections = {
 							Context: templateScope,
 							Actions: injectedActions,
-							Model: injectedModelbuilder,
+							Modelbuilder: injectedModelbuilder,
 							StateParameters: $stateParams.parameters
 						};
 						

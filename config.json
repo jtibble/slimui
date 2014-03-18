@@ -17,7 +17,6 @@
 				"SimpleActions": "sample_application/Examples/SimpleScreen/SimpleActions.js",
 				"SimpleController": "sample_application/Examples/SimpleScreen/SimpleController.js",
 				
-				
 				"AJAXExampleController": "sample_application/Examples/AJAX/AJAX.js",
 				
 				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsController.js",
@@ -27,9 +26,6 @@
 				"ControllerCommunicationListenerModelbuilder": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerModelbuilder.js",
 				"ControllerCommunicationListenerActions": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerActions.js",
 				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerController.js",
-				
-				
-				
 				
 				
 				"ParameterPassingExampleController": "sample_application/Examples/ParameterPassing/ParameterPassing.js",
@@ -43,13 +39,13 @@
 				
 				"DocumentationTemplate": "sample_application/Documentation/Documentation.html",
 				
+				"ExamplesTemplate": "sample_application/Examples/Examples.html",
+				
 				"SimpleTemplate": "sample_application/Examples/SimpleScreen/Simple.html",
 				
-				"ExamplesTemplate": "sample_application/Examples/Examples.html",
 				"AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
 				
 				"ControllerCommunicationsExampleTemplate": "sample_application/Examples/ControllerCommunications/ControllerCommunications.html",
-				
 				"ControllerCommunicationListenerTemplate": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.html",
 				
 				"ParameterPassingExampleTemplate": "sample_application/Examples/ParameterPassing/ParameterPassing.html",
@@ -123,7 +119,8 @@
 			},
 			"ParameterPassing": {
 				"template": "ParameterPassingExampleTemplate",
-				"controller": "ParameterPassingExampleController"
+				"controller": "ParameterPassingExampleController",
+				"parameters": true
 			},
 			"Services": {
 				"template": "ServicesExampleTemplate",

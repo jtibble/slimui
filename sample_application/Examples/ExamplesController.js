@@ -1,4 +1,4 @@
-var ExamplesController = function( Context, Model, Actions, StateParameters ){
+var ExamplesController = function( Context, Modelbuilder, Actions, StateParameters ){
 	Context.Actions= Actions;
-	Context.Model= Model;
+	Context.Model= Modelbuilder;
 };

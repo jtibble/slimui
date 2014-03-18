@@ -1,7 +1,10 @@
-var ExamplesActions = function(Model){
+var ExamplesActions = function(Modelbuilder){
 	return {
 		getOtherModel: function(){
-			return Model.otherModel;
+			return Modelbuilder.otherModel;
+		},
+		changeModel: function(){
+			Modelbuilder.otherModel = {firstName: 'Second, Changed', lastName: 'Model'};	
 		}
 	};
 };

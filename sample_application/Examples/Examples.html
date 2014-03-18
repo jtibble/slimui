@@ -5,7 +5,8 @@
 	<div class="row-fluid">
 		<div class="col-md-8 container" ui-view>
 			First model from ModelBuilder: <h3>{{Model.firstName}} {{Model.lastName}}</h3><br>
-			Second model from ModelBuilder injected into Actions, exposed to Context: <h3>{{Actions.getOtherModel().firstName}} {{Actions.getOtherModel().lastName}} </h3>
+			Second model from ModelBuilder injected into Actions, exposed to Context: <h3>{{Actions.getOtherModel().firstName}} {{Actions.getOtherModel().lastName}} </h3><br>
+			Click to change model: <div class="btn btn-primary" ng-click="Actions.changeModel()">Change Model Data Through Action</div>
 		</div>
 		<div class="col-md-4 container">
 			<h3 class="voice-brand">Menu</h3>

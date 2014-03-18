@@ -1,10 +1,13 @@
-var ExamplesModelbuilder = function(){
-	return {
-		firstName: 'John',
-		lastName: 'Tibble',
+var ExamplesModelbuilder = function(Model){
+	
+	var newModel = {
+		firstName: Model.firstName,
+		lastName: Model.lastName,
 		otherModel: {
 			firstName: 'Other',
 			lastName: 'Model'
 		}
 	};
+	
+	return newModel;
 };

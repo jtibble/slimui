@@ -30,7 +30,7 @@ var validateConfigFileStructure = function( config ){
 		}
 	};
 	var directiveIsValidHelper = function( name, directive ){
-		var printError = function( error ){ console.log('View/Component \'' + name + '\' ' + error); };
+		var printError = function( error ){ console.log('Config.json Validation Error: View/Component \'' + name + '\' ' + error); };
 		
 		// view must exist
 		if( !directive ){
@@ -49,13 +49,23 @@ var validateConfigFileStructure = function( config ){
 			printError('template \'' + directive.template + '\' is invalid');
 		}
 		
-		// If directive includes controller, check it
-		if( directive.controller ){
-			if( !jsPathPropertyExistsHelper( directive.controller )){
-				printError('controller \'' + directive.controller + '\' is invalid');
-				return false;
+		var additionalDirectivePropertiesList = [
+			'model',
+			'modelbuilder',
+			'actions',
+			'controller'
+		];
+		
+		// Check every directive property for validity
+		for( var i=0; i<additionalDirectivePropertiesList.length; i++){
+			var directiveProperty = additionalDirectivePropertiesList[i];
+			if( directive[ directiveProperty ] ){
+				if( !jsPathPropertyExistsHelper( directive[directiveProperty] )){
+					printError( directiveProperty + ' \'' + directive[directiveProperty] + '\' is invalid');
+				}
 			}
 		}
+		
 		return true;
 	};
 	
@@ -401,7 +411,7 @@ framework.run( function($q){
 			modelbuilder: applicationConfig.properties.jsPaths[ directiveObject.modelbuilder ],
 			actions: applicationConfig.properties.jsPaths[ directiveObject.actions ],
 			controller: applicationConfig.properties.jsPaths[ directiveObject.controller ]
-		}; 
+		};
 		
 		if( !paths.template ){
 			console.log('Component/View \'' + directiveName + '\' is malformed:\n\tThe (required) template is missing or misconfigured in config.json. (Aborting)');

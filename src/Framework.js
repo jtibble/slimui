@@ -281,7 +281,12 @@ framework.run( function($q){
 					
 					// Helper to validate that all dependencies are ready for injection
 					var checkInjections = function( globalFunctionName ){
-						var injectionsList = $injector.annotate( window[globalFunctionName]);
+						var injectionsList;
+						try{
+							injectionsList = $injector.annotate( window[globalFunctionName]);
+						} catch(e){
+							console.log('Error: Failed to find dependency injection information for \''+globalFunctionName+'\'.\n\tPlease check in the file that the function name is spelled correctly.');
+						}
 						var neededInjections = [];
 						
 						for( var i in injectionsList ){
@@ -304,7 +309,7 @@ framework.run( function($q){
 						}
 						
 						if( neededInjections.length ){
-							console.log('Error! Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
+							console.log('Error: Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
 						}
 					};
 
@@ -328,20 +333,22 @@ framework.run( function($q){
 						}
 					}
 					
-					// Inject context and modelbuilder into actions
-					try{
-						var actionsInjections = {
-							Context: templateScope
-						};
-						
-						//Inject modelbinder if provided
-						if( injectedModelbuilder ){
-							actionsInjections.Modelbuilder = injectedModelbuilder;
+					// Inject context and modelbuilder into actions (if provided)
+					if( window[actionsName]){
+						try{
+							var actionsInjections = {
+								Context: templateScope
+							};
+							
+							//Inject modelbinder if provided
+							if( injectedModelbuilder ){
+								actionsInjections.Modelbuilder = injectedModelbuilder;
+							}
+							
+							injectedActions = $controller( window[actionsName] , actionsInjections);	
+						} catch(e){
+							console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
 						}
-						
-						injectedActions = $controller( window[actionsName] , actionsInjections);	
-					} catch(e){
-						console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
 					}
 					
 					// Inject context, state parameters, modelbuilder, and actions into controller

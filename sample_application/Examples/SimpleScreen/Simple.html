@@ -1,8 +1,90 @@
 <div class="row-fluid">
-	<h3 class="voice-brand">Simple Example</h3>
-
+	<h3 class="voice-brand">Simple Page</h3>
+	<p>
+		This example will show how to create a simple screen with basic functionality using the framework.
+	</p>
+	<hr>
+	<h4 class="voice-brand">Demo:</h4>
+	
 	Model: {{Model.firstName}} {{Model.lastName}}<br><br>
 	
 	Click to change model through Modelbinder: <br>
 	<div class="btn btn-primary" ng-click="Actions.changeModel()">Change Model Through Modelbinder</div>
+	
+	<hr>
+	<h4 class="voice-brand">Example:</h4>
+	
+	<p>
+		Begin by creating a new view in your config.json file:
+	</p>
+	<pre>
+{
+    "applicationConfig": {
+        "views": {
+            "Simple": {
+                "url": "Simple",
+                "template": "SimpleTemplate",
+                "model": "SimpleModel",
+                "modelbuilder": "SimpleModelbuilder",
+                "actions": "SimpleActions",
+                "controller": "SimpleController"
+            }
+        }
+    }
+}
+	</pre>
+	<p>
+		Next, add the files to your properties section:
+	</p>
+	<pre>
+{
+    "applicationConfig": {
+        "properties": {
+            "jsPaths": {
+                "SimpleModel": "path/to/SimpleModel.js",
+                "SimpleModelbuilder": "path/to/SimpleModelbuilder.js",
+                "SimpleActions": "path/to/SimpleActions.js",
+                "SimpleController": "path/to/SimpleController.js"
+            },
+            "templatePaths": {
+                "SimpleTemplate": "path/to/Simple.html"
+            }
+        }
+    }
+}
+	</pre>
+	<p>
+		Create your model (using this page as an example):
+	</p>
+	<pre>
+
+	</pre>
+	<p>
+		Create your modelbuilder (using this page as an example):
+	</p>
+	<pre>
+
+	</pre>
+	<p>
+		Create your actions (using this page as an example):
+	</p>
+	<pre>
+
+	</pre>
+	<p>
+		Create your controller (using this page as an example):
+	</p>
+	<pre>
+
+	</pre>
+	<p>
+		Create your template (using this page as an example):
+	</p>
+	<pre>
+Model: {{Model.firstName}} {{Model.lastName}}<br><br>
+
+Click to change model through Modelbinder: <br>
+<div class="btn btn-primary" ng-click="Actions.changeModel()">Change Model Through Modelbinder</div>
+	</pre>
+	
 </div>

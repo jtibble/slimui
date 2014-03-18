@@ -1,4 +1,5 @@
-var Documentation = function(Context){
+var DocumentationModel = function(){
+	
 	
 	var escapedJS = {
 		emptyConfigJSON: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"\",\r\n        \"properties\": {\r\n            \"jsPaths\": {},\r\n            \"templatePaths\": {}\r\n        },\r\n        \"components\": {},\r\n        \"views\": {},\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
@@ -19,7 +20,8 @@ var Documentation = function(Context){
 		serviceUsageExample: 'var ViewName = function(Context, StaticServiceName, DynamicServiceName){\n\tContext.model = {\n\t\tprimaryText: StaticServiceName.Header.primaryText,\n\t\tsecondaryText: StaticServiceName.Header.secondaryText\n\t};\n\tContext.actions = {\n\t\tsubmit: function(){\n\t\t\tDynamicServiceName.submitData();\n\t\t}\n\t};\n};',
 	};
 	
-	Context.model = {
+	
+	return {
 		docs: [
 			{
 				title: 'Config.json',
@@ -236,4 +238,4 @@ var Documentation = function(Context){
 			}
 		]
 	};
-};
+}

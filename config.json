@@ -3,7 +3,9 @@
         "defaultView": "LandingPage",
         "properties": {
             "jsPaths": {
-				"DocumentationController": "sample_application/Documentation/Documentation.js",
+				"DocumentationController": "sample_application/Documentation/DocumentationController.js",
+				"DocumentationModel": "sample_application/Documentation/DocumentationModel.js",
+				"DocumentationModelbuilder": "sample_application/Documentation/DocumentationModelbuilder.js",
 				
 				"ExamplesController": "sample_application/Examples/ExamplesController.js",
 				"ExamplesModel": "sample_application/Examples/ExamplesModel.js",
@@ -76,7 +78,9 @@
 			"Documentation": {
 				"url": "Documentation",
 				"template": "DocumentationTemplate",
-				"controller": "DocumentationController"
+				"controller": "DocumentationController",
+				"model": "DocumentationModel",
+				"modelbuilder": "DocumentationModelbuilder"
 			},
 			
 			"Examples": {

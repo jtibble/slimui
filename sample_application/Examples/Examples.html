@@ -4,15 +4,13 @@
 	</div>
 	<div class="row-fluid">
 		<div class="col-md-8 container" ui-view>
-			First model from ModelBuilder: <h3>{{Model.firstName}} {{Model.lastName}}</h3><br>
-			Second model from ModelBuilder injected into Actions, exposed to Context: <h3>{{Actions.getOtherModel().firstName}} {{Actions.getOtherModel().lastName}} </h3><br>
-			Click to change model: <div class="btn btn-primary" ng-click="Actions.changeModel()">Change Model Data Through Action</div>
+			Please choose an option from the menu. If you're new to the SlimUI framework start with a simple example <a href="#/Examples/Simple">here</a>.
 		</div>
 		<div class="col-md-4 container">
 			<h3 class="voice-brand">Menu</h3>
 			<ul>
-				<li ng-repeat="item in model.examplesList">
-					<a href="" ng-click="actions.goTo(item.url)">{{item.text}}</a>
+				<li ng-repeat="item in Model.examplesList">
+					<a href="" ng-click="Actions.goTo(item.url)">{{item.text}}</a>
 				</li>
 			</ul>
 		</div>

@@ -1,10 +1,7 @@
-var ExamplesActions = function(Modelbuilder){
+var ExamplesActions = function(Router){
 	return {
-		getOtherModel: function(){
-			return Modelbuilder.otherModel;
-		},
-		changeModel: function(){
-			Modelbuilder.otherModel = {firstName: 'Second, Changed', lastName: 'Model'};	
+		goTo: function( route ){
+			Router.goTo(route);
 		}
 	};
 };

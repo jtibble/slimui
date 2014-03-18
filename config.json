@@ -17,7 +17,10 @@
 				"SimpleActions": "sample_application/Examples/SimpleScreen/SimpleActions.js",
 				"SimpleController": "sample_application/Examples/SimpleScreen/SimpleController.js",
 				
-				"AJAXExampleController": "sample_application/Examples/AJAX/AJAX.js",
+				"AJAXExampleModel": "sample_application/Examples/AJAX/AJAXModel.js",
+				"AJAXExampleModelbuilder": "sample_application/Examples/AJAX/AJAXModelbuilder.js",
+				"AJAXExampleActions": "sample_application/Examples/AJAX/AJAXActions.js",
+				"AJAXExampleController": "sample_application/Examples/AJAX/AJAXController.js",
 				
 				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsController.js",
 				"ControllerCommunicationsExampleActions": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsActions.js",
@@ -28,10 +31,18 @@
 				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerController.js",
 				
 				
-				"ParameterPassingExampleController": "sample_application/Examples/ParameterPassing/ParameterPassing.js",
+				"ParameterPassingController": "sample_application/Examples/ParameterPassing/ParameterPassingController.js",
+				"ParameterPassingModel": "sample_application/Examples/ParameterPassing/ParameterPassingModel.js",
+				"ParameterPassingModelbuilder": "sample_application/Examples/ParameterPassing/ParameterPassingModelbuilder.js",
+				"ParameterPassingActions": "sample_application/Examples/ParameterPassing/ParameterPassingActions.js",
+				
 				"RoutingExampleController": "sample_application/Examples/Routing/RoutingController.js",
 				"RoutingExampleActions": "sample_application/Examples/Routing/RoutingActions.js",
-				"ServicesExampleController": "sample_application/Examples/Services/Services.js"
+				
+				"ServicesExampleController": "sample_application/Examples/Services/ServicesController.js",
+				"ServicesExampleModel": "sample_application/Examples/Services/ServicesModel.js",
+				"ServicesExampleModelbuilder": "sample_application/Examples/Services/ServicesModelbuilder.js",
+				"ServicesExampleActions": "sample_application/Examples/Services/ServicesActions.js"
             },
             "templatePaths": {
 				"HeaderTemplate": "sample_application/Header/Header.html",
@@ -110,7 +121,10 @@
 			},
 			"AJAX": {
 				"template": "AJAXExampleTemplate",
-				"controller": "AJAXExampleController"
+				"controller": "AJAXExampleController",
+				"model": "AJAXExampleModel",
+				"modelbuilder": "AJAXExampleModelbuilder",
+				"actions": "AJAXExampleActions"
 			},
 			"ControllerCommunications": {
 				"template": "ControllerCommunicationsExampleTemplate",
@@ -118,13 +132,20 @@
 				"actions": "ControllerCommunicationsExampleActions"
 			},
 			"ParameterPassing": {
+				"url": "ParameterPassing",
 				"template": "ParameterPassingExampleTemplate",
-				"controller": "ParameterPassingExampleController",
-				"parameters": true
+				"model": "ParameterPassingModel",
+				"modelbuilder": "ParameterPassingModelbuilder",
+				"actions": "ParameterPassingActions",
+				"controller": "ParameterPassingController"
 			},
 			"Services": {
 				"template": "ServicesExampleTemplate",
-				"controller": "ServicesExampleController"
+				"controller": "ServicesExampleController",
+				"model": "ServicesExampleModel",
+				"modelbuilder": "ServicesExampleModelbuilder",
+				"controller": "ServicesExampleController",
+				"actions": "ServicesExampleActions"
 			}
 			
         },

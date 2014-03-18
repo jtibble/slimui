@@ -1,0 +1,3 @@
+var ServicesActions = function(){
+	return {};
+};

@@ -2,7 +2,7 @@ var ExamplesModel = function(){
 	return {
 		examplesList: [
 			{
-				text: 'Simple Example',
+				text: 'Simple Page',
 				url: 'Examples.Simple'
 			},
 			{

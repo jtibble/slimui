@@ -1,0 +1,3 @@
+var ParameterPassingModel = function(){
+	return {};
+};

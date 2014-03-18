@@ -57,34 +57,68 @@
 		Create your model (using this page as an example):
 	</p>
 	<pre>
+// A Model just returns a plain JS object (with no functions!)
 
+var SimpleModel = function(){
+	return {
+		firstName: 'John',
+		lastName: 'Tibble'
+	};
+};
 	</pre>
 	<p>
 		Create your modelbuilder (using this page as an example):
 	</p>
 	<pre>
+// Modelbuilders always accept a Model
 
+var SimpleModelbuilder = function(Model){
+	
+	// Modelbuilders must return a function that can be called.
+	//    This function returns the built model
+	return function( config ){
+		
+		// Modelbuilders can be configured to add/remove/change Model properties
+		//     See http://en.wikipedia.org/wiki/Builder_pattern
+		if( config && config.firstName && config.lastName ){
+			Model.firstName = config.firstName;
+			Model.lastName = config.lastName;
+		}
+		
+		return Model;
+	};
+};
 	</pre>
 	<p>
 		Create your actions (using this page as an example):
 	</p>
 	<pre>
-
+var ExamplesActions = function(Router){
+	return {
+		goTo: function( route ){
+			Router.goTo(route);
+		}
+	};
+};
 	</pre>
 	<p>
 		Create your controller (using this page as an example):
 	</p>
 	<pre>
+// A Controller needs to receive the following parameters:
+//   Context (which is exposed to the template), 
+//   Actions (functions that can be called by actions in the template)
+//   Modelbuilder (which is invoked to get a model to display)
 
+var SimpleController = function( Context, Modelbuilder, Actions ){
+	Context.Actions = Actions;
+	Context.Model = Modelbuilder();
+};
 	</pre>
 	<p>
-		Create your template (using this page as an example):
+		Create your template (look at the page for this example)
+		<br>
+		Finally, navigate with your browser to #/Simple to see the page
 	</p>
-	<pre>
-Model: {{Model.firstName}} {{Model.lastName}}<br><br>
-
-Click to change model through Modelbinder: <br>
-<div class="btn btn-primary" ng-click="Actions.changeModel()">Change Model Through Modelbinder</div>
-	</pre>
 	
 </div>

@@ -1,0 +1,3 @@
+var AJAXActions = function(){
+	return {};
+};

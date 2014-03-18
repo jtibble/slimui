@@ -17,8 +17,19 @@
 				
 				
 				"AJAXExampleController": "sample_application/Examples/AJAX/AJAX.js",
-				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunications.js",
-				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.js",
+				
+				"ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsController.js",
+				"ControllerCommunicationsExampleActions": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsActions.js",
+				
+				"ControllerCommunicationListenerModel": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerModel.js",
+				"ControllerCommunicationListenerModelbuilder": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerModelbuilder.js",
+				"ControllerCommunicationListenerActions": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerActions.js",
+				"ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerController.js",
+				
+				
+				
+				
+				
 				"ParameterPassingExampleController": "sample_application/Examples/ParameterPassing/ParameterPassing.js",
 				"RoutingExampleController": "sample_application/Examples/Routing/RoutingController.js",
 				"RoutingExampleActions": "sample_application/Examples/Routing/RoutingActions.js",
@@ -34,8 +45,11 @@
 				
 				"ExamplesTemplate": "sample_application/Examples/Examples.html",
 				"AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
+				
 				"ControllerCommunicationsExampleTemplate": "sample_application/Examples/ControllerCommunications/ControllerCommunications.html",
+				
 				"ControllerCommunicationListenerTemplate": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.html",
+				
 				"ParameterPassingExampleTemplate": "sample_application/Examples/ParameterPassing/ParameterPassing.html",
 				"RoutingExampleTemplate": "sample_application/Examples/Routing/Routing.html",
 				"ServicesExampleTemplate": "sample_application/Examples/Services/Services.html"
@@ -47,7 +61,10 @@
 			},
 			"ControllerCommunicationListener": {
 				"template": "ControllerCommunicationListenerTemplate",
-				"controller": "ControllerCommunicationListenerController"	
+				"controller": "ControllerCommunicationListenerController",
+				"modelbuilder": "ControllerCommunicationListenerModelbuilder",
+				"actions": "ControllerCommunicationListenerActions",
+				"model": "ControllerCommunicationListenerModel"
 			}
         },
         "views": {
@@ -97,7 +114,8 @@
 			},
 			"ControllerCommunications": {
 				"template": "ControllerCommunicationsExampleTemplate",
-				"controller": "ControllerCommunicationsExampleController"
+				"controller": "ControllerCommunicationsExampleController",
+				"actions": "ControllerCommunicationsExampleActions"
 			},
 			"ParameterPassing": {
 				"template": "ParameterPassingExampleTemplate",

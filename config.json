@@ -140,7 +140,6 @@
 			},
 			"Services": {
 				"template": "ServicesExampleTemplate",
-				"controller": "ServicesExampleController",
 				"model": "ServicesExampleModel",
 				"modelbuilder": "ServicesExampleModelbuilder",
 				"controller": "ServicesExampleController",

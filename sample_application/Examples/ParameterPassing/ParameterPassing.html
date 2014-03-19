@@ -1,1 +1,28 @@
 <h3 class="voice-brand">Parameter Passing</h3>
+
+<p>
+	To pass paramters to a view, you must add "parameters": true to the view in your config.json file:
+<pre>
+"ParameterPassing": {
+	"template": "ParameterPassingExampleTemplate",
+	"model": "ParameterPassingModel",
+	"modelbuilder": "ParameterPassingModelbuilder",
+	"actions": "ParameterPassingActions",
+	"controller": "ParameterPassingController",
+	"parameters": true
+}
+</pre>
+</p>
+
+<p>
+	To demonstrate URL parameter-passing, add text to the end of the URL, or click this link:<br>
+	<a href="#/Examples/ParameterPassing/URLParameterGoesHere">#/Examples/ParameterPassing/URLParameterGoesHere</a>
+</p>
+<br><br>
+
+<div ng-if="Model.parameters">
+	<hr>
+	<p>
+		This page was called with URL parameters '{{Model.parameters}}'
+	</p>
+</div>

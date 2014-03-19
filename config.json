@@ -136,7 +136,8 @@
 				"model": "ParameterPassingModel",
 				"modelbuilder": "ParameterPassingModelbuilder",
 				"actions": "ParameterPassingActions",
-				"controller": "ParameterPassingController"
+				"controller": "ParameterPassingController",
+				"parameters": true
 			},
 			"Services": {
 				"template": "ServicesExampleTemplate",

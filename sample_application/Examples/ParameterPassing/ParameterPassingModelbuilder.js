@@ -1,5 +1,6 @@
 var ParameterPassingModelbuilder = function(Model){
-	return function(){
+	return function( parameters ){
+		Model.parameters = parameters;
 		return Model;
 	};
 };

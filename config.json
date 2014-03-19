@@ -98,12 +98,11 @@
 				"actions": "ExamplesActions",
 				"controller": "ExamplesController",
 				
-				"regions": [
+				"subroutes": [
 					"Simple",
 					"Routing",
 					"AJAX",
 					"ControllerCommunications",
-					"ParameterPassing",
 					"Services"
 				]
 			},
@@ -131,20 +130,25 @@
 				"controller": "ControllerCommunicationsExampleController",
 				"actions": "ControllerCommunicationsExampleActions"
 			},
-			"ParameterPassing": {
-				"template": "ParameterPassingExampleTemplate",
-				"model": "ParameterPassingModel",
-				"modelbuilder": "ParameterPassingModelbuilder",
-				"actions": "ParameterPassingActions",
-				"controller": "ParameterPassingController",
-				"parameters": true
-			},
 			"Services": {
 				"template": "ServicesExampleTemplate",
 				"model": "ServicesExampleModel",
 				"modelbuilder": "ServicesExampleModelbuilder",
 				"controller": "ServicesExampleController",
 				"actions": "ServicesExampleActions"
+			},
+		
+			"ParameterPassing": {
+				"url": "ParameterPassing",
+				"template": "ParameterPassingExampleTemplate",
+				"model": "ParameterPassingModel",
+				"modelbuilder": "ParameterPassingModelbuilder",
+				"actions": "ParameterPassingActions",
+				"controller": "ParameterPassingController",
+				"parameters": [
+					"parameterExampleId",
+					"parameterExampleId2"
+				]
 			}
 			
         },

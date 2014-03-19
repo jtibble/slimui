@@ -1,5 +1,8 @@
 var ExamplesModelbuilder = function(Model){
-	return function(){
+	return function(parameters){
+		if( parameters ){
+			debugger;
+		}
 		return Model;
 	}
 };

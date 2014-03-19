@@ -142,37 +142,55 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 	
 	
-	// Function used to create the settings for each route, including lazy-load of controllers
-	var createRouteSettings = function( route, screenComponentName ){
-		//var componentNameAttribute = screenComponentName.split(/(?=[A-Z])/).join('-');
-		//var parameterString = '{parameterOne}/{parameter2}';
-		
+	// Function used to create the settings for each route, including parameters if needed
+	var createRouteSettings = function( route, parameters, screenComponentName ){	
 		return {
-			url: '/' + route,
+			url: '/' + route + (parametersFlag ? '/{parameters}' : ''),
 			template: '<div ' + screenComponentName + '></div>'
 		};
 	};
 	
-	// Loop through all views to discover application states and sub-states
+	
+	var makeStateFromView = function(view, parentUrl){
+		var settings;
+		if( view.parameters && view.parameters.length ){
+			var parametersString = '/{' + view.parameters.toString().replace(',','}/{') + '}' ;
+			settings = {
+				url: (parentUrl ? '/' + parentUrl + '.' : '') + view.url,
+				urlPattern: '/' + view.url + parametersString,
+				screenComponentName: i
+			};
+		} else {
+			settings = {
+				url: (parentUrl ? '/' + parentUrl + '.' : '') + view.url,
+				urlPattern: '/' + view.url,
+				screenComponentName: i
+			};
+		}
+		
+		debugger;
+		$stateProvider.state( settings.url, {
+			url: settings.urlPattern, 
+			template: '<div ' + settings.screenComponentName + '></div>'
+		});
+	};
+	
+	// Loop through all views to discover application states, sub-states, and parameters
 	for( var i in applicationConfig.views ){
 		var view = applicationConfig.views[i];
 		
 		if( view.url ){
-			var routeSettings = createRouteSettings(view.url, i);
-			$stateProvider.state( view.url, routeSettings );
+			makeStateFromView(view);
 		}
 		
-		if( view.regions ){
-			for( var r in view.regions ){
-				var regionName = view.regions[r];
-				var regionView = applicationConfig.views[ regionName ];
-				var route = view.url + '.' + regionName;
-				
-				$stateProvider.state( route, {
-					url: '/' + regionName + (regionView.parameters ? '/{parameters}' : ''),
-					template: '<div ' + regionName + '></div>'
-				});
-			}
+		for( var r in view.subroutes ){
+			var subrouteName = view.subroutes[r];
+			var subrouteView = applicationConfig.views[ subrouteName ];
+			
+			makeStateFromView(subrouteView, view.url);
+			
+			//var routeSettings = createRouteSettings( subrouteName, subrouteView.parameters, subrouteName);
+			//$stateProvider.state( view.url + '.' + subrouteName, routeSettings);
 		}
 	}
 	

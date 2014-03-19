@@ -19,7 +19,7 @@ var ExamplesModel = function(){
 			},
 			{
 				text: 'Parameter Passing',
-				url: 'Examples.ParameterPassing'
+				url: 'ParameterPassing'
 			},
 			{
 				text: 'Static/Dynamic Data Services',

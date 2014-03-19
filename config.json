@@ -132,7 +132,6 @@
 				"actions": "ControllerCommunicationsExampleActions"
 			},
 			"ParameterPassing": {
-				"url": "ParameterPassing",
 				"template": "ParameterPassingExampleTemplate",
 				"model": "ParameterPassingModel",
 				"modelbuilder": "ParameterPassingModelbuilder",

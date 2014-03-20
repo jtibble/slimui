@@ -140,15 +140,15 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		console.log('config file is invalid');	
 	}
 	
-	
+	// Given a view, its name, and (optional) parent, create all the routes for it
 	var makeStateFromView = function(name, view, parentName){
 		
+		// Helper function to create the URL template for a view and (optional) parameters
 		var makeURL = function(viewURL, viewParameters){
 			
 			var parametersString = '';
 			for( var p in viewParameters ){
 				var parameterName = viewParameters[p];
-				//var parameterRequired = viewParameters[p].required;
 				parametersString += '/{' + parameterName + '}';
 			}
 			
@@ -160,6 +160,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 			return '/' + viewURL + parametersString;
 		};
 		
+		// Helper function to create a router state from a view name and (optional) parent view name
 		var makeRouterState = function(viewName, parentViewName){
 			if( viewName && parentViewName ){
 				return parentViewName + '.' + viewName;
@@ -184,15 +185,14 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 			template: '<div ' + name + '></div>'
 		}
 		
-		$stateProvider.state( state, routerParameters);
-		console.log('Application state added:\n\t' + state + ': ' + routerParameters.url);
-			
+		$stateProvider.state( state, routerParameters);			
 	};
 	
 	// Loop through all views to discover application states, sub-states, and parameters
 	for( var i in applicationConfig.views ){
 		var view = applicationConfig.views[i];
 		
+		// If the view provides a url (meaning it's a root-level view, not a child-view, create a state for it
 		if( view.url != undefined ){
 			makeStateFromView(i, view);
 		}
@@ -205,9 +205,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	}
 	
 	var defaultView = applicationConfig.views[ applicationConfig.defaultView ];
-	
 	var defaultURL = defaultView.url;
-	
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){

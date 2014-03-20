@@ -15,22 +15,10 @@ var framework = angular.module('Framework', ['ui.router',
 */
 var validateConfigFileStructure = function( config ){
 	
-	var jsPathPropertyExistsHelper = function( propertyName ){
-		if( config.properties.jsPaths[propertyName] ){
-			return true;
-		} else {
-			return false;
-		}
-	};
-	var templatePathPropertyExistsHelper = function( propertyName ){
-		if( config.properties.templatePaths[propertyName] ){
-			return true;
-		} else {
-			return false;
-		}
-	};
 	var directiveIsValidHelper = function( name, directive ){
-		var printError = function( error ){ console.log('Config.json Validation Error: View/Component \'' + name + '\' ' + error); };
+		var printError = function( error ){ 
+			console.log('Config.json Validation Error: View/Component \'' + name + '\' ' + error); 
+		};
 		
 		// view must exist
 		if( !directive ){
@@ -38,32 +26,25 @@ var validateConfigFileStructure = function( config ){
 			return false;	
 		}
 		
-		// directive must have template
-		if( !directive.template ){
-			printError('is missing its templatePath');
-			return false;
+		// Check directive for validity
+		// Valid properties combinations: (template included by default, does not need to be specified)
+		//  [nothing]
+		//	controller
+		//	controller + actions
+		//	controller + modelbuilder + model
+		//  controller + actions + modelbuilder + model
+		
+		if( directive.model && !directive.modelbuilder ){
+			printError( ' is invalid: if includes model, must also include modelbuilder');
 		}
-		
-		// directive's template must be valid
-		if( !templatePathPropertyExistsHelper( directive.template )){
-			printError('template \'' + directive.template + '\' is invalid');
+		if( directive.modelbuilder && !directive.model ){
+			printError( ' is invalid: if includes modelbuilder, must also include model');
 		}
-		
-		var additionalDirectivePropertiesList = [
-			'model',
-			'modelbuilder',
-			'actions',
-			'controller'
-		];
-		
-		// Check every directive property for validity
-		for( var i=0; i<additionalDirectivePropertiesList.length; i++){
-			var directiveProperty = additionalDirectivePropertiesList[i];
-			if( directive[ directiveProperty ] ){
-				if( !jsPathPropertyExistsHelper( directive[directiveProperty] )){
-					printError( directiveProperty + ' \'' + directive[directiveProperty] + '\' is invalid');
-				}
-			}
+		if( directive.actions && !directive.controller ){
+			printError( ' is invalid: if includes actions, must also include controller');
+		}
+		if( directive.modelbuilder && !directive.controller ){
+			printError( ' is invalid: if includes modelbuilder, must also include controller');
 		}
 		
 		return true;

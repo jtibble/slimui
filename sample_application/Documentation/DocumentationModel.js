@@ -3,22 +3,19 @@ var DocumentationModel = function(){
 	// EscapedJS generated with JSONLint.com and freeformatter.com/javascript-escape.html
 	
 	var escapedJS = {
-		emptyConfigJSON: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"\",\r\n        \"properties\": {\r\n            \"jsPaths\": {},\r\n            \"templatePaths\": {}\r\n        },\r\n        \"components\": {},\r\n        \"views\": {},\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
-		configDefaultViewExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"ViewName\",\r\n        \"views\": {\r\n            \"ViewName\": {\r\n                \"url\": \"ViewURL\",\r\n                \"template\": \"ViewTemplateProperty\"\r\n            }\r\n        }\r\n    }\r\n}',
-		configPropertiesExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"jsPaths\": {\r\n                \"DocumentationController\": \"sample_application\/Documentation\/Documentation.js\"\r\n            },\r\n            \"templatePaths\": {\r\n                \"DocumentationTemplate\": \"sample_application\/Documentation\/Documentation.html\"\r\n            }\r\n        }\r\n    }\r\n}',
-		configComponentsExample: '{\r\n    \"applicationConfig\": {\r\n        \"components\": {\r\n            \"Header\": {\r\n                \"template\": \"HeaderTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		configViewsSimpleExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"LandingPage\",\r\n        \"properties\": {\r\n            \"jsPaths\": {},\r\n            \"templatePaths\": {\r\n                \"LandingPageTemplate\": \"sample_application\/LandingPage\/LandingPage.html\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"LandingPage\": {\r\n                \"url\": \"\/\",\r\n                \"template\": \"LandingPageTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		configViewsNestedExample: '{\r\n    \"applicationConfig\": {\r\n        \"views\": {\r\n            \"NestedView\": {\r\n                \"url\": \"NestedView\",\r\n                \"template\": \"NestedViewTemplate\",\r\n                \"model\": \"NestedViewModel\",\r\n                \"modelbuilder\": \"NestedViewModelbuilder\",\r\n                \"actions\": \"NestedViewActions\",\r\n                \"controller\": \"NestedViewController\",\r\n                \"subroutes\": [\r\n                    \"NestedViewChild1\",\r\n                    \"NestedViewChild2\"\r\n                ]\r\n            },\r\n            \"NestedViewChild1\": {\r\n                \"controller\": \"NestedViewChild1Controller\",\r\n                \"template\": \"NestedViewChild1Template\"\r\n            },\r\n            \"NestedViewChild2\": {\r\n                \"controller\": \"NestedViewChild2Controller\",\r\n                \"template\": \"NestedViewChild2Template\"\r\n            }\r\n        }\r\n    }\r\n}',
+		emptyConfigJSON: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"\",\r\n        \"properties\": {\r\n            \"basePath\": \"\",\r\n            \"basePaths\": {}\r\n        },\r\n        \"components\": {},\r\n        \"views\": {},\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
+		configDefaultViewExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"LandingPage\",\r\n        \"views\": {\r\n            \"LandingPage\": {\r\n                \"url\": \"\/\",\r\n                \"basePath\": \"LandingPage\"\r\n            }\r\n        }\r\n    }\r\n}',
+		configPropertiesExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"basePath\": \"sample_application\/\",\r\n            \"basePaths\": {\r\n                \"Documentation\": \"Documentation\/\"\r\n            }\r\n        }\r\n    }\r\n}',
+		configComponentsExample: '{\r\n    \"applicationConfig\": {\r\n        \"components\": {\r\n            \"Header\": {\r\n                \"basePath\": \"Header\"\r\n            }\r\n        }\r\n    }\r\n}',
+		configViewsSimpleExample: '{\r\n    \"applicationConfig\": {\r\n        \"views\": {\r\n            \"Documentation\": {\r\n                \"url\": \"Documentation\",\r\n                \"basePath\": \"Documentation\",\r\n                \"controller\": true,\r\n                \"model\": true,\r\n                \"modelbuilder\": true\r\n            }\r\n        }\r\n    }\r\n}',
+		configViewsNestedExample: '{\r\n    \"applicationConfig\": {\r\n        \"views\": {\r\n            \"ParameterPassing\": {\r\n                \"url\": \"ParameterPassing\",\r\n                \"basePath\": \"ParameterPassing\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"parameterExampleId\",\r\n                    \"parameterExampleId2\"\r\n                ],\r\n                \"subroutes\": [\r\n                    \"ParameterPassingSubroute\"\r\n                ]\r\n            },\r\n            \"ParameterPassingSubroute\": {\r\n                \"basePath\": \"ParameterPassingSubroute\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"subrouteParameterExampleId\",\r\n                    \"subrouteParameterExampleId2\"\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}',
 		configServicesExample: '{\r\n    \"applicationConfig\": {\r\n        \"services\": {\r\n            \"existing\": {\r\n                \"ExampleService\": \"path\/to\/ExistingService.js\"\r\n            },\r\n            \"generating\": {\r\n                \"ApplicationMessages\": {\r\n                    \"Header\": {\r\n                        \"primaryText\": \"Header Primary Text\",\r\n                        \"secondaryText\": \"header secondary text\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}',
-		appContentStaticExample: '{\r\n    \"applicationConfig\": {\r\n        \"views\": {\r\n            \"NewView\": {\r\n                \"url\": \"NewView\",\r\n                \"template\": \"NewViewTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		appContentStaticExample2: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"jsPaths\": {},\r\n            \"templatePaths\": {\r\n                \"NewViewTemplate\": \"path\/to\/NewHTMLPage.html\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"NewView\": {\r\n                \"url\": \"NewView\",\r\n                \"template\": \"NewViewTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		appContentDynamicExample: 'var NewViewName = function(Context){\n\tContext.model = {};\n\tContext.actions = {};\n};',
-		appContentDynamicExample2: '{\r\n    \"applicationConfig\": {\r\n        \"views\": {\r\n            \"NewView\": {\r\n                \"url\": \"NewView\",\r\n                \"controller\": \"NewViewController\",\r\n                \"template\": \"NewViewTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		appContentDynamicExampleFull: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"jsPaths\": {\r\n                \"NewViewController\": \"path\/to\/NewPageController.js\"\r\n            },\r\n            \"templatePaths\": {\r\n                \"NewViewTemplate\": \"path\/to\/NewHTMLPage.html\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"NewViewName\": {\r\n                \"url\": \"NewView\",\r\n                \"controller\": \"NewViewController\",\r\n                \"template\": \"NewViewTemplate\"\r\n            }\r\n        }\r\n    }\r\n}',
-		componentExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"jsPaths\": {\r\n                \"HeaderController\": \"path\/to\/Header.js\"\r\n            },\r\n            \"templatePaths\": {\r\n                \"HeaderTemplate\": \"path\/to\/Header.html\"\r\n            }\r\n        },\r\n        \"components\": {\r\n            \"Header\": {\r\n                \"template\": \"HeaderTemplate\",\r\n                \"model\": \"HeaderModel\",\r\n                \"modelbuilder\": \"HeaderModelbuilder\",\r\n                \"actions\": \"HeaderActions\",\r\n                \"controller\": \"HeaderController\"\r\n            }\r\n        }\r\n    }\r\n}',
+		appContentStaticExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"LandingPage\",\r\n        \"properties\": {\r\n            \"basePath\": \"sample_application\/\",\r\n            \"basePaths\": {\r\n                \"LandingPage\": \"LandingPage\/\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"LandingPage\": {\r\n                \"url\": \"\/\",\r\n                \"basePath\": \"LandingPage\"\r\n            },\r\n        }\r\n    }\r\n}',
+		appContentDynamicExampleFull: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"basePath\": \"sample_application\/\",\r\n            \"basePaths\": {\r\n                \"ParameterPassing\": \"Examples\/ParameterPassing\/\",\r\n                \"ParameterPassingSubroute\": \"Examples\/ParameterPassing\/\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"ParameterPassing\": {\r\n                \"url\": \"ParameterPassing\",\r\n                \"basePath\": \"ParameterPassing\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"parameterExampleId\",\r\n                    \"parameterExampleId2\"\r\n                ],\r\n                \"subroutes\": [\r\n                    \"ParameterPassingSubroute\"\r\n                ]\r\n            },\r\n            \"ParameterPassingSubroute\": {\r\n                \"basePath\": \"ParameterPassingSubroute\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"subrouteParameterExampleId\",\r\n                    \"subrouteParameterExampleId2\"\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}',
+		componentExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"basePath\": \"sample_application\/\",\r\n            \"basePaths\": {\r\n                \"ControllerCommunicationListener\": \"Examples\/ControllerCommunications\/ListenerComponent\/\"\r\n            }\r\n        },\r\n        \"components\": {\r\n            \"ControllerCommunicationListener\": {\r\n                \"basePath\": \"ControllerCommunicationListener\",\r\n                \"controller\": true,\r\n                \"modelbuilder\": true,\r\n                \"actions\": true,\r\n                \"model\": true\r\n            }\r\n        }\r\n    }\r\n}',
 		generatingServicesExample: '{\r\n    \"applicationConfig\": {\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {\r\n                \"StaticServiceName\": {\r\n                    \"Header\": {\r\n                        \"primaryText\": \"Header Primary Text\",\r\n                        \"secondaryText\": \"header secondary text\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}',
 		existingServicesExample: '{\r\n    \"applicationConfig\": {\r\n        \"services\": {\r\n            \"existing\": {\r\n                \"DynamicServiceName\": \"path\/to\/ExistingService.js\"\r\n            },\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
-		serviceUsageExample: 'var ViewName = function(Context, StaticServiceName, DynamicServiceName){\n\tContext.model = {\n\t\tprimaryText: StaticServiceName.Header.primaryText,\n\t\tsecondaryText: StaticServiceName.Header.secondaryText\n\t};\n\tContext.actions = {\n\t\tsubmit: function(){\n\t\t\tDynamicServiceName.submitData();\n\t\t}\n\t};\n};',
+		serviceUsageExample: '\r\nvar ViewName = function(Context, Modelbuilder, StaticServiceName, DynamicServiceName){\r\n\tvar serviceData = {\r\n\t\tprimaryText: StaticServiceName.Header.primaryText,\r\n\t\tsecondaryText: StaticServiceName.Header.secondaryText,\r\n\t\tdynamicData: DynamicServiceName.submitData()\r\n\t};\r\n\t\r\n\tContext.Model = Modelbuilder( serviceData );\r\n};',
 	};
 	
 	
@@ -108,7 +105,7 @@ var DocumentationModel = function(){
 						title: 'Static Page',
 						steps: [
 							{
-								content: 'To create a static HTML page in your application, begin by creating an HTML file in your project folder.'
+								content: 'To create a static HTML page in your application, begin by creating an HTML file "LandingPage.html" in your project folder.'
 							},
 							{
 								code: '<h3>New HTML Page!</h3>'
@@ -120,13 +117,7 @@ var DocumentationModel = function(){
 								code: escapedJS.appContentStaticExample
 							},
 							{
-								content: 'Next, add the HTML file to the \'properties\' \'templatePath\':'
-							},
-							{
-								code: escapedJS.appContentStaticExample2
-							},
-							{
-								content: 'Now the page is available if you navigate to #/NewView'
+								content: 'Now the page is available if you navigate to #/LandingPage'
 							}
 						]
 					},
@@ -134,28 +125,13 @@ var DocumentationModel = function(){
 						title: 'Dynamic Page',
 						steps: [
 							{
-								content: 'To create a dynamic HTML page in your application, begin by creating new HTML and JS files in your project folder.'
+								content: 'To create a dynamic HTML page in your application, you will need an HTML template, and one or more of the following JS files: controller, actions, model, modelbuilder. Modelbuilder requires having a model and controller, and actions requires a controller.'
 							},
 							{
-								code: '<h3>New HTML Page!</h3>'
-							},
-							{
-								code: escapedJS.appContentDynamicExample
-							},
-							{
-								content: 'Create a new \'view\' in your config.json.    NOTE: The name of the JS function must exactly match the key in the config.json \'views\' object!'
-							},
-							{
-								code: escapedJS.appContentDynamicExample2
-							},
-							{
-								content: 'Next, add the HTML file to the \'properties\' \'templatePath\':'
+								content: 'Here is a full example:'
 							},
 							{
 								code: escapedJS.appContentDynamicExampleFull
-							},
-							{
-								content: 'Now the page is available if you navigate to #/NewViewName.'
 							}
 						]
 					}
@@ -177,7 +153,7 @@ var DocumentationModel = function(){
 								content: 'To use your component, just include it in any HTML template as seen below. NOTE: The HTML-attribute name must exactly match the component name in config.json file, as well as (optionally) the controller JavaScript file'
 							},
 							{
-								code: '<div Header></div>'
+								code: '<div ControllerCommunicationListener></div>'
 							}
 						]
 					}

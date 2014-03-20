@@ -118,8 +118,8 @@
                 ]
             }
         },
-		"services":{
-        	"existing": {},
+        "services": {
+            "existing": {},
             "generating": {}
         }
     }

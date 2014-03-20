@@ -393,7 +393,7 @@ framework.run( function($q){
 						
 						var controllerInjections = {
 							Context: templateScope,
-							StateParameters: $stateParams.parameters
+							StateParameters: $stateParams
 						};
 						
 						// Inject modelbinder if provided

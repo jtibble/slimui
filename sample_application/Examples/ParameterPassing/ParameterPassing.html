@@ -9,13 +9,24 @@
 <p>
 	To pass paramters to a view, you must add "parameters": true to the view in your config.json file:
 <pre>
-
+"ParameterPassing": {
+	"url": "ParameterPassing",
+	"template": "ParameterPassingExampleTemplate",
+	"model": "ParameterPassingModel",
+	"modelbuilder": "ParameterPassingModelbuilder",
+	"actions": "ParameterPassingActions",
+	"controller": "ParameterPassingController",
+	"parameters": [
+		"parameterExampleId",
+		"parameterExampleId2"
+	]
+}
 </pre>
 </p>
 
 <p>
 	To demonstrate URL parameter-passing, add text to the end of the URL, or click this link:<br>
-	<a href="#/Examples/ParameterPassing/URLParameterGoesHere">#/Examples/ParameterPassing/URLParameterGoesHere</a>
+	<a href="#/ParameterPassing/URLParameter1/URLParameter2">#/ParameterPassing/URLParameter1GoesHere/URLParameter2GoesHere</a>
 </p>
 <br><br>
 
@@ -23,6 +34,9 @@
 	<hr>
 	<h3 class="voice-brand">Demo</h3>
 	<p>
-		This page was called with URL parameters '{{Model.parameters}}'
+		This page was called with the following URL parameters:
+		<div ng-repeat="(key, value) in Model.parameters">
+			{{key}}: {{value}}
+		</div>
 	</p>
 </div>

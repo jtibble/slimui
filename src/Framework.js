@@ -185,6 +185,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		}
 		
 		$stateProvider.state( state, routerParameters);
+		console.log('Application state added:\n\t' + state + ': ' + routerParameters.url);
 			
 	};
 	

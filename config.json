@@ -27,7 +27,9 @@
                 "ParameterPassingController": "sample_application/Examples/ParameterPassing/ParameterPassingController.js",
                 "ParameterPassingModel": "sample_application/Examples/ParameterPassing/ParameterPassingModel.js",
                 "ParameterPassingModelbuilder": "sample_application/Examples/ParameterPassing/ParameterPassingModelbuilder.js",
-                "ParameterPassingActions": "sample_application/Examples/ParameterPassing/ParameterPassingActions.js",
+                "ParameterPassingSubrouteController": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteController.js",
+                "ParameterPassingSubrouteModel": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteModel.js",
+                "ParameterPassingSubrouteModelbuilder": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteModelbuilder.js",
                 "RoutingExampleController": "sample_application/Examples/Routing/RoutingController.js",
                 "RoutingExampleActions": "sample_application/Examples/Routing/RoutingActions.js",
                 "ServicesExampleController": "sample_application/Examples/Services/ServicesController.js",
@@ -44,7 +46,8 @@
                 "AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
                 "ControllerCommunicationsExampleTemplate": "sample_application/Examples/ControllerCommunications/ControllerCommunications.html",
                 "ControllerCommunicationListenerTemplate": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.html",
-                "ParameterPassingExampleTemplate": "sample_application/Examples/ParameterPassing/ParameterPassing.html",
+                "ParameterPassingTemplate": "sample_application/Examples/ParameterPassing/ParameterPassing.html",
+                "ParameterPassingSubrouteTemplate": "sample_application/Examples/ParameterPassing/ParameterPassingSubroute.html",
                 "RoutingExampleTemplate": "sample_application/Examples/Routing/Routing.html",
                 "ServicesExampleTemplate": "sample_application/Examples/Services/Services.html"
             }
@@ -121,14 +124,26 @@
             },
             "ParameterPassing": {
                 "url": "ParameterPassing",
-                "template": "ParameterPassingExampleTemplate",
+                "template": "ParameterPassingTemplate",
                 "model": "ParameterPassingModel",
                 "modelbuilder": "ParameterPassingModelbuilder",
-                "actions": "ParameterPassingActions",
                 "controller": "ParameterPassingController",
                 "parameters": [
 					"parameterExampleId",
 					"parameterExampleId2"
+                ],
+				"subroutes": [
+					"ParameterPassingSubroute"	
+				]
+            },
+            "ParameterPassingSubroute": {
+                "template": "ParameterPassingSubrouteTemplate",
+                "model": "ParameterPassingSubrouteModel",
+                "modelbuilder": "ParameterPassingSubrouteModelbuilder",
+                "controller": "ParameterPassingSubrouteController",
+                "parameters": [
+					"subrouteParameterExampleId",
+					"subrouteParameterExampleId2"
                 ]
             }
         }

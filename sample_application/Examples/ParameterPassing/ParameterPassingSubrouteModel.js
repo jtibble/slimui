@@ -1,0 +1,3 @@
+var ParameterPassingSubrouteModel = function(){
+	return {};
+};

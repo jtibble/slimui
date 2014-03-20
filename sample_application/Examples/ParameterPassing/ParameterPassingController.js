@@ -1,4 +1,3 @@
-var ParameterPassingController = function( Context, Modelbuilder, Actions, StateParameters ){
-	Context.Actions = Actions;
+var ParameterPassingController = function( Context, Modelbuilder, StateParameters ){
 	Context.Model = Modelbuilder( StateParameters );
 };

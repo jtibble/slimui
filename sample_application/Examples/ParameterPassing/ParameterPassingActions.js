@@ -1,3 +1,0 @@
-var ParameterPassingActions = function( ){
-	return {};
-};

@@ -1,7 +1,7 @@
 <h3 class="voice-brand">Parameter Passing</h3>
 
 <p>
-	<b>Notice the URL for this page!</b> This page is not part of Examples, but its own top-level route!
+	<b>Notice the URL for this page!</b> This page is not part of Examples, but its own top-level route.
 </p>
 <p>
 	URL Parameter-passing can be used to select a particular item and drill down into its details.
@@ -26,7 +26,11 @@
 
 <p>
 	To demonstrate URL parameter-passing, add text to the end of the URL, or click this link:<br>
-	<a href="#/ParameterPassing/URLParameter1/URLParameter2">#/ParameterPassing/URLParameter1GoesHere/URLParameter2GoesHere</a>
+	<a href="#/ParameterPassing/parameter1/parameter2">#/ParameterPassing/parameter1/parameter2</a>
+</p>
+<p>
+	To demonstrate URL parameter-passing in both a parent and subroute, click this link:<br>
+	<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4">#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4</a>
 </p>
 <br><br>
 
@@ -40,3 +44,7 @@
 		</div>
 	</p>
 </div>
+
+
+<hr>
+<div ui-view>Subview goes here if provided</div>

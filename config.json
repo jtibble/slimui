@@ -146,9 +146,15 @@
 				"actions": "ParameterPassingActions",
 				"controller": "ParameterPassingController",
 				"parameters": [
-					"parameterExampleId",
-					"parameterExampleId2"
-				]
+					{ 
+						"key": "parameterExampleId",
+					 	"required": true
+					},
+					{ 
+						"key": "parameterExampleId2",
+					 	"required": true
+					}
+				}
 			}
 			
         },

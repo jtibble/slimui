@@ -147,6 +147,13 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		//var componentNameAttribute = screenComponentName.split(/(?=[A-Z])/).join('-');
 		//var parameterString = '{parameterOne}/{parameter2}';
 		
+		if( route == '/' ){
+			return {
+				url: '/',
+				template: '<div ' + screenComponentName + '></div>'
+			}
+		}
+		
 		return {
 			url: '/' + route,
 			template: '<div ' + screenComponentName + '></div>'
@@ -157,7 +164,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	for( var i in applicationConfig.views ){
 		var view = applicationConfig.views[i];
 		
-		if( view.url ){
+		if( view.url != undefined ){
 			var routeSettings = createRouteSettings(view.url, i);
 			$stateProvider.state( view.url, routeSettings );
 		}

@@ -77,8 +77,9 @@
 			}
         },
         "views": {
+			
 			"LandingPage": {
-				"url": "LandingPage",
+				"url": "/",
 				"template": "LandingPageTemplate"
 			},
 			
@@ -144,7 +145,6 @@
 				"controller": "ServicesExampleController",
 				"actions": "ServicesExampleActions"
 			}
-			
         },
         "services": {
             "existing": {

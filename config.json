@@ -35,9 +35,10 @@
             },
             "templatePaths": {
                 "HeaderTemplate": "sample_application/Header/Header.html",
-				"ExamplesMenu": "sample_application/Examples/ExamplesMenu/Menu.html",
+                "ExamplesMenu": "sample_application/Examples/ExamplesMenu/Menu.html",
                 "LandingPageTemplate": "sample_application/LandingPage/LandingPage.html",
                 "DocumentationTemplate": "sample_application/Documentation/Documentation.html",
+                "ReleaseNotesTemplate": "sample_application/ReleaseNotes/ReleaseNotes.html",
                 "ExamplesTemplate": "sample_application/Examples/Examples.html",
                 "SimpleTemplate": "sample_application/Examples/SimpleScreen/Simple.html",
                 "AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
@@ -53,9 +54,9 @@
             "Header": {
                 "template": "HeaderTemplate"
             },
-			"ExamplesMenu": {
-				"template": "ExamplesMenu"
-			},
+            "ExamplesMenu": {
+                "template": "ExamplesMenu"
+            },
             "ControllerCommunicationListener": {
                 "template": "ControllerCommunicationListenerTemplate",
                 "controller": "ControllerCommunicationListenerController",
@@ -68,6 +69,10 @@
             "LandingPage": {
                 "url": "/",
                 "template": "LandingPageTemplate"
+            },
+            "ReleaseNotes": {
+                "url": "ReleaseNotes",
+                "template": "ReleaseNotesTemplate"
             },
             "Documentation": {
                 "url": "Documentation",
@@ -125,12 +130,12 @@
                 "modelbuilder": "ParameterPassingModelbuilder",
                 "controller": "ParameterPassingController",
                 "parameters": [
-					"parameterExampleId",
-					"parameterExampleId2"
+                    "parameterExampleId",
+                    "parameterExampleId2"
                 ],
-				"subroutes": [
-					"ParameterPassingSubroute"	
-				]
+                "subroutes": [
+                    "ParameterPassingSubroute"
+                ]
             },
             "ParameterPassingSubroute": {
                 "template": "ParameterPassingSubrouteTemplate",
@@ -138,14 +143,13 @@
                 "modelbuilder": "ParameterPassingSubrouteModelbuilder",
                 "controller": "ParameterPassingSubrouteController",
                 "parameters": [
-					"subrouteParameterExampleId",
-					"subrouteParameterExampleId2"
+                    "subrouteParameterExampleId",
+                    "subrouteParameterExampleId2"
                 ]
             }
+        },
+        "existing": {
+            "generating": {}
         }
-    },
-    "services": {
-        "existing": {},
-        "generating": {}
     }
 }

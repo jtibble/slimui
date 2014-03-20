@@ -141,56 +141,65 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	}
 	
 	
-	
-	// Function used to create the settings for each route, including parameters if needed
-	var createRouteSettings = function( route, parameters, screenComponentName ){	
-		return {
-			url: '/' + route + (parametersFlag ? '/{parameters}' : ''),
-			template: '<div ' + screenComponentName + '></div>'
+	var makeStateFromView = function(name, view, parentName){
+		
+		var makeURL = function(viewURL, viewParameters){
+			
+			var parametersString = '';
+			for( var p in viewParameters ){
+				var parameterName = viewParameters[p];
+				//var parameterRequired = viewParameters[p].required;
+				parametersString += '/{' + parameterName + '}';
+			}
+			
+			// Allow a default route of '/' to work correctly
+			if( viewURL == '/' ){
+				viewURL = '';
+			}
+			
+			return '/' + viewURL + parametersString;
 		};
-	};
-	
-	
-	var makeStateFromView = function(view, parentUrl){
-		var settings;
-		if( view.parameters && view.parameters.length ){
-			var parametersString = '/{' + view.parameters.toString().replace(',','}/{') + '}' ;
-			settings = {
-				url: (parentUrl ? '/' + parentUrl + '.' : '') + view.url,
-				urlPattern: '/' + view.url + parametersString,
-				screenComponentName: i
-			};
+		
+		var makeRouterState = function(viewName, parentViewName){
+			if( viewName && parentViewName ){
+				return parentViewName + '.' + viewName;
+			} else if( viewName ){
+				return viewName;	
+			} else {
+				console.log('Error: Can\'t create router state from view name and/or parent view name');
+				return;
+			}
+		};
+		
+		var url;
+		if( view.url ){
+			url = makeURL(view.url, view.parameters);
 		} else {
-			settings = {
-				url: (parentUrl ? '/' + parentUrl + '.' : '') + view.url,
-				urlPattern: '/' + view.url,
-				screenComponentName: i
-			};
+			url = makeURL(name, view.parameters);
 		}
 		
-		debugger;
-		$stateProvider.state( settings.url, {
-			url: settings.urlPattern, 
-			template: '<div ' + settings.screenComponentName + '></div>'
-		});
+		var state = makeRouterState(name, parentName);
+		var routerParameters = {
+			url: url, 
+			template: '<div ' + name + '></div>'
+		}
+		
+		$stateProvider.state( state, routerParameters);
+			
 	};
 	
 	// Loop through all views to discover application states, sub-states, and parameters
 	for( var i in applicationConfig.views ){
 		var view = applicationConfig.views[i];
 		
-		if( view.url ){
-			makeStateFromView(view);
+		if( view.url != undefined ){
+			makeStateFromView(i, view);
 		}
 		
 		for( var r in view.subroutes ){
 			var subrouteName = view.subroutes[r];
 			var subrouteView = applicationConfig.views[ subrouteName ];
-			
-			makeStateFromView(subrouteView, view.url);
-			
-			//var routeSettings = createRouteSettings( subrouteName, subrouteView.parameters, subrouteName);
-			//$stateProvider.state( view.url + '.' + subrouteName, routeSettings);
+			makeStateFromView(subrouteName, subrouteView, i);
 		}
 	}
 	

@@ -1,50 +1,66 @@
-<h3 class="voice-brand">Parameter Passing</h3>
-
-<p>
-	<b>Notice the URL for this page!</b> This page is not part of Examples, but its own top-level route.
-</p>
-<p>
-	URL Parameter-passing can be used to select a particular item and drill down into its details.
-</p>
-<p>
-	To pass paramters to a view, you must add "parameters": true to the view in your config.json file:
-<pre>
-"ParameterPassing": {
-	"url": "ParameterPassing",
-	"template": "ParameterPassingExampleTemplate",
-	"model": "ParameterPassingModel",
-	"modelbuilder": "ParameterPassingModelbuilder",
-	"actions": "ParameterPassingActions",
-	"controller": "ParameterPassingController",
-	"parameters": [
-		"parameterExampleId",
-		"parameterExampleId2"
-	]
-}
-</pre>
-</p>
-<br><br>
-
-<hr>
-<h3 class="voice-brand">Demo 1:</h3>
-<p>
-	<a href="#/ParameterPassing/parameter1/parameter2">Click to send parameters to this page</a>
-</p>
-<p>
-	This page received the following URL parameters:
-	<div ng-repeat="(key, value) in Model.parameters">
-		{{key}}: <b>{{value}}</b>
+<div class="row-fluid">
+	<div class="title row-fluid" id="title">
+			<h2 class="voice-brand">Examples</h2>
 	</div>
-</p>
-
-
-<hr>
-<h3 class="voice-brand">Demo 2:</h3>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3 class="panel-title">Parameter-Passing-Subroute View Content:</h3>
-	</div>
-	<div class="panel-body" ui-view>
-		<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4">Click to navigate to ParameterPassingSubroute</a>
+	<div class="row-fluid">
+		
+		<div class="col-md-8 container">
+			<h3 class="voice-brand">Parameter Passing</h3>
+	
+			<p>
+				<div class="alert alert-info">Notice the URL for this page! This page is not an Examples-subroute, but its own top-level route.</div>
+			</p>
+			<p>
+				URL Parameter-passing can be used to select a particular item and drill down into its details.
+			</p>
+			<p>
+				To pass paramters to a view, you must add "parameters": true to the view in your config.json file:
+			<pre>
+	"ParameterPassing": {
+		"url": "ParameterPassing",
+		"template": "ParameterPassingExampleTemplate",
+		"model": "ParameterPassingModel",
+		"modelbuilder": "ParameterPassingModelbuilder",
+		"actions": "ParameterPassingActions",
+		"controller": "ParameterPassingController",
+		"parameters": [
+			"parameterExampleId",
+			"parameterExampleId2"
+		]
+	}
+			</pre>
+			</p>
+			<br><br>
+			
+			<hr>
+			<h3 class="voice-brand">Demo 1:</h3>
+			<p>
+				<a href="#/ParameterPassing/parameter1/parameter2">Click to send parameters to this page</a>
+			</p>
+			<p>
+				This page received the following URL parameters:
+				<div ng-repeat="(key, value) in Model.parameters">
+					{{key}}: <b>{{value}}</b>
+				</div>
+			</p>
+			
+			
+			<hr>
+			<h3 class="voice-brand">Demo 2:</h3>
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Parameter-Passing-Subroute View Content:</h3>
+					</div>
+					<div class="panel-body" ui-view>
+						<p>
+							Currently, the "ParameterPassingSubroute" is not loaded.
+						</p>
+						<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute//">Click to navigate to ParameterPassingSubroute (with no subroute-parameters)</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4" ExamplesMenu></div>
 	</div>
 </div>

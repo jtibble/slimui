@@ -6,10 +6,6 @@
                 "DocumentationController": "sample_application/Documentation/DocumentationController.js",
                 "DocumentationModel": "sample_application/Documentation/DocumentationModel.js",
                 "DocumentationModelbuilder": "sample_application/Documentation/DocumentationModelbuilder.js",
-                "ExamplesController": "sample_application/Examples/ExamplesController.js",
-                "ExamplesModel": "sample_application/Examples/ExamplesModel.js",
-                "ExamplesModelbuilder": "sample_application/Examples/ExamplesModelbuilder.js",
-                "ExamplesActions": "sample_application/Examples/ExamplesActions.js",
                 "SimpleModel": "sample_application/Examples/SimpleScreen/SimpleModel.js",
                 "SimpleModelbuilder": "sample_application/Examples/SimpleScreen/SimpleModelbuilder.js",
                 "SimpleActions": "sample_application/Examples/SimpleScreen/SimpleActions.js",
@@ -39,6 +35,7 @@
             },
             "templatePaths": {
                 "HeaderTemplate": "sample_application/Header/Header.html",
+				"ExamplesMenu": "sample_application/Examples/ExamplesMenu/Menu.html",
                 "LandingPageTemplate": "sample_application/LandingPage/LandingPage.html",
                 "DocumentationTemplate": "sample_application/Documentation/Documentation.html",
                 "ExamplesTemplate": "sample_application/Examples/Examples.html",
@@ -56,6 +53,9 @@
             "Header": {
                 "template": "HeaderTemplate"
             },
+			"ExamplesMenu": {
+				"template": "ExamplesMenu"
+			},
             "ControllerCommunicationListener": {
                 "template": "ControllerCommunicationListenerTemplate",
                 "controller": "ControllerCommunicationListenerController",
@@ -79,10 +79,6 @@
             "Examples": {
                 "url": "Examples",
                 "template": "ExamplesTemplate",
-                "model": "ExamplesModel",
-                "modelbuilder": "ExamplesModelbuilder",
-                "actions": "ExamplesActions",
-                "controller": "ExamplesController",
                 "subroutes": [
                     "Simple",
                     "Routing",

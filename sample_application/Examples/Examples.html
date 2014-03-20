@@ -6,13 +6,7 @@
 		<div class="col-md-8 container" ui-view>
 			Please choose an option from the menu. If you're new to the SlimUI framework start with a simple example <a href="#/Examples/Simple">here</a>.
 		</div>
-		<div class="col-md-4 container">
-			<h3 class="voice-brand">Menu</h3>
-			<ul>
-				<li ng-repeat="item in Model.examplesList">
-					<a href="" ng-click="Actions.goTo(item.url)">{{item.text}}</a>
-				</li>
-			</ul>
+		<div class="col-md-4" ExamplesMenu>
 		</div>
 	</div>
 </div>

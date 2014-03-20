@@ -15,20 +15,54 @@
 			</p>
 			<p>
 				To pass paramters to a view, you must add a list of parameters to the view in your config.json file:
-			<pre>
-	"ParameterPassing": {
-		"url": "ParameterPassing",
-		"template": "ParameterPassingExampleTemplate",
-		"model": "ParameterPassingModel",
-		"modelbuilder": "ParameterPassingModelbuilder",
-		"actions": "ParameterPassingActions",
-		"controller": "ParameterPassingController",
-		"parameters": [
-			"parameterExampleId",
-			"parameterExampleId2"
-		]
-	}
-			</pre>
+				<pre>
+"ParameterPassing": {
+	"url": "ParameterPassing",
+	"template": "ParameterPassingTemplate",
+	"model": "ParameterPassingModel",
+	"modelbuilder": "ParameterPassingModelbuilder",
+	"controller": "ParameterPassingController",
+	"parameters": [
+		"parameterExampleId",
+		"parameterExampleId2"
+	],
+	"subroutes": [
+		"ParameterPassingSubroute"	
+	]
+}
+				</pre>			
+				<pre>
+"ParameterPassingSubroute": {
+	"template": "ParameterPassingSubrouteTemplate",
+	"model": "ParameterPassingSubrouteModel",
+	"modelbuilder": "ParameterPassingSubrouteModelbuilder",
+	"controller": "ParameterPassingSubrouteController",
+	"parameters": [
+		"subrouteParameterExampleId",
+		"subrouteParameterExampleId2"
+	]
+}
+				</pre>
+			</p>
+			<p>
+				To receive parameters, include them in your controller and pass them to your modelbuilder:
+				<pre>
+var ParameterPassingController = function( Context, Modelbuilder, StateParameters ){
+	Context.Model = Modelbuilder( StateParameters );
+};
+				</pre>
+				<pre>
+var ParameterPassingModelbuilder = function(Model){
+	return function( parameters ){
+		
+		if( parameters ){
+			Model.parameters = parameters;
+		}
+		
+		return Model;
+	};
+};
+				</pre>
 			</p>
 			<br><br>
 			

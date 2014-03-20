@@ -3,14 +3,11 @@ var RoutingActions = function(Router){
 		goToExamples: function(){
 			Router.goTo('Examples');	
 		},
-		goToChildViews: function(){
-			Router.goTo('Examples.ChildViews');
+		goToParameterPassing: function(){
+			Router.goTo('ParameterPassing');
 		},
-		goToParameterPassingDestination: function(){
-			var parameters = {
-				originatingView: 'Examples/Routing'	
-			}
-			Router.goTo('Examples.ParameterPassingDestination', parameters);
+		goToParameterPassingSubroute: function(){
+			Router.goTo('ParameterPassing.ParameterPassingSubroute');
 		},
 		goToHome: function(){
 			Router.goToHome();

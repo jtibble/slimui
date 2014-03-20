@@ -14,7 +14,7 @@
 				URL Parameter-passing can be used to select a particular item and drill down into its details.
 			</p>
 			<p>
-				To pass paramters to a view, you must add "parameters": true to the view in your config.json file:
+				To pass paramters to a view, you must add a list of parameters to the view in your config.json file:
 			<pre>
 	"ParameterPassing": {
 		"url": "ParameterPassing",
@@ -52,7 +52,7 @@
 					<div class="panel-heading">
 						<h3 class="panel-title">Parameter-Passing-Subroute View Content:</h3>
 					</div>
-					<div class="panel-body" ui-view>
+					<div class="panel-body" ui-view autoscroll='false'>
 						<p>
 							Currently, the "ParameterPassingSubroute" is not loaded.
 						</p>

@@ -431,13 +431,16 @@ framework.run( function($q){
 	};
 	
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
+		var basePath = applicationConfig.properties.basePath + applicationConfig.properties.basePaths[ directiveObject.basePath ];
+		// Template is always required
 		var paths = {
-			template: applicationConfig.properties.templatePaths[ directiveObject.template ],
-			model: applicationConfig.properties.jsPaths[ directiveObject.model ],
-			modelbuilder: applicationConfig.properties.jsPaths[ directiveObject.modelbuilder ],
-			actions: applicationConfig.properties.jsPaths[ directiveObject.actions ],
-			controller: applicationConfig.properties.jsPaths[ directiveObject.controller ]
+			template: basePath + directiveName + '.html'
 		};
+		
+		if( directiveObject.model ){ paths.model = basePath + directiveName + 'Model.js'; }
+		if( directiveObject.modelbuilder ){ paths.modelbuilder = basePath + directiveName + 'Modelbuilder.js'; }
+		if( directiveObject.actions ){ paths.actions = basePath + directiveName + 'Actions.js'; }
+		if( directiveObject.controller ){ paths.controller = basePath + directiveName + 'Controller.js'; }
 		
 		if( !paths.template ){
 			console.log('Component/View \'' + directiveName + '\' is malformed:\n\tThe (required) template is missing or misconfigured in config.json. (Aborting)');
@@ -502,7 +505,7 @@ framework.run( function($q){
 		}
 		
 	} else {
-		console.log('Framework: No services to generate from existing files');	
+		console.log('SlimUI: No services to generate from existing files');	
 	}
 	
 	// Create application-defined services from config file	
@@ -531,7 +534,7 @@ framework.run( function($q){
 		}
 		
 	} else {
-		console.log('Framework: No services to generate from config file');	
+		console.log('SlimUI: No services to generate from config file');	
 	}
 	
 });

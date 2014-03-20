@@ -2,88 +2,58 @@
     "applicationConfig": {
         "defaultView": "LandingPage",
         "properties": {
-            "jsPaths": {
-                "DocumentationController": "sample_application/Documentation/DocumentationController.js",
-                "DocumentationModel": "sample_application/Documentation/DocumentationModel.js",
-                "DocumentationModelbuilder": "sample_application/Documentation/DocumentationModelbuilder.js",
-                "SimpleModel": "sample_application/Examples/SimpleScreen/SimpleModel.js",
-                "SimpleModelbuilder": "sample_application/Examples/SimpleScreen/SimpleModelbuilder.js",
-                "SimpleActions": "sample_application/Examples/SimpleScreen/SimpleActions.js",
-                "SimpleController": "sample_application/Examples/SimpleScreen/SimpleController.js",
-                "AJAXExampleModel": "sample_application/Examples/AJAX/AJAXModel.js",
-                "AJAXExampleModelbuilder": "sample_application/Examples/AJAX/AJAXModelbuilder.js",
-                "AJAXExampleActions": "sample_application/Examples/AJAX/AJAXActions.js",
-                "AJAXExampleController": "sample_application/Examples/AJAX/AJAXController.js",
-                "ControllerCommunicationsExampleController": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsController.js",
-                "ControllerCommunicationsExampleActions": "sample_application/Examples/ControllerCommunications/ControllerCommunicationsActions.js",
-                "ControllerCommunicationListenerModel": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerModel.js",
-                "ControllerCommunicationListenerModelbuilder": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerModelbuilder.js",
-                "ControllerCommunicationListenerActions": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerActions.js",
-                "ControllerCommunicationListenerController": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListenerController.js",
-                "ParameterPassingController": "sample_application/Examples/ParameterPassing/ParameterPassingController.js",
-                "ParameterPassingModel": "sample_application/Examples/ParameterPassing/ParameterPassingModel.js",
-                "ParameterPassingModelbuilder": "sample_application/Examples/ParameterPassing/ParameterPassingModelbuilder.js",
-                "ParameterPassingSubrouteController": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteController.js",
-                "ParameterPassingSubrouteModel": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteModel.js",
-                "ParameterPassingSubrouteModelbuilder": "sample_application/Examples/ParameterPassing/ParameterPassingSubrouteModelbuilder.js",
-                "RoutingExampleController": "sample_application/Examples/Routing/RoutingController.js",
-                "RoutingExampleActions": "sample_application/Examples/Routing/RoutingActions.js",
-                "ServicesExampleController": "sample_application/Examples/Services/ServicesController.js",
-                "ServicesExampleModel": "sample_application/Examples/Services/ServicesModel.js",
-                "ServicesExampleModelbuilder": "sample_application/Examples/Services/ServicesModelbuilder.js",
-                "ServicesExampleActions": "sample_application/Examples/Services/ServicesActions.js"
-            },
-            "templatePaths": {
-                "HeaderTemplate": "sample_application/Header/Header.html",
-                "ExamplesMenu": "sample_application/Examples/ExamplesMenu/Menu.html",
-                "LandingPageTemplate": "sample_application/LandingPage/LandingPage.html",
-                "DocumentationTemplate": "sample_application/Documentation/Documentation.html",
-                "ReleaseNotesTemplate": "sample_application/ReleaseNotes/ReleaseNotes.html",
-                "ExamplesTemplate": "sample_application/Examples/Examples.html",
-                "SimpleTemplate": "sample_application/Examples/SimpleScreen/Simple.html",
-                "AJAXExampleTemplate": "sample_application/Examples/AJAX/AJAX.html",
-                "ControllerCommunicationsExampleTemplate": "sample_application/Examples/ControllerCommunications/ControllerCommunications.html",
-                "ControllerCommunicationListenerTemplate": "sample_application/Examples/ControllerCommunications/ListenerComponent/ControllerCommunicationListener.html",
-                "ParameterPassingTemplate": "sample_application/Examples/ParameterPassing/ParameterPassing.html",
-                "ParameterPassingSubrouteTemplate": "sample_application/Examples/ParameterPassing/ParameterPassingSubroute.html",
-                "RoutingExampleTemplate": "sample_application/Examples/Routing/Routing.html",
-                "ServicesExampleTemplate": "sample_application/Examples/Services/Services.html"
+            "basePath": "sample_application/",
+            "basePaths": {
+                "ReleaseNotes": "ReleaseNotes/",
+                "Header": "Header/",
+                "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
+                "ExamplesMenu": "Examples/ExamplesMenu/",
+                "LandingPage": "LandingPage/",
+                "Documentation": "Documentation/",
+                "Examples": "Examples/",
+                "Simple": "Examples/SimpleScreen/",
+                "AJAX": "Examples/AJAX/",
+                "ControllerCommunications": "Examples/ControllerCommunications/",
+                "ParameterPassing": "Examples/ParameterPassing/",
+                "ParameterPassingSubroute": "Examples/ParameterPassing/",
+                "Routing": "Examples/Routing/",
+                "Services": "Examples/Services/"
             }
         },
         "components": {
             "Header": {
-                "template": "HeaderTemplate"
+                "basePath": "Header"
             },
             "ExamplesMenu": {
-                "template": "ExamplesMenu"
+                "basePath": "ExamplesMenu"
             },
             "ControllerCommunicationListener": {
-                "template": "ControllerCommunicationListenerTemplate",
-                "controller": "ControllerCommunicationListenerController",
-                "modelbuilder": "ControllerCommunicationListenerModelbuilder",
-                "actions": "ControllerCommunicationListenerActions",
-                "model": "ControllerCommunicationListenerModel"
+                "basePath": "ControllerCommunicationListener",
+                "controller": true,
+                "modelbuilder": true,
+                "actions": true,
+                "model": true
             }
         },
         "views": {
             "LandingPage": {
                 "url": "/",
-                "template": "LandingPageTemplate"
+                "basePath": "LandingPage"
             },
             "ReleaseNotes": {
                 "url": "ReleaseNotes",
-                "template": "ReleaseNotesTemplate"
+                "basePath": "ReleaseNotes"
             },
             "Documentation": {
                 "url": "Documentation",
-                "template": "DocumentationTemplate",
-                "controller": "DocumentationController",
-                "model": "DocumentationModel",
-                "modelbuilder": "DocumentationModelbuilder"
+                "basePath": "Documentation",
+                "controller": true,
+                "model": true,
+                "modelbuilder": true
             },
             "Examples": {
                 "url": "Examples",
-                "template": "ExamplesTemplate",
+                "basePath": "Examples",
                 "subroutes": [
                     "Simple",
                     "Routing",
@@ -93,42 +63,42 @@
                 ]
             },
             "Simple": {
-                "template": "SimpleTemplate",
-                "model": "SimpleModel",
-                "modelbuilder": "SimpleModelbuilder",
-                "actions": "SimpleActions",
-                "controller": "SimpleController"
+                "basePath": "Simple",
+                "model": true,
+                "modelbuilder": true,
+                "actions": true,
+                "controller": true
             },
             "Routing": {
-                "template": "RoutingExampleTemplate",
-                "controller": "RoutingExampleController",
-                "actions": "RoutingExampleActions"
+                "basePath": "Routing",
+                "controller": true,
+                "actions": true
             },
             "AJAX": {
-                "template": "AJAXExampleTemplate",
-                "controller": "AJAXExampleController",
-                "model": "AJAXExampleModel",
-                "modelbuilder": "AJAXExampleModelbuilder",
-                "actions": "AJAXExampleActions"
+                "basePath": "AJAX",
+                "controller": true,
+                "model": true,
+                "modelbuilder": true,
+                "actions": true
             },
             "ControllerCommunications": {
-                "template": "ControllerCommunicationsExampleTemplate",
-                "controller": "ControllerCommunicationsExampleController",
-                "actions": "ControllerCommunicationsExampleActions"
+                "basePath": "ControllerCommunications",
+                "controller": true,
+                "actions": true
             },
             "Services": {
-                "template": "ServicesExampleTemplate",
-                "model": "ServicesExampleModel",
-                "modelbuilder": "ServicesExampleModelbuilder",
-                "controller": "ServicesExampleController",
-                "actions": "ServicesExampleActions"
+                "basePath": "Services",
+                "model": true,
+                "modelbuilder": true,
+                "controller": true,
+                "actions": true
             },
             "ParameterPassing": {
                 "url": "ParameterPassing",
-                "template": "ParameterPassingTemplate",
-                "model": "ParameterPassingModel",
-                "modelbuilder": "ParameterPassingModelbuilder",
-                "controller": "ParameterPassingController",
+                "basePath": "ParameterPassing",
+                "model": true,
+                "modelbuilder": true,
+                "controller": true,
                 "parameters": [
                     "parameterExampleId",
                     "parameterExampleId2"
@@ -138,17 +108,18 @@
                 ]
             },
             "ParameterPassingSubroute": {
-                "template": "ParameterPassingSubrouteTemplate",
-                "model": "ParameterPassingSubrouteModel",
-                "modelbuilder": "ParameterPassingSubrouteModelbuilder",
-                "controller": "ParameterPassingSubrouteController",
+                "basePath": "ParameterPassingSubroute",
+                "model": true,
+                "modelbuilder": true,
+                "controller": true,
                 "parameters": [
                     "subrouteParameterExampleId",
                     "subrouteParameterExampleId2"
                 ]
             }
         },
-        "existing": {
+		"services":{
+        	"existing": {},
             "generating": {}
         }
     }

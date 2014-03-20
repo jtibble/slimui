@@ -50,6 +50,8 @@
 				
 				"DocumentationTemplate": "sample_application/Documentation/Documentation.html",
 				
+				"ReleaseNotesTemplate": "sample_application/ReleaseNotes/ReleaseNotes.html",
+				
 				"ExamplesTemplate": "sample_application/Examples/Examples.html",
 				
 				"SimpleTemplate": "sample_application/Examples/SimpleScreen/Simple.html",
@@ -81,6 +83,11 @@
 			"LandingPage": {
 				"url": "/",
 				"template": "LandingPageTemplate"
+			},
+			
+			"ReleaseNotes":{
+				"url": "ReleaseNotes",
+				"template": "ReleaseNotesTemplate"
 			},
 			
 			"Documentation": {

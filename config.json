@@ -97,8 +97,7 @@
 				"modelbuilder": "ExamplesModelbuilder",
 				"actions": "ExamplesActions",
 				"controller": "ExamplesController",
-				
-				"regions": [
+				"subroutes": [
 					"Simple",
 					"Routing",
 					"AJAX",

@@ -23,28 +23,28 @@
 }
 </pre>
 </p>
-
-<p>
-	To demonstrate URL parameter-passing, add text to the end of the URL, or click this link:<br>
-	<a href="#/ParameterPassing/parameter1/parameter2">#/ParameterPassing/parameter1/parameter2</a>
-</p>
-<p>
-	To demonstrate URL parameter-passing in both a parent and subroute, click this link:<br>
-	<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4">#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4</a>
-</p>
 <br><br>
 
-<div ng-if="Model.parameters">
-	<hr>
-	<h3 class="voice-brand">Demo</h3>
-	<p>
-		This page was called with the following URL parameters:
-		<div ng-repeat="(key, value) in Model.parameters">
-			{{key}}: {{value}}
-		</div>
-	</p>
-</div>
+<hr>
+<h3 class="voice-brand">Demo 1:</h3>
+<p>
+	<a href="#/ParameterPassing/parameter1/parameter2">Click to send parameters to this page</a>
+</p>
+<p>
+	This page received the following URL parameters:
+	<div ng-repeat="(key, value) in Model.parameters">
+		{{key}}: <b>{{value}}</b>
+	</div>
+</p>
 
 
 <hr>
-<div ui-view>Subview goes here if provided</div>
+<h3 class="voice-brand">Demo 2:</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Parameter-Passing-Subroute View Content:</h3>
+	</div>
+	<div class="panel-body" ui-view>
+		<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4">Click to navigate to ParameterPassingSubroute</a>
+	</div>
+</div>

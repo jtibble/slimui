@@ -412,16 +412,23 @@ framework.run( function($q){
 	};
 	
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
-		var basePath = applicationConfig.properties.basePath + applicationConfig.properties.basePaths[ directiveObject.basePath ];
+		var rootPath = applicationConfig.properties.rootPaths.default;
+		
+		if( directiveObject.rootPath ){
+			rootPath = applicationConfig.properties.rootPaths[directiveObject.rootPath];
+		}
+		
+		var filePath = rootPath + applicationConfig.properties.paths[ directiveObject.path ];
+		
 		// Template is always required
 		var paths = {
-			template: basePath + directiveName + '.html'
+			template: filePath + directiveName + '.html'
 		};
 		
-		if( directiveObject.model ){ paths.model = basePath + directiveName + 'Model.js'; }
-		if( directiveObject.modelbuilder ){ paths.modelbuilder = basePath + directiveName + 'Modelbuilder.js'; }
-		if( directiveObject.actions ){ paths.actions = basePath + directiveName + 'Actions.js'; }
-		if( directiveObject.controller ){ paths.controller = basePath + directiveName + 'Controller.js'; }
+		if( directiveObject.model ){ paths.model = filePath + directiveName + 'Model.js'; }
+		if( directiveObject.modelbuilder ){ paths.modelbuilder = filePath + directiveName + 'Modelbuilder.js'; }
+		if( directiveObject.actions ){ paths.actions = filePath + directiveName + 'Actions.js'; }
+		if( directiveObject.controller ){ paths.controller = filePath + directiveName + 'Controller.js'; }
 		
 		if( !paths.template ){
 			console.log('Component/View \'' + directiveName + '\' is malformed:\n\tThe (required) template is missing or misconfigured in config.json. (Aborting)');

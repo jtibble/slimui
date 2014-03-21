@@ -2,8 +2,10 @@
     "applicationConfig": {
         "defaultView": "LandingPage",
         "properties": {
-            "basePath": "sample_application/",
-            "basePaths": {
+            "rootPaths": {
+				"default": "sample_application/"
+			},
+            "paths": {
                 "ReleaseNotes": "ReleaseNotes/",
                 "Header": "Header/",
                 "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
@@ -22,13 +24,13 @@
         },
         "components": {
             "Header": {
-                "basePath": "Header"
+                "path": "Header"
             },
             "ExamplesMenu": {
-                "basePath": "ExamplesMenu"
+                "path": "ExamplesMenu"
             },
             "ControllerCommunicationListener": {
-                "basePath": "ControllerCommunicationListener",
+                "path": "ControllerCommunicationListener",
                 "controller": true,
                 "modelbuilder": true,
                 "actions": true,
@@ -38,22 +40,22 @@
         "views": {
             "LandingPage": {
                 "url": "/",
-                "basePath": "LandingPage"
+                "path": "LandingPage"
             },
             "ReleaseNotes": {
                 "url": "ReleaseNotes",
-                "basePath": "ReleaseNotes"
+                "path": "ReleaseNotes"
             },
             "Documentation": {
                 "url": "Documentation",
-                "basePath": "Documentation",
+                "path": "Documentation",
                 "controller": true,
                 "model": true,
                 "modelbuilder": true
             },
             "Examples": {
                 "url": "Examples",
-                "basePath": "Examples",
+                "path": "Examples",
                 "subroutes": [
                     "Simple",
                     "Routing",
@@ -63,31 +65,31 @@
                 ]
             },
             "Simple": {
-                "basePath": "Simple",
+                "path": "Simple",
                 "model": true,
                 "modelbuilder": true,
                 "actions": true,
                 "controller": true
             },
             "Routing": {
-                "basePath": "Routing",
+                "path": "Routing",
                 "controller": true,
                 "actions": true
             },
             "AJAX": {
-                "basePath": "AJAX",
+                "path": "AJAX",
                 "controller": true,
                 "model": true,
                 "modelbuilder": true,
                 "actions": true
             },
             "ControllerCommunications": {
-                "basePath": "ControllerCommunications",
+                "path": "ControllerCommunications",
                 "controller": true,
                 "actions": true
             },
             "Services": {
-                "basePath": "Services",
+                "path": "Services",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,
@@ -95,7 +97,7 @@
             },
             "ParameterPassing": {
                 "url": "ParameterPassing",
-                "basePath": "ParameterPassing",
+                "path": "ParameterPassing",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,
@@ -108,7 +110,7 @@
                 ]
             },
             "ParameterPassingSubroute": {
-                "basePath": "ParameterPassingSubroute",
+                "path": "ParameterPassingSubroute",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,

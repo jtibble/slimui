@@ -204,7 +204,12 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
  */
 framework.run( function($q){
 	
-	// Create application-level directives
+	// Create application-level directives from a set of files including the following:
+	// template (always required, no exceptions)
+	// controller
+	// modelbuilder (requires model to be injected and controller to be injected-into. optionally injected into actions)
+	// model (requires modelbuilder to be injected-into)
+	// actions (requires controller to be injected-into)	
 	var DirectiveFactory = function( componentName, paths ){
 		var directiveName = componentName.toLowerCase();
 		
@@ -404,6 +409,7 @@ framework.run( function($q){
 		});
 	};
 	
+	// Helper to return a simple directive that only consists of an HTML template
 	var TemplateDirectiveFactory = function( templatePath ){
 		return function(){
 			return {
@@ -411,15 +417,30 @@ framework.run( function($q){
 			};
 		}
 	};
-		
-	var MakeDirectivesHelper = function( directiveName, directiveObject ){
-		var rootPath = applicationConfig.properties.rootPaths.default;
-		
-		if( directiveObject.rootPath ){
-			rootPath = applicationConfig.properties.rootPaths[directiveObject.rootPath];
+	
+	// Helper to retrieve properly-formatted paths from the config.json file
+	var ConfigPropertyPathFinder = function( configFileItem ){
+		if( !configFileItem ){
+			console.log('Could not fetch path for undefined config file item');
+			return;
+		}
+		if( !configFileItem.path ){
+			console.log('Could not fetch path for config file item with missing \'path\' property');
+			return;
 		}
 		
-		var filePath = rootPath + applicationConfig.properties.paths[ directiveObject.path ];
+		var rootPathName = configFileItem.rootPath ? configFileItem.rootPath : 'default';
+		var rootPath = applicationConfig.properties.rootPaths[ rootPathName ];
+		
+		var pathName = configFileItem.path;
+		var path = applicationConfig.properties.paths[ pathName ];
+		
+		return rootPath + path;
+	};
+		
+	// Helper to create directives from an entry in the config.json file
+	var MakeDirectivesHelper = function( directiveName, directiveObject ){
+		var filePath = ConfigPropertyPathFinder( directiveObject );
 		
 		// Template is always required
 		var paths = {
@@ -480,18 +501,8 @@ framework.run( function($q){
 		};
 				
 		for( var i in this.applicationConfig.services ){
-			
 			var serviceDefinition = this.applicationConfig.services[i];
-			var servicePathKey = serviceDefinition.path;
-			
-			var rootPath = applicationConfig.properties.rootPaths.default;
-			
-			if( serviceDefinition.rootPath ){
-				rootPath = applicationConfig.properties.rootPaths[serviceDefinition.rootPath];
-			}
-			
-			var filePath = rootPath + applicationConfig.properties.paths[ servicePathKey ];
-			
+			var filePath = ConfigPropertyPathFinder( serviceDefinition );			
 			var servicePath = filePath + i + '.js';
 			
 			ServiceFromFileFactory( i, servicePath );

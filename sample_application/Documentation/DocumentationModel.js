@@ -13,9 +13,8 @@ var DocumentationModel = function(){
 		appContentStaticExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"LandingPage\",\r\n        \"properties\": {\r\n            \"path\": \"sample_application\/\",\r\n            \"paths\": {\r\n                \"LandingPage\": \"LandingPage\/\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"LandingPage\": {\r\n                \"url\": \"\/\",\r\n                \"path\": \"LandingPage\"\r\n            },\r\n        }\r\n    }\r\n}',
 		appContentDynamicExampleFull: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"path\": \"sample_application\/\",\r\n            \"paths\": {\r\n                \"ParameterPassing\": \"Examples\/ParameterPassing\/\",\r\n                \"ParameterPassingSubroute\": \"Examples\/ParameterPassing\/\"\r\n            }\r\n        },\r\n        \"views\": {\r\n            \"ParameterPassing\": {\r\n                \"url\": \"ParameterPassing\",\r\n                \"path\": \"ParameterPassing\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"parameterExampleId\",\r\n                    \"parameterExampleId2\"\r\n                ],\r\n                \"subroutes\": [\r\n                    \"ParameterPassingSubroute\"\r\n                ]\r\n            },\r\n            \"ParameterPassingSubroute\": {\r\n                \"path\": \"ParameterPassingSubroute\",\r\n                \"model\": true,\r\n                \"modelbuilder\": true,\r\n                \"controller\": true,\r\n                \"parameters\": [\r\n                    \"subrouteParameterExampleId\",\r\n                    \"subrouteParameterExampleId2\"\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}',
 		componentExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"rootPaths\": {\r\n                \"default\": \"sample_application\/\"\r\n            },\r\n            \"paths\": {\r\n                \"ControllerCommunicationListener\": \"Examples\/ControllerCommunications\/ListenerComponent\/\"\r\n            }\r\n        },\r\n        \"components\": {\r\n            \"ControllerCommunicationListener\": {\r\n                \"path\": \"ControllerCommunicationListener\",\r\n                \"controller\": true,\r\n                \"modelbuilder\": true,\r\n                \"actions\": true,\r\n                \"model\": true\r\n            }\r\n        }\r\n    }\r\n}',
-		generatingServicesExample: '{\r\n    \"applicationConfig\": {\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {\r\n                \"StaticServiceName\": {\r\n                    \"Header\": {\r\n                        \"primaryText\": \"Header Primary Text\",\r\n                        \"secondaryText\": \"header secondary text\"\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}',
-		existingServicesExample: '{\r\n    \"applicationConfig\": {\r\n        \"services\": {\r\n            \"existing\": {\r\n                \"DynamicServiceName\": \"path\/to\/ExistingService.js\"\r\n            },\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
-		serviceUsageExample: '\r\nvar ViewName = function(Context, Modelbuilder, StaticServiceName, DynamicServiceName){\r\n\tvar serviceData = {\r\n\t\tprimaryText: StaticServiceName.Header.primaryText,\r\n\t\tsecondaryText: StaticServiceName.Header.secondaryText,\r\n\t\tdynamicData: DynamicServiceName.submitData()\r\n\t};\r\n\t\r\n\tContext.Model = Modelbuilder( serviceData );\r\n};',
+		servicesExample: 'var FibonacciService = function( ){\r\n\treturn {\r\n\t\ta: 1,\r\n\t\tb: 1,\r\n\t\tgetNextFibonacciNumber: function(){\r\n\t\t\tvar value = this.a + this.b;\r\n\t\t\tthis.a = this.b; \r\n\t\t\tthis.b = value;\r\n\t\t\treturn value;\t\r\n\t\t}\r\n\t};\r\n};\r\n',
+		serviceUsageExample: 'var ServicesActions = function(Modelbuilder, FibonacciService){\r\n\treturn {\r\n\t\tgetNextFibonacciNumberFromService: function(){\r\n\t\t\tModelbuilder( {fibonacciNumber: FibonacciService.getNextFibonacciNumber()} );\r\n\t\t}\r\n\t};\r\n};',
 	};
 	
 	
@@ -89,10 +88,10 @@ var DocumentationModel = function(){
 						title: '\'services\'',
 						steps: [
 							{
-								content: '\'services\' are application-specific functionality that may be shared between one or more views. They can be created from static data in the config.json file, or loaded from a JavaScript file:'
+								content: '\'services\' are application-specific functionality that may be shared between one or more views. They are loaded from a JavaScript files, and can optionally specify a \'rootPath\' property to load from an alltogether-different path:'
 							},
 							{
-								code: escapedJS.configServicesExample
+								code: escapedJS.servicesExample
 							}
 						]
 					}
@@ -163,24 +162,13 @@ var DocumentationModel = function(){
 				title: 'Creating Application Services',
 				subSections: [
 					{
-						title: 'Static-Data Service',
+						title: 'Service from File',
 						steps: [
 							{
-								content: 'To create a service that provides static data, create a new property within the config.json file \'generating\' services section:'
+								content: 'To create a service that provides complex data, build the service\'s JavaScript file like this:'
 							},
 							{
-								code: escapedJS.generatingServicesExample
-							}
-						]
-					},
-					{
-						title: 'Complex Service',
-						steps: [
-							{
-								content: 'To create a service that provides complex data, include the service\'s JavaScript file like this:'
-							},
-							{
-								code: escapedJS.existingServicesExample
+								code: escapedJS.servicesExample
 							}
 						]
 					},
@@ -188,7 +176,7 @@ var DocumentationModel = function(){
 						title: 'Using Services',
 						steps: [
 							{
-								content: 'To use a service that has been declared in the application config.json file, include it as a parameter in your controller JavaScript:'
+								content: 'To use a service that has been declared in the application config.json file, include it as a parameter in your JavaScript function, as seen in this Action-file:'
 							},
 							{
 								code: escapedJS.serviceUsageExample

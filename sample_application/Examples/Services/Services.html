@@ -1,4 +1,4 @@
-<h3 class="voice-brand">Simple Services - Populating a Model</h3>
+<h3 class="voice-brand">Populating a Model with Services</h3>
 <p>
 This data comes from the ExampleService: <b>{{Model.data.firstName}} {{Model.data.lastName}}</b>
 </p>
@@ -7,7 +7,39 @@ This selected state <b>{{Model.selectedState.stateDescription}}</b> comes from a
 </p>
 
 <hr>
-<h3 class="voice-brand">Simple Services - Tying to Actions</h3>
+<h3 class="voice-brand">Calling a Service with Actions</h3>
 <p>
-The next Fibonacci Number is <span class="btn btn-primary" ng-click="Actions.getNextFibonacciNumberFromService()">{{Model.fibonacciNumber}}</span>
+The next Fibonacci Number is <span class="btn btn-primary btn-sm" ng-click="Actions.getNextFibonacciNumberFromService()">{{Model.fibonacciNumber}}</span>
+</p>
+
+<hr>
+<h3 class="voice-brand">Building a Service</h3>
+<p>
+	To build a service, create a generic JavaScript function that returns an object:
+<pre>
+var FibonacciService = function( ){
+	return {
+		a: 1,
+		b: 1,
+		getNextFibonacciNumber: function(){
+			var value = this.a + this.b;
+			this.a = this.b; 
+			this.b = value;
+			return value;	
+		}
+	};
+};
+</pre>
+</p>
+<p>
+	Then pass the service to an Actions, Modelbuilder, or Controller, where it will be available:
+<pre>
+var ServicesActions = function(Modelbuilder, FibonacciService){
+	return {
+		getNextFibonacciNumberFromService: function(){
+			Modelbuilder( {fibonacciNumber: FibonacciService.getNextFibonacciNumber()} );
+		}
+	};
+};
+</pre>
 </p>

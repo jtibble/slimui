@@ -1,1 +1,13 @@
-<h3 class="voice-brand">Static-Data/Dynamic-Data Services</h3>
+<h3 class="voice-brand">Simple Services - Populating a Model</h3>
+<p>
+This data comes from the ExampleService: <b>{{Model.data.firstName}} {{Model.data.lastName}}</b>
+</p>
+<p>
+This selected state <b>{{Model.selectedState.stateDescription}}</b> comes from a dropdown displaying options from a more-complex "USAStates" service: <select ng-model="Model.selectedState" ng-options="state.stateId for state in Model.states" ></select>
+</p>
+
+<hr>
+<h3 class="voice-brand">Simple Services - Tying to Actions</h3>
+<p>
+The next Fibonacci Number is <span class="btn btn-primary" ng-click="Actions.getNextFibonacciNumberFromService()">{{Model.fibonacciNumber}}</span>
+</p>

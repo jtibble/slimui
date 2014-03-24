@@ -19,7 +19,11 @@
                 "ParameterPassing": "Examples/ParameterPassing/",
                 "ParameterPassingSubroute": "Examples/ParameterPassing/",
                 "Routing": "Examples/Routing/",
-                "Services": "Examples/Services/"
+                "Services": "Examples/Services/",
+				
+				"ExampleServicePath": "Examples/Services/Services/",
+				"FibonacciServicePath": "Examples/Services/Services/",
+				"USAStatesServicePath": "Examples/Services/Services/"
             }
         },
         "components": {
@@ -121,8 +125,15 @@
             }
         },
         "services": {
-            "existing": {},
-            "generating": {}
-        }
+            "ExampleService": {
+				"path": "ExampleServicePath"
+			},
+			"FibonacciService": {
+				"path": "FibonacciServicePath"	
+			},
+			"USAStates": {
+				"path": "USAStatesServicePath"
+			}
+		}
     }
 }

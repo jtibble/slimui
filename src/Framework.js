@@ -88,11 +88,12 @@ var validateConfigFileStructure = function( config ){
 		}
 	}
 	
-	// Check services
-	if( applicationConfig.services ){
-		if( !(applicationConfig.services.existing && applicationConfig.services.generating) ){
-				configIsValid = false;
-				console.log('Config is missing either its existing or generating services');
+	// Check services				
+	for( var i in this.applicationConfig.services ){
+		var servicePath = this.applicationConfig.services[i].path;
+		if( !this.applicationConfig.properties.paths[ servicePath ] ){
+			configIsValid = false;
+			console.log('Service \'' + i + '\' is invalid: missing path \'' + servicePath + '\'');
 		}
 	}
 	
@@ -118,7 +119,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 
 	if( !validateConfigFileStructure( applicationConfig )){
-		console.log('config file is invalid');	
+		console.log('SlimUI ERROR: config.json file is invalid');	
 	}
 	
 	// Given a view, its name, and (optional) parent, create all the routes for it
@@ -410,7 +411,7 @@ framework.run( function($q){
 			};
 		}
 	};
-	
+		
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
 		var rootPath = applicationConfig.properties.rootPaths.default;
 		
@@ -463,7 +464,7 @@ framework.run( function($q){
 	window['servicesToInject'] = {};
 	
 	// Create application-defined services from existing files
-	if( this.applicationConfig.services && this.applicationConfig.services.existing ){
+	if( this.applicationConfig.services ){
 		
 		// Create JavaScript closure and factory
 		function ServiceFromFileFactory( serviceName, servicePath ){
@@ -478,51 +479,26 @@ framework.run( function($q){
 			});
 		};
 				
-		var servicesList = _.keys( this.applicationConfig.services.existing );
-		
-		for( var i in servicesList ){
-			var serviceName = servicesList[i];
+		for( var i in this.applicationConfig.services ){
 			
-			//var servicePathProperty = applicationConfig.services.existing[ serviceName ]
-			//var servicePath = applicationConfig.properties.servicesPaths[ servicePathProperty ];
-
-			var servicePath = applicationConfig.services.existing[ serviceName ];
+			var serviceDefinition = this.applicationConfig.services[i];
+			var servicePathKey = serviceDefinition.path;
 			
+			var rootPath = applicationConfig.properties.rootPaths.default;
 			
-			ServiceFromFileFactory( serviceName, servicePath );
+			if( serviceDefinition.rootPath ){
+				rootPath = applicationConfig.properties.rootPaths[serviceDefinition.rootPath];
+			}
+			
+			var filePath = rootPath + applicationConfig.properties.paths[ servicePathKey ];
+			
+			var servicePath = filePath + i + '.js';
+			
+			ServiceFromFileFactory( i, servicePath );
 		}
 		
 	} else {
 		console.log('SlimUI: No services to generate from existing files');	
-	}
-	
-	// Create application-defined services from config file	
-	if( this.applicationConfig.services && this.applicationConfig.services.generating ){
-		
-		// Create JavaScript closure and factory
-		function ServiceFromConfigFactory( data ){
-			return	function(){
-				return {
-					$get: function(){
-						return data;
-					}
-				};
-			};
-		};
-		
-		var servicesList = _.keys( this.applicationConfig.services.generating );
-		
-		for( var i in servicesList ){
-			var serviceName = servicesList[i];
-			var serviceData = applicationConfig.services.generating[ serviceName ];
-			
-			window.servicesToInject[ serviceName ] = ServiceFromConfigFactory(serviceData);
-			
-			this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );
-		}
-		
-	} else {
-		console.log('SlimUI: No services to generate from config file');	
 	}
 	
 });

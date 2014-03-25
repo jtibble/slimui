@@ -1,3 +1,5 @@
 var ServicesModel = function(){
-	return {};
+	return {
+		fibonacciNumber: 1
+	};
 };

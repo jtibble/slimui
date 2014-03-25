@@ -18,6 +18,7 @@
                 "ControllerCommunications": "Examples/ControllerCommunications/",
                 "ParameterPassing": "Examples/ParameterPassing/",
                 "ParameterPassingSubroute": "Examples/ParameterPassing/",
+                "ParameterPassingInnerSubroute": "Examples/ParameterPassing/",
                 "Routing": "Examples/Routing/",
                 "Services": "Examples/Services/"
             }
@@ -102,8 +103,8 @@
                 "modelbuilder": true,
                 "controller": true,
                 "parameters": [
-                    "parameterExampleId",
-                    "parameterExampleId2"
+                    "parameter1",
+                    "parameter2"
                 ],
                 "subroutes": [
                     "ParameterPassingSubroute"
@@ -115,8 +116,19 @@
                 "modelbuilder": true,
                 "controller": true,
                 "parameters": [
-                    "subrouteParameterExampleId",
-                    "subrouteParameterExampleId2"
+                    "subrouteParameter1",
+                    "subrouteParameter2"
+                ],
+				"subroutes": [
+					"ParameterPassingInnerSubroute"	
+				]
+            },
+            "ParameterPassingInnerSubroute": {
+                "path": "ParameterPassingInnerSubroute",
+                "controller": true,
+                "parameters": [
+                    "subrouteSubrouteParameter1",
+                    "subrouteSubrouteParameter2"
                 ]
             }
         },

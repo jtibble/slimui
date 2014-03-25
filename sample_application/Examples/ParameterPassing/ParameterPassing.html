@@ -5,11 +5,50 @@
 	<div class="row-fluid">
 		
 		<div class="col-md-8 container">
+			
+			<p>
+				<div class="alert alert-info">Notice the URL for this page! This page is not a subroute of Examples; it is its own top-level route.</div>
+			</p>
+			<h3 class="voice-brand">Parameter Passing</h3>
+			<p>
+				This page received the following URL parameters:
+				<div ng-repeat="(key, value) in Model.parameters">
+					{{key}}: <b>{{value}}</b>
+				</div>
+			</p>
+		
+			<hr>
+			<h3 class="voice-brand">Demo 1: Pass Simple Parameters</h3>
+			<div class="container">
+				<p>
+					<a href="#/ParameterPassing/parameter1/parameter2">
+						Click to send parameters to this page
+					</a>
+				</p>
+			</div>
+		
+			<hr>
+		
+			<h3 class="voice-brand">Demo 2: Navigate to Subroute</h3>
+			<div class="well well-lg" ui-view autoscroll='false'>
+				<p>
+					<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute//">
+						Click to navigate to subroute (no subroute parameters)
+					</a>
+				</p>
+			</div>
+			
+			
+			
+		</div>
+		<div class="col-md-4" ExamplesMenu></div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-md-12 container">
+			<hr>
+		
 			<h3 class="voice-brand">Parameter Passing</h3>
 	
-			<p>
-				<div class="alert alert-info">Notice the URL for this page! This page is not an Examples-subroute, but its own top-level route.</div>
-			</p>
 			<p>
 				URL Parameter-passing can be used to select a particular item and drill down into its details.
 			</p>
@@ -66,35 +105,7 @@ var ParameterPassingModelbuilder = function(Model){
 			</p>
 			<br><br>
 			
-			<hr>
-			<h3 class="voice-brand">Demo 1:</h3>
-			<p>
-				<a href="#/ParameterPassing/parameter1/parameter2">Click to send parameters to this page</a>
-			</p>
-			<p>
-				This page received the following URL parameters:
-				<div ng-repeat="(key, value) in Model.parameters">
-					{{key}}: <b>{{value}}</b>
-				</div>
-			</p>
-			
-			
-			<hr>
-			<h3 class="voice-brand">Demo 2:</h3>
-			<div class="container">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Parameter-Passing-Subroute View Content:</h3>
-					</div>
-					<div class="panel-body" ui-view autoscroll='false'>
-						<p>
-							Currently, the "ParameterPassingSubroute" is not loaded.
-						</p>
-						<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute//">Click to navigate to ParameterPassingSubroute (with no subroute-parameters)</a>
-					</div>
-				</div>
-			</div>
+		
 		</div>
-		<div class="col-md-4" ExamplesMenu></div>
 	</div>
 </div>

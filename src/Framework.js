@@ -166,7 +166,16 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 			template: '<div ' + name + '></div>'
 		}
 		
-		$stateProvider.state( state, routerParameters);			
+		$stateProvider.state( state, routerParameters);	
+		console.log('created state \'' + state + '\'');
+		
+		// Loop through all child-views and recurse
+		for( var r in view.subroutes ){
+			var subrouteName = view.subroutes[r];
+			var subrouteView = applicationConfig.views[ subrouteName ];
+			
+			makeStateFromView(subrouteName, subrouteView, parentName ? (parentName + '.' + name) : name);
+		}
 	};
 	
 	// Loop through all views to discover application states, sub-states, and parameters
@@ -176,12 +185,6 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		// If the view provides a url (meaning it's a root-level view, not a child-view, create a state for it
 		if( view.url != undefined ){
 			makeStateFromView(i, view);
-		}
-		
-		for( var r in view.subroutes ){
-			var subrouteName = view.subroutes[r];
-			var subrouteView = applicationConfig.views[ subrouteName ];
-			makeStateFromView(subrouteName, subrouteView, i);
 		}
 	}
 	

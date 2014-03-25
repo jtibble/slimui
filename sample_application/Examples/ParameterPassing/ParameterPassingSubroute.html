@@ -1,9 +1,10 @@
-<p>
-	This subroute view received the following URL parameters:
-	<div ng-repeat="(key, value) in Model.parameters">
-		{{key}}: <b>{{value}}</b>
-	</div>
-</p>
+<h3 class="voice-brand">ParameterPassingSubroute</h3>
 <p>
 	<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4">Click to add subroute parameters</a>
 </p>
+
+<div class="well well-lg" ui-view autoscroll='false'>
+	<a href="#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4/ParameterPassingInnerSubroute//">
+		Load the inner-most subroute (no parameters)
+	</a>
+</div>

@@ -167,8 +167,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 			template: '<div ' + name + '></div>'
 		}
 		
-		$stateProvider.state( state, routerParameters);	
-		console.log('created state \'' + state + '\'');
+		$stateProvider.state( state, routerParameters);
 		
 		// Loop through all child-views and recurse
 		for( var r in view.subroutes ){

@@ -334,7 +334,8 @@ framework.run( function($q){
 							    injectionName == 'Actions' ||
 							    injectionName == 'Model' ||
 							    injectionName == 'Modelbuilder' ||
-							    injectionName == 'StateParameters' ){
+							    injectionName == 'StateParameters' ||
+							  	injectionName == 'SlimUIAttribute' ){
 								continue;   
 						   }
 							
@@ -406,6 +407,11 @@ framework.run( function($q){
 							controllerInjections.Actions = injectedActions;	
 						}
 						
+						// Inject directive's attribute if provided
+						if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
+							controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value
+						}
+						
 						var injectedController = $controller( window[controllerName], controllerInjections );
 						
 					} catch(e){
@@ -419,7 +425,12 @@ framework.run( function($q){
 				});
 			};
 			
-			return { link: link	};
+			return { 
+				link: link,	
+				scope: {
+					attributeParameter: '@'
+				}
+			};
 		});
 	};
 	

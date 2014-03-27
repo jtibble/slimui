@@ -36,15 +36,25 @@ var validateConfigFileStructure = function( config ){
 		
 		if( directive.model && !directive.modelbuilder ){
 			printError( ' is invalid: if includes model, must also include modelbuilder');
+			return false;
 		}
 		if( directive.modelbuilder && !directive.model ){
 			printError( ' is invalid: if includes modelbuilder, must also include model');
+			return false;
 		}
 		if( directive.actions && !directive.controller ){
 			printError( ' is invalid: if includes actions, must also include controller');
+			return false;
 		}
 		if( directive.modelbuilder && !directive.controller ){
 			printError( ' is invalid: if includes modelbuilder, must also include controller');
+			return false;
+		}
+		
+		// Every directive must have a path so the framework can load its files
+		if( !directive.path ){
+			printError( ' is invalid: missing \'path\'');
+			return false;
 		}
 		
 		return true;
@@ -91,7 +101,9 @@ var validateConfigFileStructure = function( config ){
 	// Check services				
 	for( var i in this.applicationConfig.services ){
 		var servicePath = this.applicationConfig.services[i].path;
-		if( !this.applicationConfig.properties.paths[ servicePath ] ){
+		if( !this.applicationConfig.properties || 
+		    !this.applicationConfig.properties.paths || 
+		    !this.applicationConfig.properties.paths[ servicePath ] ){
 			configIsValid = false;
 			console.log('Service \'' + i + '\' is invalid: missing path \'' + servicePath + '\'');
 		}

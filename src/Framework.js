@@ -202,6 +202,14 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 	var defaultView = applicationConfig.views[ applicationConfig.defaultView ];
 	var defaultURL = defaultView.url;
+	
+	//Add parameters to the defaultURL if the defaultView requires parameters
+	if( defaultView.parameters ){
+		for( var i=0; i<defaultView.parameters.length; i++){
+			defaultURL+='/';
+		}
+	}
+	
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){

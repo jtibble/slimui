@@ -7,7 +7,12 @@
 			},
             "paths": {
                 "ReleaseNotes": "ReleaseNotes/",
-                "Header": "Header/",
+                "Header":"Header/",
+				"Task":"Task/",
+				"Bower":"Task/Bower/",
+				"Node":"Task/Node/",
+				"GIT":"Task/GIT/",
+				"TaskMenu":"Task/TaskMenu/",
                 "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
                 "ExamplesMenu": "Examples/ExamplesMenu/",
                 "LandingPage": "LandingPage/",
@@ -34,6 +39,9 @@
             "ExamplesMenu": {
                 "path": "ExamplesMenu"
             },
+			"TaskMenu": {
+                "path": "TaskMenu"
+            },
             "ControllerCommunicationListener": {
                 "path": "ControllerCommunicationListener",
                 "controller": true,
@@ -57,6 +65,29 @@
                 "controller": true,
                 "model": true,
                 "modelbuilder": true
+            },
+			  "Task": {
+                "url": "Task",
+                "path": "Task",
+				"subroutes": [
+                    "Node",
+                    "GIT",
+                    "Bower"
+                   
+                ]
+            
+            },
+			    "Node": {
+                "path": "Node"
+                
+            },
+            "GIT": {
+                "path": "GIT"
+                
+            },
+            "Bower": {
+                "path": "Bower"
+                
             },
             "Examples": {
                 "url": "Examples",

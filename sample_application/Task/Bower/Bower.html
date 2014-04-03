@@ -1,0 +1,53 @@
+<div class="row-fluid">
+	<h3 class="voice-brand">Config Proxies</h3>
+	<p>
+		We need previously installed Git and Node JS
+	</p>
+	
+	<h4 class="voice-brand">Creating .bash_profile</h4>
+	
+	<pre>
+1.-	Create file .bash_profile in your user folder, which is usually C:/Users/[SSO]/
+2.-	In .bash_profile, add the following:
+
+	<p style="color:blue";># Enable npm & git behind the GE proxy with these ENV variables </p>
+    export http_proxy="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
+    export HTTPS_PROXY="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
+    export https_proxy="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
+    export HTTP_PROXY="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
+
+    <p style="color:blue";># For GIT</p>
+	
+    export no_proxy="devcloud.sw.ge.com, openge.ge.com" #Atlassian Stash and OpenGE
+		
+3.- Open up your .gitconfig file in C:/Users/[SSO]/.gitconfig and add the following:
+
+    [url "ssh://"]
+        insteadOf = git://
+     
+4.- Open up Git Bash from Start Menu -> Programs -> Git -> Git Bash       
+
+5.- Navigate to project folder
+
+6.- Add proxies to node package manager like this:
+
+    npm config set proxy http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80/ 
+    npm config set https-proxy http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80/  
+	
+	</pre>
+	
+<h4 class="voice-brand">Installing Bower</h4>	
+
+<pre>
+	
+1.- Opem Git Bash and type:
+
+    npm install -g bower
+
+2.- Run bower to fetch all UI dependencies:
+
+    bower install
+	
+</pre>
+ 
+</div>

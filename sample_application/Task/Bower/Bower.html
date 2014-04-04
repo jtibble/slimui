@@ -9,15 +9,13 @@
 	<pre>
 1.-	Create file .bash_profile in your user folder, which is usually C:/Users/[SSO]/
 2.-	In .bash_profile, add the following:
-
-	<p style="color:blue";># Enable npm & git behind the GE proxy with these ENV variables </p>
+<h6># Enable npm & git behind the GE proxy with these ENV variables </h6>
     export http_proxy="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
     export HTTPS_PROXY="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
     export https_proxy="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
     export HTTP_PROXY="http://iss-americas-pitc-alpharettaz.proxy.corporate.ge.com:80"
-
-    <p style="color:blue";># For GIT</p>
-	
+    
+<h6># For GIT </h6>
     export no_proxy="devcloud.sw.ge.com, openge.ge.com" #Atlassian Stash and OpenGE
 		
 3.- Open up your .gitconfig file in C:/Users/[SSO]/.gitconfig and add the following:

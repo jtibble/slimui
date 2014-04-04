@@ -36,15 +36,25 @@ var validateConfigFileStructure = function( config ){
 		
 		if( directive.model && !directive.modelbuilder ){
 			printError( ' is invalid: if includes model, must also include modelbuilder');
+			return false;
 		}
 		if( directive.modelbuilder && !directive.model ){
 			printError( ' is invalid: if includes modelbuilder, must also include model');
+			return false;
 		}
 		if( directive.actions && !directive.controller ){
 			printError( ' is invalid: if includes actions, must also include controller');
+			return false;
 		}
 		if( directive.modelbuilder && !directive.controller ){
 			printError( ' is invalid: if includes modelbuilder, must also include controller');
+			return false;
+		}
+		
+		// Every directive must have a path so the framework can load its files
+		if( !directive.path ){
+			printError( ' is invalid: missing \'path\'');
+			return false;
 		}
 		
 		return true;
@@ -91,7 +101,9 @@ var validateConfigFileStructure = function( config ){
 	// Check services				
 	for( var i in this.applicationConfig.services ){
 		var servicePath = this.applicationConfig.services[i].path;
-		if( !this.applicationConfig.properties.paths[ servicePath ] ){
+		if( !this.applicationConfig.properties || 
+		    !this.applicationConfig.properties.paths || 
+		    !this.applicationConfig.properties.paths[ servicePath ] ){
 			configIsValid = false;
 			console.log('Service \'' + i + '\' is invalid: missing path \'' + servicePath + '\'');
 		}
@@ -190,6 +202,14 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 	var defaultView = applicationConfig.views[ applicationConfig.defaultView ];
 	var defaultURL = defaultView.url;
+	
+	//Add parameters to the defaultURL if the defaultView requires parameters
+	if( defaultView.parameters ){
+		for( var i=0; i<defaultView.parameters.length; i++){
+			defaultURL+='/';
+		}
+	}
+	
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){
@@ -322,7 +342,8 @@ framework.run( function($q){
 							    injectionName == 'Actions' ||
 							    injectionName == 'Model' ||
 							    injectionName == 'Modelbuilder' ||
-							    injectionName == 'StateParameters' ){
+							    injectionName == 'StateParameters' ||
+							  	injectionName == 'SlimUIAttribute' ){
 								continue;   
 						   }
 							
@@ -394,6 +415,11 @@ framework.run( function($q){
 							controllerInjections.Actions = injectedActions;	
 						}
 						
+						// Inject directive's attribute if provided
+						if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
+							controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value
+						}
+						
 						var injectedController = $controller( window[controllerName], controllerInjections );
 						
 					} catch(e){
@@ -407,7 +433,12 @@ framework.run( function($q){
 				});
 			};
 			
-			return { link: link	};
+			return { 
+				link: link,	
+				scope: {
+					attributeParameter: '@'
+				}
+			};
 		});
 	};
 	

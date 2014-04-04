@@ -22,9 +22,8 @@ framework.provider('Router', function(){
 			return {
 				goTo: function(state, parameters){
 					
-					if( $state.current.name !== state ){
-						//console.log( strings.routingFrom + $state.current.name + strings.routingTo + state);
-						$state.go( state, { parameters: parameters} );
+					if( $state.current.name !== state || parameters){
+						$state.go( state, parameters );
 					} else {
 						console.log( strings.notRouting );	
 					}

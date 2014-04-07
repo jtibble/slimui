@@ -6,6 +6,7 @@
  */
 var framework = angular.module('Framework', ['ui.router',
 											 'ui.bootstrap',
+											 'ngSanitize',
 									   		'Framework.Services']);
 
 

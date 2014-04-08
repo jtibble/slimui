@@ -8,11 +8,11 @@
             "paths": {
                 "ReleaseNotes": "ReleaseNotes/",
                 "Header": "Header/",
-				"Task": "Task/",
-				"Bower": "Task/Bower/",
-				"Node": "Task/Node/",
-				"GIT": "Task/GIT/",
-				"TaskMenu": "Task/TaskMenu/",
+				"Setup": "Setup/",
+				"Bower": "Setup/Bower/",
+				"Node": "Setup/Node/",
+				"GIT": "Setup/GIT/",
+				"SetupMenu": "Setup/SetupMenu/",
                 "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
                 "ExamplesMenu": "Examples/ExamplesMenu/",
                 "LandingPage": "LandingPage/",
@@ -40,8 +40,8 @@
             "ExamplesMenu": {
                 "path": "ExamplesMenu"
             },
-			"TaskMenu": {
-                "path": "TaskMenu"
+			"SetupMenu": {
+                "path": "SetupMenu"
             },
             "ControllerCommunicationListener": {
                 "path": "ControllerCommunicationListener",
@@ -67,29 +67,26 @@
                 "model": true,
                 "modelbuilder": true
             },
-			  "Task": {
-                "url": "Task",
-                "path": "Task",
+			"Setup": {
+				"url": "Setup",
+				"path": "Setup",
 				"subroutes": [
-                    "Node",
-                    "GIT",
-                    "Bower"
-                   
-                ]
-            
+					"Node",
+					"GIT",
+					"Bower"
+				]
             },
-			    "Node": {
+			"Node": {
                 "path": "Node"
-                
             },
             "GIT": {
                 "path": "GIT"
-                
             },
             "Bower": {
                 "path": "Bower"
-                
             },
+			
+			
             "Examples": {
                 "url": "Examples",
                 "path": "Examples",
@@ -137,6 +134,7 @@
                 "path": "HTMLRendering",
 				"controller": true
             },
+			
             "ParameterPassing": {
                 "url": "ParameterPassing",
                 "path": "ParameterPassing",

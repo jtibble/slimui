@@ -3,7 +3,7 @@ var DocumentationModel = function(){
 	// EscapedJS generated with JSONLint.com and freeformatter.com/javascript-escape.html
 	
 	var escapedJS = {
-		emptyConfigJSON: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"\",\r\n        \"properties\": {\r\n            \"rootPaths\": {\r\n                \"default\": \"\"\r\n            },\r\n            \"paths\": {\r\n            }\r\n        },\r\n        \"components\": {\r\n        },\r\n        \"views\": {\r\n        },\r\n        \"services\": {\r\n            \"existing\": {},\r\n            \"generating\": {}\r\n        }\r\n    }\r\n}',
+		emptyConfigJSON: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"\",\r\n        \"properties\": {\r\n            \"rootPaths\": {\r\n                \"default\": \"\"\r\n            },\r\n            \"paths\": {\r\n            }\r\n        },\r\n        \"components\": {\r\n        },\r\n        \"views\": {\r\n        },\r\n        \"services\": {\r\n        }\r\n    }\r\n}',
 		configDefaultViewExample: '{\r\n    \"applicationConfig\": {\r\n        \"defaultView\": \"LandingPage\",\r\n        \"views\": {\r\n            \"LandingPage\": {\r\n                \"url\": \"\/\",\r\n                \"path\": \"LandingPage\"\r\n            }\r\n        }\r\n    }\r\n}',
 		configPropertiesExample: '{\r\n    \"applicationConfig\": {\r\n        \"properties\": {\r\n            \"rootPaths\": {\r\n                \"default\": \"sample_application\/\"\r\n            },\r\n            \"paths\": {\r\n                \"ReleaseNotes\": \"ReleaseNotes\/\",\r\n            }\r\n        }\r\n    }\r\n}',
 		configComponentsExample: '{\r\n    \"applicationConfig\": {\r\n        \"components\": {\r\n            \"Header\": {\r\n                \"path\": \"Header\"\r\n            }\r\n        }\r\n    }\r\n}',
@@ -192,7 +192,7 @@ var DocumentationModel = function(){
 						title: 'Hyperlinks',
 						steps: [
 							{
-								content: 'To link to another page, put the whole route in your hyperlink tag. Links with href="#" will not work correctly.'
+								content: 'To link to another page, put the whole route in your hyperlink tag. Links without href="#" will not work correctly.'
 							},
 							{
 								code: '<a href="#PageName/ChildPageName">Go to PageName/ChildPageName</a>'

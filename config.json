@@ -21,6 +21,7 @@
                 "ParameterPassingInnerSubroute": "Examples/ParameterPassing/",
                 "Routing": "Examples/Routing/",
                 "Services": "Examples/Services/",
+				"HTMLRendering": "Examples/HTMLRendering/",
 				
 				"ExampleServicePath": "Examples/Services/Services/",
 				"FibonacciServicePath": "Examples/Services/Services/",
@@ -66,7 +67,8 @@
                     "Routing",
                     "AJAX",
                     "ControllerCommunications",
-                    "Services"
+                    "Services",
+					"HTMLRendering"
                 ]
             },
             "Simple": {
@@ -99,6 +101,10 @@
                 "modelbuilder": true,
                 "controller": true,
                 "actions": true
+            },
+            "HTMLRendering": {
+                "path": "HTMLRendering",
+				"controller": true
             },
             "ParameterPassing": {
                 "url": "ParameterPassing",

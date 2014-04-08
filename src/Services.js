@@ -69,7 +69,7 @@ framework.provider('ControllerCommunication', function(){
 					}
 				},
 				get: function(channel){
-					if( models[channel] ){
+					if( models[channel]!="undefined" ){
 						return models[channel];	
 					}
 					

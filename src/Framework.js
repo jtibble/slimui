@@ -239,199 +239,150 @@ framework.run( function($q){
 		framework.directive( directiveName, function($http, $controller, $compile, $templateCache, $injector, $stateParams){
 			function link( $scope, element, attributes ){
 				
-				var templateText, templateScope;
+				// Create new scope for view
+				var templateScope = $scope.$new();
 				
-				var templatePromise = $q.defer();
+				var templateName = componentName + 'Template';
+				var modelName = componentName + 'Model';
+				var modelbuilderName = componentName + 'Modelbuilder';
+				var actionsName = componentName + 'Actions';
+				var controllerName = componentName + 'Controller';
+				var jsLoadingError = false;
 				
-				var modelPromise = $q.defer();
-				var modelbuilderPromise = $q.defer();
-				var actionsPromise = $q.defer();
-				var controllerPromise = $q.defer();
-				
-				// Attempt to load the (required) template
-				require( ['text!' + paths.template], function( template ){
-					templateText = template;
-					templatePromise.resolve();
-				});
-				
-				if( paths.model ){
-					require( [paths.model], function(){
-						modelPromise.resolve();
-					});
-				} else {
-					modelPromise.resolve();
+				// Check that the files loaded correctly
+				if( (paths.template && !window[templateName])){
+					console.log('Couldn\'t correctly load template named \'' + templateName + '\'.');
+					jsLoadingError = true;
+				}
+				if( (paths.model && !window[modelName])){
+					console.log('Couldn\'t correctly load model named \'' + modelName + '\'.');
+					jsLoadingError = true;
+				}
+				if( (paths.model && !window[modelName])){
+					console.log('Couldn\'t correctly load modelbuilder named \'' + modelbuilderName + '\'.');
+					jsLoadingError = true;	
+				}
+				if( (paths.model && !window[modelName])){
+					console.log('Couldn\'t correctly load actions named \'' + actionsName + '\'.');
+					jsLoadingError = true;	
+				}
+				if( (paths.model && !window[modelName])){
+					console.log('Couldn\'t correctly load controller named \'' + controllerName + '\'.');
+					jsLoadingError = true;
 				}
 				
-				if( paths.modelbuilder ){ 
-					require( [paths.modelbuilder], function(){
-						modelbuilderPromise.resolve();
-					});
-				} else { 
-					modelbuilderPromise.resolve(); 
+				if( jsLoadingError ){
+					console.log('Check spelling in file and config.json. Aborting creation of \'' + componentName + '\'');
+					return;
 				}
 				
-				if( paths.actions ){ 
-					require( [paths.actions], function(){
-						actionsPromise.resolve();
-					});
-				} else {
-					actionsPromise.resolve();
-				}
-				
-				if( paths.controller ){ 
-					require( [paths.controller], function(){
-						controllerPromise.resolve();
-					});
-				} else {
-					controllerPromise.resolve();
-				}
-				
-				// Wait for all files to be loaded into global window scope
-				$q.all([ templatePromise.promise,
-						 modelbuilderPromise.promise,
-						 modelPromise.promise,
-						 actionsPromise.promise,
-						 controllerPromise.promise ]).then( function() {
-					
-					// Create new scope for view
-					templateScope = $scope.$new();
-					
-					var modelName = componentName + 'Model';
-					var modelbuilderName = componentName + 'Modelbuilder';
-					var actionsName = componentName + 'Actions';
-					var controllerName = componentName + 'Controller';
-					var jsLoadingError = false;
-					
-					// Check that the files loaded correctly
-					if( (paths.model && !window[modelName])){
-						console.log('Couldn\'t correctly load model named \'' + modelName + '\'.');
-						jsLoadingError = true;
-					}
-					if( (paths.model && !window[modelName])){
-						console.log('Couldn\'t correctly load modelbuilder named \'' + modelbuilderName + '\'.');
-						jsLoadingError = true;	
-					}
-					if( (paths.model && !window[modelName])){
-						console.log('Couldn\'t correctly load actions named \'' + actionsName + '\'.');
-						jsLoadingError = true;	
-					}
-					if( (paths.model && !window[modelName])){
-						console.log('Couldn\'t correctly load controller named \'' + controllerName + '\'.');
-						jsLoadingError = true;
-					}
-					
-					if( jsLoadingError ){
-						console.log('Check spelling in file and config.json. Aborting creation of \'' + componentName + '\'');
-						return;
-					}
-					
-					// Helper to validate that all dependencies are ready for injection
-					var checkInjections = function( globalFunctionName ){
-						var injectionsList;
-						try{
-							injectionsList = $injector.annotate( window[globalFunctionName]);
-						} catch(e){
-							console.log('Error: Failed to find dependency injection information for \''+globalFunctionName+'\'.\n\tPlease check in the file that the function name is spelled correctly.');
-						}
-						var neededInjections = [];
-						
-						for( var i in injectionsList ){
-							var injectionName = injectionsList[i];
-							
-							// Injections provided by this framework should not be counted
-							if( injectionName == 'Context' ||
-							    injectionName == 'Actions' ||
-							    injectionName == 'Model' ||
-							    injectionName == 'Modelbuilder' ||
-							    injectionName == 'StateParameters' ||
-							  	injectionName == 'SlimUIAttribute' ){
-								continue;   
-						   }
-							
-							try{
-								$injector.get( injectionName );
-							}catch(exception){
-								neededInjections.push( injectionName );
-							}
-						}
-						
-						if( neededInjections.length ){
-							console.log('Error: Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
-						}
-					};
-
-					// Check all injections to make sure they're ready
-					if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
-					if( paths.actions ){ checkInjections( actionsName ); }
-					if( paths.controller ){ checkInjections( controllerName ); }
-					
-					var injectedModelbuilder;
-					var injectedActions;
-					
-					// Inject model into modelbuilder (if provided)
-					if( window[modelName] ){
-						try{
-							var additionalModelbuilderInjections = {
-								Model: window[modelName]()
-							};
-							injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
-						} catch(e){
-							console.log('Error: Could not inject model into modelbuilder. Exception: \n\t' + e.message);
-						}
-					}
-					
-					// Inject context and modelbuilder into actions (if provided)
-					if( window[actionsName]){
-						try{
-							var actionsInjections = {
-								Context: templateScope
-							};
-							
-							//Inject modelbinder if provided
-							if( injectedModelbuilder ){
-								actionsInjections.Modelbuilder = injectedModelbuilder;
-							}
-							
-							injectedActions = $controller( window[actionsName] , actionsInjections);	
-						} catch(e){
-							console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
-						}
-					}
-					
-					// Inject context, state parameters, modelbuilder, and actions into controller
+				// Helper to validate that all dependencies are ready for injection
+				var checkInjections = function( globalFunctionName ){
+					var injectionsList;
 					try{
+						injectionsList = $injector.annotate( window[globalFunctionName]);
+					} catch(e){
+						console.log('Error: Failed to find dependency injection information for \''+globalFunctionName+'\'.\n\tPlease check in the file that the function name is spelled correctly.');
+					}
+					var neededInjections = [];
+					
+					for( var i in injectionsList ){
+						var injectionName = injectionsList[i];
 						
-						var controllerInjections = {
-							Context: templateScope,
-							StateParameters: $stateParams
+						// Injections provided by this framework should not be counted
+						if( injectionName == 'Context' ||
+							injectionName == 'Actions' ||
+							injectionName == 'Model' ||
+							injectionName == 'Modelbuilder' ||
+							injectionName == 'StateParameters' ||
+							injectionName == 'SlimUIAttribute' ){
+							continue;   
+					   }
+						
+						try{
+							$injector.get( injectionName );
+						}catch(exception){
+							neededInjections.push( injectionName );
+						}
+					}
+					
+					if( neededInjections.length ){
+						console.log('Error: Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
+					}
+				};
+
+				// Check all injections to make sure they're ready
+				if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
+				if( paths.actions ){ checkInjections( actionsName ); }
+				if( paths.controller ){ checkInjections( controllerName ); }
+				
+				var injectedModelbuilder;
+				var injectedActions;
+				
+				// Inject model into modelbuilder (if provided)
+				if( window[modelName] ){
+					try{
+						var additionalModelbuilderInjections = {
+							Model: window[modelName]()
+						};
+						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
+					} catch(e){
+						console.log('Error: Could not inject model into modelbuilder. Exception: \n\t' + e.message);
+					}
+				}
+				
+				// Inject context and modelbuilder into actions (if provided)
+				if( window[actionsName]){
+					try{
+						var actionsInjections = {
+							Context: templateScope
 						};
 						
-						// Inject modelbinder if provided
+						//Inject modelbinder if provided
 						if( injectedModelbuilder ){
-							controllerInjections.Modelbuilder = injectedModelbuilder;
+							actionsInjections.Modelbuilder = injectedModelbuilder;
 						}
 						
-						// Inject actions if provided
-						if( injectedActions ){
-							controllerInjections.Actions = injectedActions;	
-						}
-						
-						// Inject directive's attribute if provided
-						if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
-							controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value
-						}
-						
-						var injectedController = $controller( window[controllerName], controllerInjections );
-						
+						injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
-						console.log('Error: Could not inject dependencies into controller. Exception: \n\t' + e.message);	
+						console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
+					}
+				}
+				
+				// Inject context, state parameters, modelbuilder, and actions into controller
+				try{
+					
+					var controllerInjections = {
+						Context: templateScope,
+						StateParameters: $stateParams
+					};
+					
+					// Inject modelbinder if provided
+					if( injectedModelbuilder ){
+						controllerInjections.Modelbuilder = injectedModelbuilder;
 					}
 					
-					// Render template, and bind/compile controller to it
-					element.html( templateText );
-					element.children().data('$ngControllerController', injectedController);
-					$compile( element.contents() )( templateScope );
-				});
+					// Inject actions if provided
+					if( injectedActions ){
+						controllerInjections.Actions = injectedActions;	
+					}
+					
+					// Inject directive's attribute if provided
+					if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
+						controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value
+					}
+					
+					var injectedController = $controller( window[controllerName], controllerInjections );
+					
+				} catch(e){
+					console.log('Error: Could not inject dependencies into controller. Exception: \n\t' + e.message);	
+				}
+				
+				// Render template, and bind/compile controller to it
+				element.html( window[templateName] );
+				element.children().data('$ngControllerController', injectedController);
+				$compile( element.contents() )( templateScope );
+
 			};
 			
 			return { 
@@ -444,10 +395,10 @@ framework.run( function($q){
 	};
 	
 	// Helper to return a simple directive that only consists of an HTML template
-	var TemplateDirectiveFactory = function( templatePath ){
+	var TemplateDirectiveFactory = function( templateText ){
 		return function(){
 			return {
-				templateUrl: templatePath	
+				template: templateText	
 			};
 		}
 	};
@@ -474,30 +425,15 @@ framework.run( function($q){
 		
 	// Helper to create directives from an entry in the config.json file
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
-		var filePath = ConfigPropertyPathFinder( directiveObject );
 		
-		// Template is always required
-		var paths = {
-			template: filePath + directiveName + '.html'
-		};
-		
-		if( directiveObject.model ){ paths.model = filePath + directiveName + 'Model.js'; }
-		if( directiveObject.modelbuilder ){ paths.modelbuilder = filePath + directiveName + 'Modelbuilder.js'; }
-		if( directiveObject.actions ){ paths.actions = filePath + directiveName + 'Actions.js'; }
-		if( directiveObject.controller ){ paths.controller = filePath + directiveName + 'Controller.js'; }
-		
-		if( !paths.template ){
-			console.log('Component/View \'' + directiveName + '\' is malformed:\n\tThe (required) template is missing or misconfigured in config.json. (Aborting)');
-			return;
-		}
-		
-		if( paths.model || paths.modelbuilder || paths.actions || paths.controller ){
+		if( directiveObject.model || directiveObject.modelbuilder || directiveObject.actions || directiveObject.controller ){
 			// generate a complex directive
-			DirectiveFactory( directiveName, paths );
+			DirectiveFactory( directiveName, directiveObject );
 		} else {
 			// generate simple directive (just template)
+			templateName = directiveName + 'Template';
 			directiveName = directiveName.toLowerCase();
-			framework.directive( directiveName, TemplateDirectiveFactory( paths.template ) );
+			framework.directive( directiveName, TemplateDirectiveFactory( window[templateName] ) );
 		}
 		
 	};
@@ -521,29 +457,23 @@ framework.run( function($q){
 	// Create application-defined services from existing files
 	if( this.applicationConfig.services ){
 		
-		// Create JavaScript closure and factory
-		function ServiceFromFileFactory( serviceName, servicePath ){
-			require( [servicePath], function( newFunction ){
-				window.servicesToInject[ serviceName ] = function(){
-					return {
-						$get: window[serviceName]
-					};
-				};
-					
-				this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );
-			});
-		};
-				
-		for( var i in this.applicationConfig.services ){
-			var serviceDefinition = this.applicationConfig.services[i];
-			var filePath = ConfigPropertyPathFinder( serviceDefinition );			
-			var servicePath = filePath + i + '.js';
+		for( var serviceName in this.applicationConfig.services ){
+			if( !window[serviceName] ){
+				console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
+				continue;
+			}
 			
-			ServiceFromFileFactory( i, servicePath );
+			window.servicesToInject[ serviceName ] = function(){
+				return {
+					$get: window[serviceName]
+				};
+			};
+		
+			this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
 		}
 		
 	} else {
-		console.log('SlimUI: No services to generate from existing files');	
+		console.log('SlimUI: no services specified in config.json');	
 	}
 	
 });

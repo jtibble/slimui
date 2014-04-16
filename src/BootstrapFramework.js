@@ -1,10 +1,3 @@
-// Tell our script-loader about the location of the text-loading plugin
-require.config({
-	paths: {
-		text: 'bower_components/requirejs-text/text'
-	}
-});
-
 // Bootstrapping of application with config file comes from 'philippd' courtesy of 
 // http://stackoverflow.com/questions/16286605/initialize-angularjs-service-with-asynchronous-data
 

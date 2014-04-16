@@ -11,5 +11,6 @@ Some of the project goals:
 ##Sample Application
 A sample application is included with this repository. To try it out, follow these steps:
 
-1. Install NodeJS, NPM, and Bower, and run 'bower install' in the project root. This will fetch all of SlimUI's dependencies.
-2. Host the /sample-application.html file, and open it up in a web browser. More documentation is provided in the sample application.
+1. Install NodeJS and NPM
+2. Install Bower, and run 'bower install' in the project root. This will fetch all of SlimUI's dependencies.
+2. Host this folder, and open sample_application.html in a browser. More documentation is provided in the sample application.

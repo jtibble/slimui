@@ -1,1 +1,4 @@
 bower_components
+node_modules
+/app.html
+/app.js

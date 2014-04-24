@@ -1,8 +1,8 @@
 {
-  "name": "proxy",
-  "version": "0.1.0",
+  "name": "SlimUI",
+  "version": "1.0",
   "author": "John Tible <john@jtibble.com>",
-  "description": "a simple nodejs proxy",
+  "description": "This NPM Package contains the dependencies for the Gulp-build for the SlimUI framework. See the README for more information.",
   "contributors": [
     {
       "name": "John Tibble",
@@ -12,10 +12,7 @@
   "scripts": {},
   "repository": {},
   "keywords": [],
-  "dependencies": {
-    "express": "*",
-    "http-proxy": "*"
-  },
+  "dependencies": {},
   "engines": {
     "node": ">=0.6"
   },
@@ -25,6 +22,11 @@
     "gulp-concat": "~2.2.0",
     "gulp-uglify": "~0.2.1",
     "gulp-jshint": "~1.5.3",
-    "gulp-if": "~1.0.0"
+	"gulp-notify": "*",
+	"gulp-minify-html": "*",
+	"gulp-insert": "*",
+	"gulp-tap": "*",
+	"js-string-escape": "*",
+	"event-stream": "*"
   }
 }

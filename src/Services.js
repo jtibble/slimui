@@ -18,7 +18,7 @@ framework.provider('Router', function(){
 	var logoutRoute, homeRoute;
 	
 	return {
-		$get: function( $state ){
+		$get: ['$state', function( $state ){
 			return {
 				goTo: function(state, parameters){
 					
@@ -34,7 +34,7 @@ framework.provider('Router', function(){
 					$state.go( homeRoute );
 				}
 			};
-		},
+		}],
 		setHomeRoute: function( newHomeRoute ){
 			homeRoute = newHomeRoute;
 		}
@@ -53,7 +53,7 @@ framework.provider('ControllerCommunication', function(){
 	var observerCallbacks = {};
 	
 	return {
-		$get: function( $state ){
+		$get: ['$state', function( $state ){
 			return {
 				registerCallback: function(channel, callback){
 					if( !observerCallbacks[channel] ){
@@ -81,7 +81,7 @@ framework.provider('ControllerCommunication', function(){
 					this.notifyObservers(channel);
 				}
 			};
-		}		
+		}]		
 	};
 });
 
@@ -94,7 +94,7 @@ framework.provider('ControllerCommunication', function(){
  */
 framework.provider('FrameworkAJAX', function(){
 	return {
-		$get: function( $http ){
+		$get: ['$http', function( $http ){
 			return {
 				sendRequest: function(request, successCallback, errorCallback){
 					
@@ -106,6 +106,6 @@ framework.provider('FrameworkAJAX', function(){
 					$http( request ).success( successCallback ).error( errorCallback );
 				}
 			};
-		}		
+		}]		
 	};
 });

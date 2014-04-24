@@ -5,50 +5,57 @@
 var bootstrapModule = angular.module('bootstrapModule', []);
 
 // the bootstrapper service loads the config and bootstraps the specified app
-bootstrapModule.factory('bootstrapper', function ($http, $log, $q) {
+bootstrapModule.provider('bootstrapper', function () {
 	return {
-		bootstrap: function (appName) {
-			var deferred = $q.defer();
-			
-			$http.get('config.json')
-				.success(function (config) {
-					// set all returned values as constants on the app...
-					var myApp = angular.module(appName);
-					angular.forEach(config, function(value, key){
-						myApp.constant(key, value);
-					});
+		$get: ['$http', '$q', function($http, $q){
+			return {
+				bootstrap: function (appName) {
+					var deferred = $q.defer();
 					
-					// ...and bootstrap the actual app.
-					angular.bootstrap(document, [appName]);
-					deferred.resolve();
-				})
-				.error(function () {
-					$log.warn('Could not initialize application, configuration could not be loaded.');
-					deferred.reject();
-				});
-			
-			return deferred.promise;
-		}
+					$http.get('config.json')
+						.success(function (config) {
+							// set all returned values as constants on the app...
+							var myApp = angular.module(appName);
+							angular.forEach(config, function(value, key){
+								myApp.constant(key, value);
+							});
+							
+							// ...and bootstrap the actual app.
+							angular.bootstrap(document, [appName]);
+							deferred.resolve();
+						})
+						.error(function () {
+							console.log('Could not initialize application, configuration could not be loaded.');
+							deferred.reject();
+						});
+					
+					return deferred.promise;
+				}
+			};
+		}]
 	};
 });
 
 // create a div which is used as the root of the bootstrap app
 var appContainer = document.createElement('div');
 
-// in run() function you can now use the bootstrapper service and shutdown the bootstrapping app after initialization of your actual app
-bootstrapModule.run(function (bootstrapper) {
+// in run() function you can now use the bootstrapper service and shutdown the bootstrapping app after initialization of your actual app.
+// 'bootstrapper' is dependency-injection by-name here to avoid problems when compiling/minifying/uglifying as part of a build process
+bootstrapModule.run(['bootstrapper', function (bootstrapper) {
 
 	bootstrapper.bootstrap('Framework').then(function () {
 		// removing the container will destroy the bootstrap app
 		appContainer.remove();
 	});
 
-});
+}]);
 
 // make sure the DOM is fully loaded before bootstrapping.
 angular.element(document).ready(function() {
 	angular.bootstrap(appContainer, ['bootstrapModule']);
 });
+/*jshint loopfunc: true */
+
 /**
  *	@name LSApplication
  *	@class
@@ -142,22 +149,22 @@ var validateConfigFileStructure = function( config ){
 
 	// Check components
 	if( config.components ){
-		for( var i in config.components ){
-			if( !directiveIsValidHelper( i, config.components[i] )){
+		for( var j in config.components ){
+			if( !directiveIsValidHelper( j, config.components[j] )){
 				configIsValid = false;
-				console.log('\tComponent \'' + i + '\' is invalid with broken template or controller');
+				console.log('\tComponent \'' + j + '\' is invalid with broken template or controller');
 			}
 		}
 	}
 	
 	// Check services				
-	for( var i in this.applicationConfig.services ){
-		var servicePath = this.applicationConfig.services[i].path;
+	for( var k in this.applicationConfig.services ){
+		var servicePath = this.applicationConfig.services[k].path;
 		if( !this.applicationConfig.properties || 
 		    !this.applicationConfig.properties.paths || 
 		    !this.applicationConfig.properties.paths[ servicePath ] ){
 			configIsValid = false;
-			console.log('Service \'' + i + '\' is invalid: missing path \'' + servicePath + '\'');
+			console.log('Service \'' + k + '\' is invalid: missing path \'' + servicePath + '\'');
 		}
 	}
 	
@@ -168,7 +175,12 @@ var validateConfigFileStructure = function( config ){
 /** 
  * Configure the framework
  */
-framework.config( function($stateProvider, $urlRouterProvider, applicationConfig, $compileProvider, $provide, RouterProvider) {
+framework.config( ['$stateProvider', 
+				   '$urlRouterProvider', 
+				   'applicationConfig', 
+				   '$compileProvider', 
+				   '$provide', 
+				   'RouterProvider', function($stateProvider, $urlRouterProvider, applicationConfig, $compileProvider, $provide, RouterProvider) {
 	this.applicationConfig = applicationConfig;
 	
 	// Storing $provide allows us to create providers programatically in framework.run()
@@ -229,7 +241,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		var routerParameters = {
 			url: url, 
 			template: '<div ' + name + '></div>'
-		}
+		};
 		
 		$stateProvider.state( state, routerParameters);
 		
@@ -247,7 +259,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		var view = applicationConfig.views[i];
 		
 		// If the view provides a url (meaning it's a root-level view, not a child-view, create a state for it
-		if( view.url != undefined ){
+		if( view.url !== 'undefined' ){
 			makeStateFromView(i, view);
 		}
 	}
@@ -257,7 +269,7 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 	
 	//Add parameters to the defaultURL if the defaultView requires parameters
 	if( defaultView.parameters ){
-		for( var i=0; i<defaultView.parameters.length; i++){
+		for( var j=0; j<defaultView.parameters.length; j++){
 			defaultURL+='/';
 		}
 	}
@@ -269,14 +281,14 @@ framework.config( function($stateProvider, $urlRouterProvider, applicationConfig
 		return defaultURL;
 	});
 	
-});
+}]);
 
 
 
 /** 
  * Run the framework
  */
-framework.run( function($q){
+framework.run( ['$q', function($q){
 	
 	// Create application-level directives from a set of files including the following:
 	// template (always required, no exceptions)
@@ -287,7 +299,12 @@ framework.run( function($q){
 	var DirectiveFactory = function( componentName, paths ){
 		var directiveName = componentName.toLowerCase();
 		
-		framework.directive( directiveName, function($http, $controller, $compile, $templateCache, $injector, $stateParams){
+		framework.directive( directiveName, ['$http', 
+											 '$controller', 
+											 '$compile', 
+											 '$templateCache', 
+											 '$injector', 
+											 '$stateParams', function($http, $controller, $compile, $templateCache, $injector, $stateParams){
 			function link( $scope, element, attributes ){
 				
 				// Create new scope for view
@@ -369,6 +386,7 @@ framework.run( function($q){
 				
 				var injectedModelbuilder;
 				var injectedActions;
+				var injectedController;
 				
 				// Inject model into modelbuilder (if provided)
 				if( window[modelName] ){
@@ -420,10 +438,10 @@ framework.run( function($q){
 					
 					// Inject directive's attribute if provided
 					if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
-						controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value
+						controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value;
 					}
 					
-					var injectedController = $controller( window[controllerName], controllerInjections );
+					injectedController = $controller( window[controllerName], controllerInjections );
 					
 				} catch(e){
 					console.log('Error: Could not inject dependencies into controller. Exception: \n\t' + e.message);	
@@ -434,7 +452,7 @@ framework.run( function($q){
 				element.children().data('$ngControllerController', injectedController);
 				$compile( element.contents() )( templateScope );
 
-			};
+			}
 			
 			return { 
 				link: link,	
@@ -442,7 +460,7 @@ framework.run( function($q){
 					attributeParameter: '@'
 				}
 			};
-		});
+		}]);
 	};
 	
 	// Helper to return a simple directive that only consists of an HTML template
@@ -451,7 +469,7 @@ framework.run( function($q){
 			return {
 				template: templateText	
 			};
-		}
+		};
 	};
 	
 	// Helper to retrieve properly-formatted paths from the config.json file
@@ -496,17 +514,23 @@ framework.run( function($q){
 	}
 	
 	// Generate directives for all views
-	for( var i in this.applicationConfig.views ){
-		var screen = applicationConfig.views[i];
-		MakeDirectivesHelper( i, screen );
+	for( var j in this.applicationConfig.views ){
+		var screen = applicationConfig.views[j];
+		MakeDirectivesHelper( j, screen );
 	}
 	
 	
 	// Create services to inject during component-initialization
-	window['servicesToInject'] = {};
+	window.servicesToInject = {};
 	
 	// Create application-defined services from existing files
 	if( this.applicationConfig.services ){
+		
+		var serviceWrapperFunction = function(serviceName){
+			return {
+				$get: window[serviceName]
+			};
+		};
 		
 		for( var serviceName in this.applicationConfig.services ){
 			if( !window[serviceName] ){
@@ -514,11 +538,7 @@ framework.run( function($q){
 				continue;
 			}
 			
-			window.servicesToInject[ serviceName ] = function(){
-				return {
-					$get: window[serviceName]
-				};
-			};
+			window.servicesToInject[ serviceName ] = serviceWrapperFunction(serviceName);
 		
 			this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
 		}
@@ -527,7 +547,7 @@ framework.run( function($q){
 		console.log('SlimUI: no services specified in config.json');	
 	}
 	
-});
+}]);
 
 var framework = angular.module('Framework.Services', []);
 
@@ -549,7 +569,7 @@ framework.provider('Router', function(){
 	var logoutRoute, homeRoute;
 	
 	return {
-		$get: function( $state ){
+		$get: ['$state', function( $state ){
 			return {
 				goTo: function(state, parameters){
 					
@@ -565,7 +585,7 @@ framework.provider('Router', function(){
 					$state.go( homeRoute );
 				}
 			};
-		},
+		}],
 		setHomeRoute: function( newHomeRoute ){
 			homeRoute = newHomeRoute;
 		}
@@ -584,7 +604,7 @@ framework.provider('ControllerCommunication', function(){
 	var observerCallbacks = {};
 	
 	return {
-		$get: function( $state ){
+		$get: ['$state', function( $state ){
 			return {
 				registerCallback: function(channel, callback){
 					if( !observerCallbacks[channel] ){
@@ -612,7 +632,7 @@ framework.provider('ControllerCommunication', function(){
 					this.notifyObservers(channel);
 				}
 			};
-		}		
+		}]		
 	};
 });
 
@@ -625,7 +645,7 @@ framework.provider('ControllerCommunication', function(){
  */
 framework.provider('FrameworkAJAX', function(){
 	return {
-		$get: function( $http ){
+		$get: ['$http', function( $http ){
 			return {
 				sendRequest: function(request, successCallback, errorCallback){
 					
@@ -637,6 +657,6 @@ framework.provider('FrameworkAJAX', function(){
 					$http( request ).success( successCallback ).error( errorCallback );
 				}
 			};
-		}		
+		}]		
 	};
 });

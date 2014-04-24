@@ -13,6 +13,9 @@ var htmlJsStr  = require('js-string-escape');
 var tap = require('gulp-tap');
 var es = require('event-stream');
 
+// Set directory for sample application file-loading
+var filesPath = 'sample_application/';
+
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src(['src/*.js'])
@@ -37,7 +40,7 @@ gulp.task('SlimUImin', function() {
 
 // Build the Sample Application scripts
 function buildScripts(){
-	return gulp.src('sample_application/**/*.js')
+	return gulp.src(filesPath + '**/*.js')
         .pipe(concat('app.js'))
         .pipe(gulp.dest(''));
 }
@@ -45,7 +48,7 @@ function buildScripts(){
 // Build the Sample Application HTML into JS
 function buildHTML(){
 	var fileName =''; 
-    return gulp.src('sample_application/**/*.html') //add htmlPaths to object
+    return gulp.src(filesPath + '**/*.html')
 		.pipe(minifyHTML({quotes: true, empty: true}))
 		.pipe(tap(function(file) {
 			var nameS = file.path.split("\\");

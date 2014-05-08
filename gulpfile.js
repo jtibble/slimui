@@ -38,6 +38,22 @@ gulp.task('SlimUImin', function() {
         .pipe(gulp.dest('release'));
 });
 
+// Builds the Framework with all dependencies included. 
+// Pulls in SlimUI.min.js
+gulp.task('SlimUIStandalone', ['SlimUImin'], function() {
+    return gulp.src(['bower_components/angular/angular.min.js', 
+					 'bower_components/angular-ui-router/release/angular-ui-router.min.js', 
+					 'bower_components/angular-sanitize/angular-sanitize.min.js',
+					 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+					 'bower_components/underscore/underscore.js', 
+					 'release/SlimUI.min.js'])
+        .pipe(concat('SlimUIStandalone.js'))
+        .pipe(gulp.dest('release'))
+        .pipe(rename('SlimUIStandalone.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('release'));
+});
+
 // Build the Sample Application scripts
 function buildScripts(){
 	return gulp.src(filesPath + '**/*.js')
@@ -90,4 +106,4 @@ gulp.task('SampleApplication', ['SampleApplicationParts'], function(){
 });
 
 // Provide a default task that builds everything
-gulp.task('default', ['lint', 'SlimUI', 'SlimUImin', 'SampleApplication']);
+gulp.task('default', ['lint', 'SlimUI', 'SlimUImin', 'SlimUIStandalone', 'SampleApplication']);

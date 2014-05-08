@@ -12,12 +12,13 @@
   "scripts": {},
   "repository": {},
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "gulp": "~3.6.1"
+  },
   "engines": {
     "node": ">=0.6"
   },
   "devDependencies": {
-    "gulp": "~3.6.1",
     "gulp-rename": "~1.2.0",
     "gulp-concat": "~2.2.0",
     "gulp-uglify": "~0.2.1",

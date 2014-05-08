@@ -11,8 +11,16 @@ Some of the project goals:
 ##Sample Application
 A sample application is included with this repository. To try it out, follow these steps:
 
+0. Clone this repository to your local machine
 1. Install NodeJS (and Node Package Manager, NPM) on your machine
-2. Using NPM, install the NPM package and Gulp build-dependencies by running 'npm install'
-3. Build the sample application by running 'gulp'
-4. Using NPM, install Bower, and run 'bower install' in the project root. This will fetch all of SlimUI's runtime dependencies, like AngularJS
-5. Host this folder, and open sample_application.html in a browser. More documentation is provided in the sample application
+2. Install Gulp (a NodeJS built-tool) by running 'npm install'
+3. Build the framework and sample application by running 'gulp SampleApplication'
+    - This collects all the source files and HTML into a file, app.js, and puts it in the project directory.
+    - This app.js file is loaded by the SlimUI framework when the sample_application.html is opened by your browser
+4. Host this folder with a webserver and open sample_application.html, and navigate to it from your favorite browser.
+
+More documentation is provided in the sample application.
+
+
+## Building SlimUI
+To build the SlimUI framework, (in this directory) run 'bower install' followed by 'gulp'. 

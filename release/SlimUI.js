@@ -54,20 +54,11 @@ bootstrapModule.run(['bootstrapper', function (bootstrapper) {
 angular.element(document).ready(function() {
 	angular.bootstrap(appContainer, ['bootstrapModule']);
 });
-/*jshint loopfunc: true */
 
-/**
- *	@name LSApplication
- *	@class
- *	@global
- *	@desc LSApplication is responsible for initializing the framework
- */
 var framework = angular.module('Framework', ['ui.router',
 											 'ui.bootstrap',
 											 'ngSanitize',
 									   		'Framework.Services']);
-
-
 
 /**
 * Validate config file integrity

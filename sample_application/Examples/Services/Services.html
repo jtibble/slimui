@@ -15,7 +15,7 @@ The next Fibonacci Number is <span class="btn btn-primary btn-sm" ng-click="Acti
 <hr>
 <h3 class="voice-brand">Building a Service</h3>
 <p>
-	To build a service, create a generic JavaScript function that returns an object:
+	To build a service that returns client-side data, create a generic JavaScript function that returns an object:
 <pre>
 var FibonacciService = function( ){
 	return {
@@ -42,4 +42,43 @@ var ServicesActions = function(Modelbuilder, FibonacciService){
 	};
 };
 </pre>
+</p>
+
+
+<hr>
+<h3 class="voice-brand">Building an Asynchronous Service</h3>
+<p>
+	To build a service that returns server-side data, follow the example of the 'FetchJSONService', provided with this sample application. The caller must register a callback with the service, and then tell the service to begin the asychronous fetch:
+
+<pre>
+// In controller or actions...
+FetchJSONService.listenForData( Context.Actions.FetchJSONServiceDataAvailable );
+FetchJSONService.fetchData();
+</pre>
+<pre>
+// In actions...
+
+FetchJSONServiceDataAvailable: function(){
+	
+  // Retrieve most-recent data from service
+  var data = FetchJSONService.getData();
+
+  // Add the data to our Model, which is then exposed to the template and rendered
+  Modelbuilder( {jsonData: data} );
+}
+</pre>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="object in Model.jsonData">
+				<td>{{object.id}}</td>
+				<td>{{object.name}}</td>
+			</tr>
+		</tbody>
+	</table>
 </p>

@@ -1,7 +1,11 @@
 var ServicesModelbuilder = function(Model, ExampleService, USAStates){
-	return function( settings ){
-		if( settings && settings.fibonacciNumber ){
-			Model.fibonacciNumber = settings.fibonacciNumber;
+	return function( options ){
+		if( options && options.fibonacciNumber ){
+			Model.fibonacciNumber = options.fibonacciNumber;
+		}
+		
+		if( options && options.jsonData ){
+			Model.jsonData = options.jsonData;	
 		}
 		
 		Model.data = ExampleService.getExampleData();

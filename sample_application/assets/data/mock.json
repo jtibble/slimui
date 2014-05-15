@@ -1,0 +1,21 @@
+{
+    "success": true,
+    "objects": [
+        {
+            "id": 0,
+            "name": "Mock Object 0"
+        },
+        {
+            "id": 1,
+            "name": "Mock Object 1"
+        },
+        {
+            "id": 2,
+            "name": "Mock Object 2"
+        },
+        {
+            "id": 3,
+            "name": "Mock Object 3"
+        }
+    ]
+}

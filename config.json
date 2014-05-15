@@ -28,9 +28,7 @@
                 "Services": "Examples/Services/",
 				"HTMLRendering": "Examples/HTMLRendering/",
 				
-				"ExampleServicePath": "Examples/Services/Services/",
-				"FibonacciServicePath": "Examples/Services/Services/",
-				"USAStatesServicePath": "Examples/Services/Services/"
+				"ServicesExamplesPath": "Examples/Services/Services/"
             }
         },
         "components": {
@@ -173,13 +171,16 @@
         },
         "services": {
             "ExampleService": {
-				"path": "ExampleServicePath"
+				"path": "ServicesExamplesPath"
 			},
 			"FibonacciService": {
-				"path": "FibonacciServicePath"	
+				"path": "ServicesExamplesPath"	
 			},
 			"USAStates": {
-				"path": "USAStatesServicePath"
+				"path": "ServicesExamplesPath"
+			},
+			"FetchJSONService": {
+				"path": "ServicesExamplesPath"
 			}
 		}
     }

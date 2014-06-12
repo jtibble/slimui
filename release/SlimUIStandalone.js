@@ -30584,7 +30584,7 @@ framework.config( ['$stateProvider',
 		var view = applicationConfig.views[i];
 		
 		// If the view provides a url (meaning it's a root-level view, not a child-view, create a state for it
-		if( view.url !== 'undefined' ){
+		if( view.url !== undefined ){
 			makeStateFromView(i, view);
 		}
 	}
@@ -30721,7 +30721,7 @@ framework.run( ['$q', function($q){
 						};
 						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
 					} catch(e){
-						console.log('Error: Could not inject model into modelbuilder. Exception: \n\t' + e.message);
+						console.log('Error: Could not inject model into modelbuilder \'' + modelbuilderName + '\'. Exception: \n\t' + e.message);
 					}
 				}
 				
@@ -30739,7 +30739,7 @@ framework.run( ['$q', function($q){
 						
 						injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
-						console.log('Error: Could not inject context or modelbuilder into actions. Exception: \n\t' + e.message);
+						console.log('Error: Could not inject context or modelbuilder into actions \'' + actionsName + '\'. Exception: \n\t' + e.message);
 					}
 				}
 				
@@ -30769,7 +30769,7 @@ framework.run( ['$q', function($q){
 					injectedController = $controller( window[controllerName], controllerInjections );
 					
 				} catch(e){
-					console.log('Error: Could not inject dependencies into controller. Exception: \n\t' + e.message);	
+					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Exception: \n\t' + e.message);	
 				}
 				
 				// Render template, and bind/compile controller to it

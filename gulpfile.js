@@ -64,7 +64,7 @@ gulp.task('SlimUIStandaloneMin', ['SlimUImin'], function() {
 // Build the Sample Application scripts
 function buildScripts(){
 	return gulp.src(filesPath + '**/*.js')
-        .pipe(concat('sample_application.js'))
+        .pipe(concat('compiledJS.js'))
         .pipe(gulp.dest(''));
 }
 
@@ -84,7 +84,7 @@ function buildHTML(){
 		  contents = "var "+ fileName+ " = '" + contents + "';";
 		  return contents;
 		}))
-		.pipe(concat('sample_application.html'))
+		.pipe(concat('compiledTemplates.html'))
         .pipe(gulp.dest(''));
 }
 
@@ -98,8 +98,8 @@ gulp.task('SampleApplicationParts', function() {
 
 // Concatinate scripts and html into one file, 'app.js'
 function mergeAll(){
-	return gulp.src(['sample_application.js', 'sample_application.html'])
-		.pipe( concat('sample_application.js'))
+	return gulp.src(['compiledJS.js', 'compiledTemplates.html'])
+		.pipe( concat('sample-application.js'))
 		.pipe( gulp.dest(''));
 }
 

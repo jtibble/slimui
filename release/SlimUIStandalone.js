@@ -30769,7 +30769,7 @@ framework.run( ['$q', function($q){
 					injectedController = $controller( window[controllerName], controllerInjections );
 					
 				} catch(e){
-					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Exception: \n\t' + e.message);	
+					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Likely cause: Actions or Modelbuilder is trying to use a service that was not injected. Check Actions and Modelbuilder injections. Exception: \n\t' + e.message);	
 				}
 				
 				// Render template, and bind/compile controller to it

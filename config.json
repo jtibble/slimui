@@ -1,6 +1,6 @@
 {
     "applicationConfig": {
-        "defaultView": "LandingPage",
+        "defaultView": "ReleaseNotes",
         "properties": {
             "rootPaths": {
 				"default": "sample_application/"
@@ -15,7 +15,7 @@
 				"SetupMenu": "Setup/SetupMenu/",
                 "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
                 "ExamplesMenu": "Examples/ExamplesMenu/",
-                "LandingPage": "LandingPage/",
+                "MoreInformation": "MoreInformation/",
                 "Documentation": "Documentation/",
                 "Examples": "Examples/",
                 "Simple": "Examples/SimpleScreen/",
@@ -50,9 +50,9 @@
             }
         },
         "views": {
-            "LandingPage": {
+            "MoreInformation": {
                 "url": "/",
-                "path": "LandingPage"
+                "path": "MoreInformation"
             },
             "ReleaseNotes": {
                 "url": "ReleaseNotes",

@@ -1,6 +1,9 @@
 ##SlimUI Framework
 
-Thank you for trying out the SlimUI framework. 
+Thank you for trying out the SlimUI framework. See it running live here:
+
+https://github.sw.ge.com/pages/jtibble/SlimUI/sample-application.html
+
 
 Some of the project goals:
 - Simplify the process of developing web applications
@@ -24,3 +27,4 @@ More documentation is provided in the sample application.
 
 ## Building SlimUI
 To build the SlimUI framework, (in this directory) run 'bower install' followed by 'gulp'. 
+

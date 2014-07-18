@@ -1,6 +1,7 @@
 
 var framework = angular.module('Framework', ['ui.router',
 											 'ui.bootstrap',
+                                             'ngTouch',
 											 'ngSanitize',
 									   		'Framework.Services']);
 

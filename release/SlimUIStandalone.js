@@ -31387,12 +31387,6 @@ var validateConfigFileStructure = function( config ){
 			return false;
 		}
 		
-		// Every directive must have a path so the framework can load its files
-		if( !directive.path ){
-			printError( ' is invalid: missing \'path\'');
-			return false;
-		}
-		
 		return true;
 	};
 	
@@ -31434,16 +31428,6 @@ var validateConfigFileStructure = function( config ){
 		}
 	}
 	
-	// Check services				
-	for( var k in this.applicationConfig.services ){
-		var servicePath = this.applicationConfig.services[k].path;
-		if( !this.applicationConfig.properties || 
-		    !this.applicationConfig.properties.paths || 
-		    !this.applicationConfig.properties.paths[ servicePath ] ){
-			configIsValid = false;
-			console.log('Service \'' + k + '\' is invalid: missing path \'' + servicePath + '\'');
-		}
-	}
 	
 	return configIsValid;	
 };
@@ -31749,26 +31733,6 @@ framework.run( ['$q', function($q){
 		};
 	};
 	
-	// Helper to retrieve properly-formatted paths from the config.json file
-	var ConfigPropertyPathFinder = function( configFileItem ){
-		if( !configFileItem ){
-			console.log('Could not fetch path for undefined config file item');
-			return;
-		}
-		if( !configFileItem.path ){
-			console.log('Could not fetch path for config file item with missing \'path\' property');
-			return;
-		}
-		
-		var rootPathName = configFileItem.rootPath ? configFileItem.rootPath : 'default';
-		var rootPath = applicationConfig.properties.rootPaths[ rootPathName ];
-		
-		var pathName = configFileItem.path;
-		var path = applicationConfig.properties.paths[ pathName ];
-		
-		return rootPath + path;
-	};
-		
 	// Helper to create directives from an entry in the config.json file
 	var MakeDirectivesHelper = function( directiveName, directiveObject ){
 		

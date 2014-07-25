@@ -12,10 +12,24 @@ var insert = require('gulp-insert');
 var htmlJsStr  = require('js-string-escape'); 
 var tap = require('gulp-tap');
 var es = require('event-stream');
+var order = require("gulp-order");
 
 // Set directory for sample application file-loading
 var filesPath = 'sample_application/';
-
+var StandaloneFiles = ['bower_components/angular/angular.js', 
+					 'bower_components/angular-ui-router/release/angular-ui-router.js', 
+					 'bower_components/angular-sanitize/angular-sanitize.js',
+                     'bower_components/angular-touch/angular-touch.js',
+					 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+					 'bower_components/underscore/underscore.js', 
+					 'release/SlimUI.js']; 
+var StandaloneMinFiles = ['bower_components/angular/angular.min.js', 
+					 'bower_components/angular-ui-router/release/angular-ui-router.min.js', 
+					 'bower_components/angular-sanitize/angular-sanitize.min.js',
+                     'bower_components/angular-touch/angular-touch.min.js',
+					 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+					 'bower_components/underscore/underscore.js', 
+					 'release/SlimUI.min.js'];
 // Lint Task
 gulp.task('lint', function() {
     return gulp.src(['src/*.js'])
@@ -40,24 +54,12 @@ gulp.task('SlimUImin', function() {
 
 // Builds the Framework with all dependencies included. 
 gulp.task('SlimUIStandalone', ['SlimUI'], function() {
-    return gulp.src(['bower_components/angular/angular.js', 
-					 'bower_components/angular-ui-router/release/angular-ui-router.js', 
-					 'bower_components/angular-sanitize/angular-sanitize.js',
-                     'bower_components/angular-touch/angular-touch.js',
-					 'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-					 'bower_components/underscore/underscore.js', 
-					 'release/SlimUI.js'])
+    return gulp.src(StandaloneFiles)
         .pipe(concat('SlimUIStandalone.js'))
         .pipe(gulp.dest('release'));
 });
 gulp.task('SlimUIStandaloneMin', ['SlimUImin'], function() {
-    return gulp.src(['bower_components/angular/angular.min.js', 
-					 'bower_components/angular-ui-router/release/angular-ui-router.min.js', 
-					 'bower_components/angular-sanitize/angular-sanitize.min.js',
-                     'bower_components/angular-touch/angular-touch.min.js',
-					 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-					 'bower_components/underscore/underscore.js', 
-					 'release/SlimUI.min.js'])
+    return gulp.src(StandaloneMinFiles)
         .pipe(concat('SlimUIStandalone.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('release'));

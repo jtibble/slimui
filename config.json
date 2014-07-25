@@ -2,34 +2,7 @@
     "applicationConfig": {
         "defaultView": "ReleaseNotes",
         "properties": {
-            "rootPaths": {
-				"default": "sample_application/"
-			},
-            "paths": {
-                "ReleaseNotes": "ReleaseNotes/",
-                "Header": "Header/",
-				"Setup": "Setup/",
-				"Bower": "Setup/Bower/",
-				"Node": "Setup/Node/",
-				"GIT": "Setup/GIT/",
-				"SetupMenu": "Setup/SetupMenu/",
-                "ControllerCommunicationListener": "Examples/ControllerCommunications/ListenerComponent/",
-                "ExamplesMenu": "Examples/ExamplesMenu/",
-                "MoreInformation": "MoreInformation/",
-                "Documentation": "Documentation/",
-                "Examples": "Examples/",
-                "Simple": "Examples/SimpleScreen/",
-                "AJAX": "Examples/AJAX/",
-                "ControllerCommunications": "Examples/ControllerCommunications/",
-                "ParameterPassing": "Examples/ParameterPassing/",
-                "ParameterPassingSubroute": "Examples/ParameterPassing/",
-                "ParameterPassingInnerSubroute": "Examples/ParameterPassing/",
-                "Routing": "Examples/Routing/",
-                "Services": "Examples/Services/",
-				"HTMLRendering": "Examples/HTMLRendering/",
-				
-				"ServicesExamplesPath": "Examples/Services/Services/"
-            }
+            
         },
         "components": {
             "Header": {

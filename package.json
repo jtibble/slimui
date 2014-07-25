@@ -23,6 +23,7 @@
     "gulp-concat": "~2.2.0",
     "gulp-uglify": "~0.2.1",
     "gulp-jshint": "~1.5.3",
+    "gulp-order": "*",
 	"gulp-notify": "*",
 	"gulp-minify-html": "*",
 	"gulp-insert": "*",

@@ -2,12 +2,13 @@
 var framework = angular.module('Framework', ['ui.router',
 											 'ui.bootstrap',
                                              'ngTouch',
-											 'ngSanitize',
 									   		'Framework.Services']);
 
 /**
 * Validate config file integrity
 */
+
+// @ifdef DEBUG
 var validateConfigFileStructure = function( config ){
 	
 	var directiveIsValidHelper = function( name, directive ){
@@ -90,6 +91,7 @@ var validateConfigFileStructure = function( config ){
 	
 	return configIsValid;	
 };
+// @endif
 
 
 /** 
@@ -113,10 +115,11 @@ framework.config( ['$stateProvider',
 		return this;
 	};
 	
-
+    // @ifdef DEBUG
 	if( !validateConfigFileStructure( applicationConfig )){
 		console.log('SlimUI ERROR: config.json file is invalid');	
 	}
+    // @endif
 	
 	// Given a view, its name, and (optional) parent, create all the routes for it
 	var makeStateFromView = function(name, view, parentName){
@@ -145,7 +148,9 @@ framework.config( ['$stateProvider',
 			} else if( viewName ){
 				return viewName;	
 			} else {
+                // @ifdef DEBUG
 				console.log('Error: Can\'t create router state from view name and/or parent view name');
+                // @endif
 				return;
 			}
 		};
@@ -197,7 +202,9 @@ framework.config( ['$stateProvider',
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){
+        // @ifdef DEBUG
 		console.log('Invalid location \'' + $location.$$url + '\', going to default route \'' + defaultURL + '\'');
+        // @endif
 		return defaultURL;
 	});
 	
@@ -235,8 +242,11 @@ framework.run( ['$q', function($q){
 				var modelbuilderName = componentName + 'Modelbuilder';
 				var actionsName = componentName + 'Actions';
 				var controllerName = componentName + 'Controller';
-				var jsLoadingError = false;
+
 				
+// @ifdef DEBUG
+                var jsLoadingError = false;
+                
 				// Check that the files loaded correctly
 				if( (paths.template && !window[templateName])){
 					console.log('Couldn\'t correctly load template named \'' + templateName + '\'.');
@@ -282,8 +292,7 @@ framework.run( ['$q', function($q){
 							injectionName == 'Actions' ||
 							injectionName == 'Model' ||
 							injectionName == 'Modelbuilder' ||
-							injectionName == 'StateParameters' ||
-							injectionName == 'SlimUIAttribute' ){
+							injectionName == 'StateParameters'){
 							continue;   
 					   }
 						
@@ -303,7 +312,8 @@ framework.run( ['$q', function($q){
 				if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
 				if( paths.actions ){ checkInjections( actionsName ); }
 				if( paths.controller ){ checkInjections( controllerName ); }
-				
+
+// @endif
 				var injectedModelbuilder;
 				var injectedActions;
 				var injectedController;
@@ -316,7 +326,10 @@ framework.run( ['$q', function($q){
 						};
 						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
 					} catch(e){
+                        // @ifdef DEBUG
 						console.log('Error: Could not inject model into modelbuilder \'' + modelbuilderName + '\'. Exception: \n\t' + e.message);
+                        // @endif
+                        
 					}
 				}
 				
@@ -334,12 +347,16 @@ framework.run( ['$q', function($q){
 						
 						injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
+                        // @ifdef DEBUG
 						console.log('Error: Could not inject context or modelbuilder into actions \'' + actionsName + '\'. Exception: \n\t' + e.message);
+                        // @endif
 					}
 				}
 				
 				// Inject context, state parameters, modelbuilder, and actions into controller
-				try{
+                // @ifdef DEBUG
+				try{          
+                // @endif
 					
 					var controllerInjections = {
 						Context: templateScope,
@@ -356,16 +373,13 @@ framework.run( ['$q', function($q){
 						controllerInjections.Actions = injectedActions;	
 					}
 					
-					// Inject directive's attribute if provided
-					if( element[0].attributes && element[0].attributes['slimui-attribute'] ){
-						controllerInjections.SlimUIAttribute = element[0].attributes['slimui-attribute'].value;
-					}
-					
 					injectedController = $controller( window[controllerName], controllerInjections );
 					
+                // @ifdef DEBUG
 				} catch(e){
 					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Likely cause: Actions or Modelbuilder is trying to use a service that was not injected. Check Actions and Modelbuilder injections. Exception: \n\t' + e.message);	
-				}
+				}                    
+                // @endif
 				
 				// Render template, and bind/compile controller to it
 				element.html( window[templateName] );
@@ -424,27 +438,26 @@ framework.run( ['$q', function($q){
 	window.servicesToInject = {};
 	
 	// Create application-defined services from existing files
-	if( this.applicationConfig.services ){
-		
-		var serviceWrapperFunction = function(serviceName){
-			return {
-				$get: window[serviceName]
-			};
-		};
-		
-		for( var serviceName in this.applicationConfig.services ){
-			if( !window[serviceName] ){
-				console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
-				continue;
-			}
-			
-			window.servicesToInject[ serviceName ] = serviceWrapperFunction(serviceName);
-		
-			this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
-		}
-		
-	} else {
-		console.log('SlimUI: no services specified in config.json');	
-	}
+    var serviceWrapperFunction = function(serviceName){
+        return {
+            $get: window[serviceName]
+        };
+    };
+
+    for( var serviceName in this.applicationConfig.services ){
+
+        if( !window[serviceName] ){
+            // @ifdef DEBUG
+            console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
+            // @endif
+
+            continue;
+        }
+
+        window.servicesToInject[ serviceName ] = serviceWrapperFunction(serviceName);
+
+        this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
+    }
+	
 	
 }]);

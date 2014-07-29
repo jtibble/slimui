@@ -1,21 +1,11 @@
 {
     "applicationConfig": {
         "defaultView": "ReleaseNotes",
-        "properties": {
-            
-        },
         "components": {
-            "Header": {
-                "path": "Header"
-            },
-            "ExamplesMenu": {
-                "path": "ExamplesMenu"
-            },
-			"SetupMenu": {
-                "path": "SetupMenu"
-            },
+            "Header": {},
+            "ExamplesMenu": {},
+			"SetupMenu": {},
             "ControllerCommunicationListener": {
-                "path": "ControllerCommunicationListener",
                 "controller": true,
                 "modelbuilder": true,
                 "actions": true,
@@ -24,43 +14,30 @@
         },
         "views": {
             "MoreInformation": {
-                "url": "/",
-                "path": "MoreInformation"
+                "url": "/"
             },
             "ReleaseNotes": {
-                "url": "ReleaseNotes",
-                "path": "ReleaseNotes"
+                "url": "ReleaseNotes"
             },
             "Documentation": {
                 "url": "Documentation",
-                "path": "Documentation",
                 "controller": true,
                 "model": true,
                 "modelbuilder": true
             },
 			"Setup": {
 				"url": "Setup",
-				"path": "Setup",
 				"subroutes": [
 					"Node",
 					"GIT",
 					"Bower"
 				]
             },
-			"Node": {
-                "path": "Node"
-            },
-            "GIT": {
-                "path": "GIT"
-            },
-            "Bower": {
-                "path": "Bower"
-            },
-			
-			
+			"Node": {},
+            "GIT": {},
+            "Bower": {},			
             "Examples": {
                 "url": "Examples",
-                "path": "Examples",
                 "subroutes": [
                     "Simple",
                     "Routing",
@@ -71,44 +48,36 @@
                 ]
             },
             "Simple": {
-                "path": "Simple",
                 "model": true,
                 "modelbuilder": true,
                 "actions": true,
                 "controller": true
             },
             "Routing": {
-                "path": "Routing",
                 "controller": true,
                 "actions": true
             },
             "AJAX": {
-                "path": "AJAX",
                 "controller": true,
                 "model": true,
                 "modelbuilder": true,
                 "actions": true
             },
             "ControllerCommunications": {
-                "path": "ControllerCommunications",
                 "controller": true,
                 "actions": true
             },
             "Services": {
-                "path": "Services",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,
                 "actions": true
             },
             "HTMLRendering": {
-                "path": "HTMLRendering",
-				"controller": true
             },
 			
             "ParameterPassing": {
                 "url": "ParameterPassing",
-                "path": "ParameterPassing",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,
@@ -121,7 +90,6 @@
                 ]
             },
             "ParameterPassingSubroute": {
-                "path": "ParameterPassingSubroute",
                 "model": true,
                 "modelbuilder": true,
                 "controller": true,
@@ -134,7 +102,6 @@
 				]
             },
             "ParameterPassingInnerSubroute": {
-                "path": "ParameterPassingInnerSubroute",
                 "controller": true,
                 "parameters": [
                     "subrouteSubrouteParameter1",
@@ -144,16 +111,12 @@
         },
         "services": {
             "ExampleService": {
-				"path": "ServicesExamplesPath"
 			},
-			"FibonacciService": {
-				"path": "ServicesExamplesPath"	
+			"FibonacciService": {	
 			},
 			"USAStates": {
-				"path": "ServicesExamplesPath"
 			},
 			"FetchJSONService": {
-				"path": "ServicesExamplesPath"
 			}
 		}
     }

@@ -5,13 +5,12 @@ var framework = angular.module('Framework.Services', []);
  * @name Router
  */
 framework.provider('Router', function(){
-	
+	// @ifdef DEBUG
 	var strings = {
-		routingFrom: 'Navigating from ',
-		routingTo: ' to ',
 		notRouting: 'Router is not navigating to the same route',
 		routingHome: 'Router is going to default screen '
 	};
+    // @endif
 	
 	var stateParameters = {};
 	
@@ -25,12 +24,16 @@ framework.provider('Router', function(){
 					if( $state.current.name !== state || parameters){
 						$state.go( state, parameters );
 					} else {
-						console.log( strings.notRouting );	
+                        // @ifdef DEBUG
+						console.log( strings.notRouting );
+                        // @endif	
 					}
 					
 				},
 				goToHome: function(){
+                    // @ifdef DEBUG
 					console.log( strings.routingHome + homeRoute);
+                    // @endif
 					$state.go( homeRoute );
 				}
 			};
@@ -73,7 +76,9 @@ framework.provider('ControllerCommunication', function(){
 						return models[channel];	
 					}
 					
+                    // @ifdef DEBUG
 					console.log('ControllerCommunication Error: no channel \'' + channel + '\' existing to return data');
+                    // @endif
 					return false;
 				},
 				set: function(channel, data){
@@ -99,7 +104,10 @@ framework.provider('FrameworkAJAX', function(){
 				sendRequest: function(request, successCallback, errorCallback){
 					
 					if( !request.method || !request.url || !request.data ){
+                        
+                        // @ifdef DEBUG
 						console.log('Error making AJAX request: missing method, url, or data.');
+                        // @endif
 						return;
 					}
 					

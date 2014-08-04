@@ -215,7 +215,7 @@ framework.config( ['$stateProvider',
 /** 
  * Run the framework
  */
-framework.run( ['$q', function($q){
+framework.run( function(){
 	
 	// Create application-level directives from a set of files including the following:
 	// template (always required, no exceptions)
@@ -456,4 +456,4 @@ framework.run( ['$q', function($q){
     }
 	
 	
-}]);
+});

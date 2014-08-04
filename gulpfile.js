@@ -119,7 +119,7 @@ function mergeAll(){
 gulp.task('SampleApplication', ['SampleApplicationParts'], function(){
 	return es.merge(
 		mergeAll() 
-	).pipe(notify({message: 'Finished building Sample Application', onLast: true}));
+	);
 
 });
 

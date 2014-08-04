@@ -96,6 +96,7 @@ framework.provider('ControllerCommunication', function(){
  * @description 
  * Provides HTTP AJAX communication mechanism for developer-written controllers.
  * Expects 'request' to contain properties 'method': GET/POST/PUT, 'url', and 'data'
+ * As of SlimUI v0.0.21, sendRequest() returns the $http promise to the caller
  */
 framework.provider('FrameworkAJAX', function(){
 	return {
@@ -111,7 +112,7 @@ framework.provider('FrameworkAJAX', function(){
 						return;
 					}
 					
-					$http( request ).success( successCallback ).error( errorCallback );
+					return $http( request ).success( successCallback ).error( errorCallback );
 				}
 			};
 		}]		

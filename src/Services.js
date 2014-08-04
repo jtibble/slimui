@@ -56,7 +56,7 @@ framework.provider('ControllerCommunication', function(){
 	var observerCallbacks = {};
 	
 	return {
-		$get: ['$state', function( $state ){
+		$get: function(){
 			return {
 				registerCallback: function(channel, callback){
 					if( !observerCallbacks[channel] ){
@@ -86,7 +86,7 @@ framework.provider('ControllerCommunication', function(){
 					this.notifyObservers(channel);
 				}
 			};
-		}]		
+		}		
 	};
 });
 
@@ -116,4 +116,51 @@ framework.provider('FrameworkAJAX', function(){
 			};
 		}]		
 	};
+});
+
+
+framework.provider('Promise', function(){
+    return {
+        $get: ['$q', function($q){
+            return {
+                promisesStorage: {},
+                createDeferred: function(name){
+                    this.promisesStorage[ name ] = $q.defer();
+                    return true;
+                },
+                getPromise: function(name){
+                    if( this.promisesStorage[ name ] ){
+                        return this.promisesStorage[name].promise;
+                    } else {
+                        // @ifdef DEBUG
+                        console.log('Can\'t return promise: deferred not created correctly');
+                        // @endif
+                        return false;
+                    }
+                },
+                resolveDeferred: function(name, value){
+                    if( this.promisesStorage[name] && this.promisesStorage[name].resolve ){
+                        this.promisesStorage[name].resolve( value );
+                        return true;
+                    } else {
+                        // @ifdef DEBUG
+                        console.log('Can\'t resolve: deferred not created correctly');
+                        // @endif
+                        return false;
+                    }
+                },
+                rejectDeferred: function(name, value){
+                    if( this.promisesStorage[name] && this.promisesStorage[name].reject ){
+                        this.promisesStorage[name].reject( value );
+                        return true;
+                    } else {
+                        // @ifdef DEBUG
+                        console.log('Can\'t reject: deferred not created correctly');
+                        // @endif
+                        return false;
+                    }
+                }
+            };
+        }]
+    };
 });

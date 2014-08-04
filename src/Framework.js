@@ -288,8 +288,7 @@ framework.run( ['$q', function($q){
 							injectionName == 'Actions' ||
 							injectionName == 'Model' ||
 							injectionName == 'Modelbuilder' ||
-							injectionName == 'StateParameters' ||
-                            injectionName == '$q'){
+							injectionName == 'StateParameters'){
 							continue;   
 					   }
 						
@@ -357,8 +356,7 @@ framework.run( ['$q', function($q){
 					
 					var controllerInjections = {
 						Context: templateScope,
-						StateParameters: $stateParams,
-                        $q: $q
+						StateParameters: $stateParams
 					};
 					
 					// Inject modelbinder if provided

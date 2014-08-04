@@ -1,12 +1,7 @@
-var PromisesActions = function(){
-	return {
-        
-        storeDeferred: function(deferred){
-            this.deferred = deferred;
-        },
-        
+var PromisesActions = function( Promise ){
+	return {        
         resolveDeferred: function(){
-            this.deferred.resolve();
+            Promise.resolveDeferred( 'Example', 'Promise Resolved');
         }
     };
 };

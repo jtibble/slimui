@@ -235,8 +235,7 @@ framework.run( ['$q', function($q){
 					
 					var controllerInjections = {
 						Context: templateScope,
-						StateParameters: $stateParams,
-                        $q: $q
+						StateParameters: $stateParams
 					};
 					
 					// Inject modelbinder if provided
@@ -375,7 +374,7 @@ framework.provider('ControllerCommunication', function(){
 	var observerCallbacks = {};
 	
 	return {
-		$get: ['$state', function( $state ){
+		$get: function(){
 			return {
 				registerCallback: function(channel, callback){
 					if( !observerCallbacks[channel] ){
@@ -402,7 +401,7 @@ framework.provider('ControllerCommunication', function(){
 					this.notifyObservers(channel);
 				}
 			};
-		}]		
+		}		
 	};
 });
 
@@ -430,248 +429,41 @@ framework.provider('FrameworkAJAX', function(){
 		}]		
 	};
 });
-er;
-				
-				// Inject model into modelbuilder (if provided)
-				if( window[modelName] ){
-					try{
-						var additionalModelbuilderInjections = {
-							Model: window[modelName]()
-						};
-						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
-					} catch(e){
-						console.log('Error: Could not inject model into modelbuilder \'' + modelbuilderName + '\'. Exception: \n\t' + e.message);
-                        
-					}
-				}
-				
-				// Inject context and modelbuilder into actions (if provided)
-				if( window[actionsName]){
-					try{
-						var actionsInjections = {
-							Context: templateScope
-						};
-						
-						//Inject modelbinder if provided
-						if( injectedModelbuilder ){
-							actionsInjections.Modelbuilder = injectedModelbuilder;
-						}
-						
-						injectedActions = $controller( window[actionsName] , actionsInjections);	
-					} catch(e){
-						console.log('Error: Could not inject context or modelbuilder into actions \'' + actionsName + '\'. Exception: \n\t' + e.message);
-					}
-				}
-				
-				// Inject context, state parameters, modelbuilder, and actions into controller
-				try{          
-					
-					var controllerInjections = {
-						Context: templateScope,
-						StateParameters: $stateParams,
-                        $q: $q
-					};
-					
-					// Inject modelbinder if provided
-					if( injectedModelbuilder ){
-						controllerInjections.Modelbuilder = injectedModelbuilder;
-					}
-					
-					// Inject actions if provided
-					if( injectedActions ){
-						controllerInjections.Actions = injectedActions;	
-					}
-					
-					injectedController = $controller( window[controllerName], controllerInjections );
-					
-				} catch(e){
-					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Likely cause: Actions or Modelbuilder is trying to use a service that was not injected. Check Actions and Modelbuilder injections. Exception: \n\t' + e.message);	
-				}                    
-				
-				// Render template, and bind/compile controller to it
-				element.html( window[templateName] );
-				element.children().data('$ngControllerController', injectedController);
-				$compile( element.contents() )( templateScope );
 
-			}
-			
-			return { 
-				link: link,	
-				scope: {
-					attributeParameter: '@'
-				}
-			};
-		}]);
-	};
-	
-	// Helper to return a simple directive that only consists of an HTML template
-	var TemplateDirectiveFactory = function( templateText ){
-		return function(){
-			return {
-				template: templateText	
-			};
-		};
-	};
-	
-	// Helper to create directives from an entry in the config.json file
-	var MakeDirectivesHelper = function( directiveName, directiveObject ){
-		
-		if( directiveObject.model || directiveObject.modelbuilder || directiveObject.actions || directiveObject.controller ){
-			// generate a complex directive
-			DirectiveFactory( directiveName, directiveObject );
-		} else {
-			// generate simple directive (just template)
-			templateName = directiveName + 'Template';
-			directiveName = directiveName.toLowerCase();
-			framework.directive( directiveName, TemplateDirectiveFactory( window[templateName] ) );
-		}
-		
-	};
-	
-	// Generate directives for all components
-	for( var i in this.applicationConfig.components ){
-		var component = applicationConfig.components[i];
-		MakeDirectivesHelper( i, component );
-	}
-	
-	// Generate directives for all views
-	for( var j in this.applicationConfig.views ){
-		var screen = applicationConfig.views[j];
-		MakeDirectivesHelper( j, screen );
-	}
-	
-	
-	// Create services to inject during component-initialization
-	window.servicesToInject = {};
-	
-	// Create application-defined services from existing files
-    var serviceWrapperFunction = function(serviceName){
-        return {
-            $get: window[serviceName]
-        };
+
+framework.provider('Promise', function(){
+    return {
+        $get: ['$q', function($q){
+            return {
+                promisesStorage: {},
+                createDeferred: function(name){
+                    this.promisesStorage[ name ] = $q.defer();
+                    return true;
+                },
+                getPromise: function(name){
+                    if( this.promisesStorage[ name ] ){
+                        return this.promisesStorage[name].promise;
+                    } else {
+                        return false;
+                    }
+                },
+                resolveDeferred: function(name, value){
+                    if( this.promisesStorage[name] && this.promisesStorage[name].resolve ){
+                        this.promisesStorage[name].resolve( value );
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                rejectDeferred: function(name, value){
+                    if( this.promisesStorage[name] && this.promisesStorage[name].reject ){
+                        this.promisesStorage[name].reject( value );
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            };
+        }]
     };
-
-    for( var serviceName in this.applicationConfig.services ){
-
-        if( !window[serviceName] ){
-            console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
-            continue;
-        }
-
-        window.servicesToInject[ serviceName ] = serviceWrapperFunction(serviceName);
-
-        this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
-    }
-	
-	
-}]);
-
-var framework = angular.module('Framework.Services', []);
-
-
-/**
- * @name Router
- */
-framework.provider('Router', function(){
-	var strings = {
-		notRouting: 'Router is not navigating to the same route',
-		routingHome: 'Router is going to default screen '
-	};
-	
-	var stateParameters = {};
-	
-	var logoutRoute, homeRoute;
-	
-	return {
-		$get: ['$state', function( $state ){
-			return {
-				goTo: function(state, parameters){
-					
-					if( $state.current.name !== state || parameters){
-						$state.go( state, parameters );
-					} else {
-						console.log( strings.notRouting );
-					}
-					
-				},
-				goToHome: function(){
-					console.log( strings.routingHome + homeRoute);
-					$state.go( homeRoute );
-				}
-			};
-		}],
-		setHomeRoute: function( newHomeRoute ){
-			homeRoute = newHomeRoute;
-		}
-	};
-	
-});
-
-
-/**
- * @name ControllerCommunication
- */
-framework.provider('ControllerCommunication', function(){
-	
-	var models = {};
-	
-	var observerCallbacks = {};
-	
-	return {
-		$get: ['$state', function( $state ){
-			return {
-				registerCallback: function(channel, callback){
-					if( !observerCallbacks[channel] ){
-						observerCallbacks[channel] = [];
-					}
-					observerCallbacks[channel].push(callback);	
-				},
-				notifyObservers: function(channel){
-					if( observerCallbacks[channel] && observerCallbacks[channel].length ){
-						angular.forEach( observerCallbacks[channel], function(callback){
-							callback();
-						});
-					}
-				},
-				get: function(channel){
-					if( models[channel]!="undefined" ){
-						return models[channel];	
-					}
-					
-					console.log('ControllerCommunication Error: no channel \'' + channel + '\' existing to return data');
-					return false;
-				},
-				set: function(channel, data){
-					models[channel] = data;
-					this.notifyObservers(channel);
-				}
-			};
-		}]		
-	};
-});
-
-
-/**
- * @name FrameworkAJAX
- * @description 
- * Provides HTTP AJAX communication mechanism for developer-written controllers.
- * Expects 'request' to contain properties 'method': GET/POST/PUT, 'url', and 'data'
- */
-framework.provider('FrameworkAJAX', function(){
-	return {
-		$get: ['$http', function( $http ){
-			return {
-				sendRequest: function(request, successCallback, errorCallback){
-					
-					if( !request.method || !request.url || !request.data ){
-                        
-						console.log('Error making AJAX request: missing method, url, or data.');
-						return;
-					}
-					
-					$http( request ).success( successCallback ).error( errorCallback );
-				}
-			};
-		}]		
-	};
 });

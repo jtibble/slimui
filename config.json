@@ -44,7 +44,8 @@
                     "AJAX",
                     "ControllerCommunications",
                     "Services",
-					"HTMLRendering"
+					"HTMLRendering",
+                    "Promises"
                 ]
             },
             "Simple": {
@@ -58,6 +59,12 @@
                 "actions": true
             },
             "AJAX": {
+                "controller": true,
+                "model": true,
+                "modelbuilder": true,
+                "actions": true
+            },
+            "Promises": {
                 "controller": true,
                 "model": true,
                 "modelbuilder": true,

@@ -25,7 +25,6 @@ bootstrapModule.provider('bootstrapper', function () {
 							deferred.resolve();
 						})
 						.error(function () {
-							console.log('Could not initialize application, configuration could not be loaded.');
 							deferred.reject();
 						});
 					
@@ -64,88 +63,6 @@ var framework = angular.module('Framework', ['ui.router',
 * Validate config file integrity
 */
 
-var validateConfigFileStructure = function( config ){
-	
-	var directiveIsValidHelper = function( name, directive ){
-		var printError = function( error ){ 
-			console.log('Config.json Validation Error: View/Component \'' + name + '\' ' + error); 
-		};
-		
-		// view must exist
-		if( !directive ){
-			printError('can\'t be validated');
-			return false;	
-		}
-		
-		// Check directive for validity
-		// Valid properties combinations: (template included by default, does not need to be specified)
-		//  [nothing]
-		//	controller
-		//	controller + actions
-		//	controller + modelbuilder + model
-		//  controller + actions + modelbuilder + model
-		
-		if( directive.model && !directive.modelbuilder ){
-			printError( ' is invalid: if includes model, must also include modelbuilder');
-			return false;
-		}
-		if( directive.modelbuilder && !directive.model ){
-			printError( ' is invalid: if includes modelbuilder, must also include model');
-			return false;
-		}
-		if( directive.actions && !directive.controller ){
-			printError( ' is invalid: if includes actions, must also include controller');
-			return false;
-		}
-		if( directive.modelbuilder && !directive.controller ){
-			printError( ' is invalid: if includes modelbuilder, must also include controller');
-			return false;
-		}
-		
-		return true;
-	};
-	
-	var configIsValid = true;
-	
-	// Error-check the configuration file
-	// Check default view
-	if( config.defaultView && config.views[ config.defaultView ] ){
-		if( !directiveIsValidHelper( config.defaultView, config.views[ config.defaultView ] ) ){
-			console.log('Config defaultView exists, but points to an invalid view');
-			configIsValid = false;
-		}
-	}
-
-	// Check views
-	if( config.views ){
-		for( var i in config.views ){
-			var view = config.views[i];
-			if( !directiveIsValidHelper( i, view )){
-				console.log('\tView \'' + i + '\' is invalid with broken template or controller');
-				configIsValid = false;
-			}
-			if( view.regions ){
-				if( !view.url ){
-					console.log('View \'' + i + '\' is invalid: cannot specify regions without \'url\' property');	
-					configIsValid = false;
-				}
-			}
-		}
-	}
-
-	// Check components
-	if( config.components ){
-		for( var j in config.components ){
-			if( !directiveIsValidHelper( j, config.components[j] )){
-				configIsValid = false;
-				console.log('\tComponent \'' + j + '\' is invalid with broken template or controller');
-			}
-		}
-	}
-	
-	
-	return configIsValid;	
-};
 /** 
  * Configure the framework
  */
@@ -167,9 +84,6 @@ framework.config( ['$stateProvider',
 		return this;
 	};
 	
-	if( !validateConfigFileStructure( applicationConfig )){
-		console.log('SlimUI ERROR: config.json file is invalid');	
-	}
 	
 	// Given a view, its name, and (optional) parent, create all the routes for it
 	var makeStateFromView = function(name, view, parentName){
@@ -198,7 +112,6 @@ framework.config( ['$stateProvider',
 			} else if( viewName ){
 				return viewName;	
 			} else {
-				console.log('Error: Can\'t create router state from view name and/or parent view name');
 				return;
 			}
 		};
@@ -250,7 +163,6 @@ framework.config( ['$stateProvider',
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){
-		console.log('Invalid location \'' + $location.$$url + '\', going to default route \'' + defaultURL + '\'');
 		return defaultURL;
 	});
 	
@@ -272,12 +184,8 @@ framework.run( ['$q', function($q){
 	var DirectiveFactory = function( componentName, paths ){
 		var directiveName = componentName.toLowerCase();
 		
-		framework.directive( directiveName, ['$http', 
-											 '$controller', 
-											 '$compile', 
-											 '$templateCache', 
-											 '$injector', 
-											 '$stateParams', function($http, $controller, $compile, $templateCache, $injector, $stateParams){
+		framework.directive( directiveName, ['$http', '$controller', '$compile', '$templateCache', '$injector', '$q', '$stateParams', function($http, $controller, $compile, $templateCache, $injector, $q, $stateParams){
+            
 			function link( $scope, element, attributes ){
 				
 				// Create new scope for view
@@ -290,77 +198,239 @@ framework.run( ['$q', function($q){
 				var controllerName = componentName + 'Controller';
 
 				
-                var jsLoadingError = false;
-                
-				// Check that the files loaded correctly
-				if( (paths.template && !window[templateName])){
-					console.log('Couldn\'t correctly load template named \'' + templateName + '\'.');
-					jsLoadingError = true;
-				}
-				if( (paths.model && !window[modelName])){
-					console.log('Couldn\'t correctly load model named \'' + modelName + '\'.');
-					jsLoadingError = true;
-				}
-				if( (paths.model && !window[modelName])){
-					console.log('Couldn\'t correctly load modelbuilder named \'' + modelbuilderName + '\'.');
-					jsLoadingError = true;	
-				}
-				if( (paths.model && !window[modelName])){
-					console.log('Couldn\'t correctly load actions named \'' + actionsName + '\'.');
-					jsLoadingError = true;	
-				}
-				if( (paths.model && !window[modelName])){
-					console.log('Couldn\'t correctly load controller named \'' + controllerName + '\'.');
-					jsLoadingError = true;
-				}
-				
-				if( jsLoadingError ){
-					console.log('Check spelling in file and config.json. Aborting creation of \'' + componentName + '\'');
-					return;
-				}
-				
-				// Helper to validate that all dependencies are ready for injection
-				var checkInjections = function( globalFunctionName ){
-					var injectionsList;
-					try{
-						injectionsList = $injector.annotate( window[globalFunctionName]);
-					} catch(e){
-						console.log('Error: Failed to find dependency injection information for \''+globalFunctionName+'\'.\n\tPlease check in the file that the function name is spelled correctly.');
-					}
-					var neededInjections = [];
-					
-					for( var i in injectionsList ){
-						var injectionName = injectionsList[i];
-						
-						// Injections provided by this framework should not be counted
-						if( injectionName == 'Context' ||
-							injectionName == 'Actions' ||
-							injectionName == 'Model' ||
-							injectionName == 'Modelbuilder' ||
-							injectionName == 'StateParameters'){
-							continue;   
-					   }
-						
-						try{
-							$injector.get( injectionName );
-						}catch(exception){
-							neededInjections.push( injectionName );
-						}
-					}
-					
-					if( neededInjections.length ){
-						console.log('Error: Not all of ' + globalFunctionName + '\'s dependencies have been loaded correctly.\n\tMissing dependencies: ' + neededInjections.toString() + '\nIf these are newly-added dependency injections, have they been added to config.json and named correctly? Additionally, check that the spelling in ' + globalFunctionName + ' matches the function name in the dependency\'s JavaScript file.');
-					}
-				};
-
-				// Check all injections to make sure they're ready
-				if( paths.modelbuilder ){ checkInjections( modelbuilderName ); }
-				if( paths.actions ){ checkInjections( actionsName ); }
-				if( paths.controller ){ checkInjections( controllerName ); }
-
 				var injectedModelbuilder;
 				var injectedActions;
 				var injectedController;
+				
+				// Inject model into modelbuilder (if provided)
+				if( window[modelName] ){
+					try{
+						var additionalModelbuilderInjections = {
+							Model: window[modelName]()
+						};
+						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
+					} catch(e){
+                        
+					}
+				}
+				
+				// Inject context and modelbuilder into actions (if provided)
+				if( window[actionsName]){
+					try{
+						var actionsInjections = {
+							Context: templateScope
+						};
+						
+						//Inject modelbinder if provided
+						if( injectedModelbuilder ){
+							actionsInjections.Modelbuilder = injectedModelbuilder;
+						}
+						
+						injectedActions = $controller( window[actionsName] , actionsInjections);	
+					} catch(e){
+					}
+				}
+				
+				// Inject context, state parameters, modelbuilder, and actions into controller
+					
+					var controllerInjections = {
+						Context: templateScope,
+						StateParameters: $stateParams,
+                        $q: $q
+					};
+					
+					// Inject modelbinder if provided
+					if( injectedModelbuilder ){
+						controllerInjections.Modelbuilder = injectedModelbuilder;
+					}
+					
+					// Inject actions if provided
+					if( injectedActions ){
+						controllerInjections.Actions = injectedActions;	
+					}
+					
+					injectedController = $controller( window[controllerName], controllerInjections );
+					
+				
+				// Render template, and bind/compile controller to it
+				element.html( window[templateName] );
+				element.children().data('$ngControllerController', injectedController);
+				$compile( element.contents() )( templateScope );
+
+			}
+			
+			return { 
+				link: link,	
+				scope: {
+					attributeParameter: '@'
+				}
+			};
+		}]);
+	};
+	
+	// Helper to return a simple directive that only consists of an HTML template
+	var TemplateDirectiveFactory = function( templateText ){
+		return function(){
+			return {
+				template: templateText	
+			};
+		};
+	};
+	
+	// Helper to create directives from an entry in the config.json file
+	var MakeDirectivesHelper = function( directiveName, directiveObject ){
+		
+		if( directiveObject.model || directiveObject.modelbuilder || directiveObject.actions || directiveObject.controller ){
+			// generate a complex directive
+			DirectiveFactory( directiveName, directiveObject );
+		} else {
+			// generate simple directive (just template)
+			templateName = directiveName + 'Template';
+			directiveName = directiveName.toLowerCase();
+			framework.directive( directiveName, TemplateDirectiveFactory( window[templateName] ) );
+		}
+		
+	};
+	
+	// Generate directives for all components
+	for( var i in this.applicationConfig.components ){
+		var component = applicationConfig.components[i];
+		MakeDirectivesHelper( i, component );
+	}
+	
+	// Generate directives for all views
+	for( var j in this.applicationConfig.views ){
+		var screen = applicationConfig.views[j];
+		MakeDirectivesHelper( j, screen );
+	}
+	
+	
+	// Create services to inject during component-initialization
+	window.servicesToInject = {};
+	
+	// Create application-defined services from existing files
+    var serviceWrapperFunction = function(serviceName){
+        return {
+            $get: window[serviceName]
+        };
+    };
+
+    for( var serviceName in this.applicationConfig.services ){
+
+        if( !window[serviceName] ){
+            continue;
+        }
+
+        window.servicesToInject[ serviceName ] = serviceWrapperFunction(serviceName);
+
+        this.postConfigProvider.provider( serviceName, window.servicesToInject[serviceName] );		
+    }
+	
+	
+}]);
+
+var framework = angular.module('Framework.Services', []);
+
+
+/**
+ * @name Router
+ */
+framework.provider('Router', function(){
+	
+	var stateParameters = {};
+	
+	var logoutRoute, homeRoute;
+	
+	return {
+		$get: ['$state', function( $state ){
+			return {
+				goTo: function(state, parameters){
+					
+					if( $state.current.name !== state || parameters){
+						$state.go( state, parameters );
+					} else {
+					}
+					
+				},
+				goToHome: function(){
+					$state.go( homeRoute );
+				}
+			};
+		}],
+		setHomeRoute: function( newHomeRoute ){
+			homeRoute = newHomeRoute;
+		}
+	};
+	
+});
+
+
+/**
+ * @name ControllerCommunication
+ */
+framework.provider('ControllerCommunication', function(){
+	
+	var models = {};
+	
+	var observerCallbacks = {};
+	
+	return {
+		$get: ['$state', function( $state ){
+			return {
+				registerCallback: function(channel, callback){
+					if( !observerCallbacks[channel] ){
+						observerCallbacks[channel] = [];
+					}
+					observerCallbacks[channel].push(callback);	
+				},
+				notifyObservers: function(channel){
+					if( observerCallbacks[channel] && observerCallbacks[channel].length ){
+						angular.forEach( observerCallbacks[channel], function(callback){
+							callback();
+						});
+					}
+				},
+				get: function(channel){
+					if( models[channel]!="undefined" ){
+						return models[channel];	
+					}
+					
+					return false;
+				},
+				set: function(channel, data){
+					models[channel] = data;
+					this.notifyObservers(channel);
+				}
+			};
+		}]		
+	};
+});
+
+
+/**
+ * @name FrameworkAJAX
+ * @description 
+ * Provides HTTP AJAX communication mechanism for developer-written controllers.
+ * Expects 'request' to contain properties 'method': GET/POST/PUT, 'url', and 'data'
+ */
+framework.provider('FrameworkAJAX', function(){
+	return {
+		$get: ['$http', function( $http ){
+			return {
+				sendRequest: function(request, successCallback, errorCallback){
+					
+					if( !request.method || !request.url || !request.data ){
+                        
+						return;
+					}
+					
+					$http( request ).success( successCallback ).error( errorCallback );
+				}
+			};
+		}]		
+	};
+});
+er;
 				
 				// Inject model into modelbuilder (if provided)
 				if( window[modelName] ){
@@ -398,7 +468,8 @@ framework.run( ['$q', function($q){
 					
 					var controllerInjections = {
 						Context: templateScope,
-						StateParameters: $stateParams
+						StateParameters: $stateParams,
+                        $q: $q
 					};
 					
 					// Inject modelbinder if provided

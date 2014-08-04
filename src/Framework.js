@@ -226,12 +226,8 @@ framework.run( ['$q', function($q){
 	var DirectiveFactory = function( componentName, paths ){
 		var directiveName = componentName.toLowerCase();
 		
-		framework.directive( directiveName, ['$http', 
-											 '$controller', 
-											 '$compile', 
-											 '$templateCache', 
-											 '$injector', 
-											 '$stateParams', function($http, $controller, $compile, $templateCache, $injector, $stateParams){
+		framework.directive( directiveName, ['$http', '$controller', '$compile', '$templateCache', '$injector', '$q', '$stateParams', function($http, $controller, $compile, $templateCache, $injector, $q, $stateParams){
+            
 			function link( $scope, element, attributes ){
 				
 				// Create new scope for view
@@ -292,7 +288,8 @@ framework.run( ['$q', function($q){
 							injectionName == 'Actions' ||
 							injectionName == 'Model' ||
 							injectionName == 'Modelbuilder' ||
-							injectionName == 'StateParameters'){
+							injectionName == 'StateParameters' ||
+                            injectionName == '$q'){
 							continue;   
 					   }
 						
@@ -360,7 +357,8 @@ framework.run( ['$q', function($q){
 					
 					var controllerInjections = {
 						Context: templateScope,
-						StateParameters: $stateParams
+						StateParameters: $stateParams,
+                        $q: $q
 					};
 					
 					// Inject modelbinder if provided

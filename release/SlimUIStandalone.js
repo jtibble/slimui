@@ -31174,7 +31174,10 @@ framework.provider('Router', function(){
 				goToHome: function(){
 					console.log( strings.routingHome + homeRoute);
 					$state.go( homeRoute );
-				}
+				},
+                getStateParameters: function(){
+                    return $state.params;   
+                }
 			};
 		}],
 		setHomeRoute: function( newHomeRoute ){

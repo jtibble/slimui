@@ -3,3 +3,4 @@ node_modules
 /app.html
 /compiledTemplates.html
 /compiledJS.js
+/npm-debug.log

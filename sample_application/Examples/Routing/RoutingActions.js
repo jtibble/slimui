@@ -1,4 +1,4 @@
-var RoutingActions = function(Router){
+var RoutingActions = function(Modelbuilder, Router){
 	return {
 		goToExamples: function(){
 			Router.goTo('Examples');	
@@ -11,6 +11,9 @@ var RoutingActions = function(Router){
 		},
 		goToHome: function(){
 			Router.goToHome();
-		}
+		},
+        getStateParameters: function(){
+            Modelbuilder({parameters: Router.getStateParameters()});
+        }
 	}
 };

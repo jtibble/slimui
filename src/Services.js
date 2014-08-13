@@ -35,7 +35,10 @@ framework.provider('Router', function(){
 					console.log( strings.routingHome + homeRoute);
                     // @endif
 					$state.go( homeRoute );
-				}
+				},
+                getStateParameters: function(){
+                    return $state.params;   
+                }
 			};
 		}],
 		setHomeRoute: function( newHomeRoute ){

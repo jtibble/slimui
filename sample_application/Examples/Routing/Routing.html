@@ -27,4 +27,7 @@ Router.goToHome() will navigate to the 'defaultView' as specified in the config.
 	<a href="" ng-click="Actions.goToParameterPassing()">Go To #/ParameterPassing//</a><br>
 	<a href="" ng-click="Actions.goToParameterPassingSubroute()">Go To #/ParameterPassing///ParameterPassingSubroute//</a><br>
 	<a href="" ng-click="Actions.goToHome()">Go To Home</a><br>
+    <br><br>    
+    Current Parameters: {{Model.parametersString}}<br>
+    <button ng-click="Actions.getStateParameters()" class="btn btn-default">Click to get Router StateParameters</button><br>
 </p>

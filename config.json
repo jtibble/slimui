@@ -55,8 +55,13 @@
                 "controller": true
             },
             "Routing": {
+                "model": true,
+                "modelbuilder": true,
                 "controller": true,
-                "actions": true
+                "actions": true,
+                "parameters": [
+                    "parameter1"
+                ]                
             },
             "AJAX": {
                 "controller": true,

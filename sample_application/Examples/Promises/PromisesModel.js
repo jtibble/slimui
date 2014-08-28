@@ -1,5 +1,5 @@
 var PromisesModel = function(){
 	return {
-        text: 'Promise Created'
+        text: 'Not Created'
     };
 }

@@ -1,14 +1,5 @@
-var PromisesController = function( Context, Modelbuilder, Actions, Promise ){
+var PromisesController = function( Context, Modelbuilder, Actions ){
     
 	Context.Actions = Actions;
 	Context.Model = Modelbuilder();
-    
-    var promise;
-    if( Promise.createDeferred('Example') ){
-        promise = Promise.getPromise( 'Example' );   
-    }
-    
-    promise.then( function(){
-        Modelbuilder({promiseResolved: true}); 
-    });
 };

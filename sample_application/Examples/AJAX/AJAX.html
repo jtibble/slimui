@@ -1,1 +1,25 @@
 <h3 class="voice-brand">AJAX with the SlimUI Framework</h3>
+
+<p>
+The SlimUI framework includes a service called FrameworkAJAX which can be used to make AJAX requests to REST services.<br>
+</p>
+<pre>
+var successCallback = function(response){
+    // Save the response to your model
+    // Modelbuilder({data: response.data});
+};
+			
+var errorCallback = function(){
+    console.log('Error fetching data in FetchJSONService');	
+};
+
+var request = {
+    url: url,
+    method: 'GET',  // Optionally 'POST'
+    data: {} // Not required for GET, but required for 'POST'
+};
+
+FrameworkAJAX.sendRequest( request, successCallback, errorCallback);
+</pre>
+
+Please look at \sample_application\Examples\Services\Services\FetchJSONService.js for details.

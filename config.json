@@ -1,6 +1,6 @@
 {
     "applicationConfig": {
-        "defaultView": "ReleaseNotes",
+        "defaultView": "About",
         "components": {
             "Header": {},
             "ExamplesMenu": {},
@@ -13,29 +13,15 @@
             }
         },
         "views": {
-            "MoreInformation": {
-                "url": "/"
-            },
-            "ReleaseNotes": {
-                "url": "ReleaseNotes"
+            "About": {
+                "url": "About"
             },
             "Documentation": {
                 "url": "Documentation",
                 "controller": true,
                 "model": true,
                 "modelbuilder": true
-            },
-			"Setup": {
-				"url": "Setup",
-				"subroutes": [
-					"Node",
-					"GIT",
-					"Bower"
-				]
-            },
-			"Node": {},
-            "GIT": {},
-            "Bower": {},			
+            },			
             "Examples": {
                 "url": "Examples",
                 "subroutes": [

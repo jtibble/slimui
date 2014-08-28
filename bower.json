@@ -1,7 +1,7 @@
 {
   "name": "slimui",
-  "version": "0.0.22",
-  "description": "Slim UI framework for GECA EF IT",
+  "version": "0.0.23",
+  "description": "Slim UI framework",
   "main": "slim.js",
   "keywords": [
     "framework"

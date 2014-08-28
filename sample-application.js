@@ -200,21 +200,6 @@ var DocumentationModelbuilder = function(Model){
 		return Model;
 	};
 };
-var AJAXActions = function(){
-	return {};
-};
-var AJAXController = function( Context, Modelbuilder, Actions ){
-	Context.Actions = Actions;
-	Context.Model = Modelbuilder();
-};
-var AJAXModel = function(){
-	return {};
-}
-var AJAXModelbuilder = function(Model){
-	return function(){
-		return Model;
-	};
-};
 var ControllerCommunicationsActions = function(ControllerCommunication){
 	return {
 		changeSharedData: function(){
@@ -265,6 +250,21 @@ var ParameterPassingSubrouteModelbuilder = function(Model){
 		return Model;
 	};
 };
+var AJAXActions = function(){
+	return {};
+};
+var AJAXController = function( Context, Modelbuilder, Actions ){
+	Context.Actions = Actions;
+	Context.Model = Modelbuilder();
+};
+var AJAXModel = function(){
+	return {};
+}
+var AJAXModelbuilder = function(Model){
+	return function(){
+		return Model;
+	};
+};
 var PromisesActions = function( Modelbuilder, Promise ){
 	return { 
         createPromise: function(){
@@ -304,6 +304,50 @@ var PromisesModelbuilder = function(Model){
         if( options && options.timeout ){
             Model.text = 'Promise resolving in ' + (options.timeout/1000).toFixed(2) + ' seconds';
         }
+		return Model;
+	};
+};
+// Actions are functions that can be invoked by interacting with the template
+
+var SimpleActions = function(Modelbuilder){
+	return {
+		changeModel: function(){
+			Modelbuilder( {firstName: 'Second, Changed', lastName: 'Model'} );	
+		}
+	};
+};
+// A Controller needs to receive the following parameters:
+//   Context (which is exposed to the template), 
+//   Actions (functions that can be called by actions in the template)
+//   Modelbuilder (which is invoked to get a model to display)
+
+var SimpleController = function( Context, Modelbuilder, Actions ){
+	Context.Actions = Actions;
+	Context.Model = Modelbuilder();
+};
+// A Model just returns a plain JS object (with no functions!)
+
+var SimpleModel = function(){
+	return {
+		firstName: 'John',
+		lastName: 'Tibble'
+	};
+};
+// Modelbuilders always accept a Model
+
+var SimpleModelbuilder = function(Model){
+	
+	// Modelbuilders must return a function that can be called.
+	//    This function returns the built model
+	return function( config ){
+		
+		// Modelbuilders can be configured to add/remove/change Model properties
+		//     See http://en.wikipedia.org/wiki/Builder_pattern
+		if( config && config.firstName && config.lastName ){
+			Model.firstName = config.firstName;
+			Model.lastName = config.lastName;
+		}
+		
 		return Model;
 	};
 };
@@ -385,50 +429,6 @@ var ServicesModelbuilder = function(Model, ExampleService, USAStates){
 		
 		Model.data = ExampleService.getExampleData();
 		Model.states = USAStates.states;
-		return Model;
-	};
-};
-// Actions are functions that can be invoked by interacting with the template
-
-var SimpleActions = function(Modelbuilder){
-	return {
-		changeModel: function(){
-			Modelbuilder( {firstName: 'Second, Changed', lastName: 'Model'} );	
-		}
-	};
-};
-// A Controller needs to receive the following parameters:
-//   Context (which is exposed to the template), 
-//   Actions (functions that can be called by actions in the template)
-//   Modelbuilder (which is invoked to get a model to display)
-
-var SimpleController = function( Context, Modelbuilder, Actions ){
-	Context.Actions = Actions;
-	Context.Model = Modelbuilder();
-};
-// A Model just returns a plain JS object (with no functions!)
-
-var SimpleModel = function(){
-	return {
-		firstName: 'John',
-		lastName: 'Tibble'
-	};
-};
-// Modelbuilders always accept a Model
-
-var SimpleModelbuilder = function(Model){
-	
-	// Modelbuilders must return a function that can be called.
-	//    This function returns the built model
-	return function( config ){
-		
-		// Modelbuilders can be configured to add/remove/change Model properties
-		//     See http://en.wikipedia.org/wiki/Builder_pattern
-		if( config && config.firstName && config.lastName ){
-			Model.firstName = config.firstName;
-			Model.lastName = config.lastName;
-		}
-		
 		return Model;
 	};
 };
@@ -729,14 +729,14 @@ var USAStates = function(  ){
 		}]
 	};
 };
-var AboutTemplate = '<div class=\"container\"><h2>About SlimUI</h2><p>SlimUI was created to help developers build web-applications faster.<br>AngularJS is powerful, but complex, so SlimUI abstracts away much of the complexity of building AngularJS applications.<br>See the <a href=\"#/Examples\">Examples</a> for information on how to build functionality into your SlimUI web app.</p></div><div class=\"container\"><h2>Release Notes</h2><p><h3>v0.0.22 <span class=\"label label-info\">Stable</span> <small>August 13, 2014</small></h3><div class=\"container\"><ul><li>Added Router method \'getStateParameters()\' which returns the current state parameters.</li></ul></div></p><p><h3>v0.0.21 <small>August 4, 2014</small></h3><div class=\"container\"><ul><li>Updated FrameworkAJAX service to return the $http promise to the caller.</li><li>Fixed gulp-build and deployed releaseA/SlimUIStandalone.js</li></ul></div></p><p><h3>v0.0.20 <span class=\"label label-danger\">Broken Build! Update to v0.0.21</span> <small>August 4, 2014</small></h3><div class=\"container\"><ul><li>Added support for Angular Promises ($q). See the example at <a href=\"#/Examples/Promises\">Examples: Promises</a></li></ul></div></p><p><h3>v0.0.19 <small>July 29, 2014</small></h3><div class=\"container\"><ul><li>Removed dynamic-rendering of HTML</li><li>Removed the ability to pass data directly to components</li><li>Added Gulp-Preprocessor directives to shrink the compiled SlimUI.min.js and SlimUIStandalone.min.js</li></ul></div></p><p><h3>v0.0.18 <small>July 25, 2014</small></h3><div class=\"container\"><ul><li>Refactored Gulp file, fixing build issues and removing config-file path-checking. Need to update docs, still.</li></ul></div></p><p><h3>v0.0.17 <small>July 25, 2014</small></h3><div class=\"container\"><ul><li>Added ngTouch to now swipe events are accessible with the ng-swipe-* attribute in your HTML templates</li></ul></div></p><p><h3>v0.0.16 <small>June 12, 2014</small></h3><div class=\"container\"><ul><li>Fixed bug in URL route-creation. Now config.json views MUST include \'url\' to be routable.</li></ul></div></p><p><h3>v0.0.15 <small>May 15, 2014</small></h3><div class=\"container\"><ul><li>Updated Services Example with how to fetch JSON asynchronously using a Service, built on top of SlimUI\'s \'FrameworkAJAX\'</li></ul></div></p><p><h3>v0.0.14 <small>May 8, 2014</small></h3><div class=\"container\"><ul><li>Created new Gulp-task to build a \'Standalone\' version of the SlimUI framework. See included sample_application.html for how to use this.</li></ul></div></p><p><h3>v0.0.13 <small>April 24, 2014</small></h3><div class=\"container\"><ul><li>Removed RequireJS script-loading due to work done with Gulp. Now the framework assumes that all scripts are loaded in-memory before application is initialized. Look in the gulpfile.js and \'Setup\' section for more information about how to build the application.</li></ul></div></p><p><h3>v0.0.12 <small>April 8, 2014</small></h3><div class=\"container\"><ul><li>Bug Fix: Setting ControllerCommunication channel to value [false] would not notify channel-listeners</li><li>Updated Documentation for ngSantitize</li><li>Setup Information added</li><li>Documentation for Services updated</li></ul></div></p><p><h3>v0.0.11 <small>April 7, 2014</small></h3><div class=\"container\"><ul><li>Added ngSanitize to allow for rendering of HTML in a template</li></ul></div></p><p><h3>v0.0.10 <small>April 4, 2014</small></h3><div class=\"container\"><ul><li>Added ability to pass parameters to HTML elements</li><li>Fixed bug when defaultView requires parameters</li></ul></div></p><p><h3>v0.0.9 <small>March 27, 2014</small></h3><div class=\"container\"><ul><li>Fixed parameter-passing bug. Now passing parameters using Router.goTo(\"state\", {\'parameterName\': value}) works correctly.</li><li>Improved config-file validation and error-checking to give more helpful advice.</li></ul></div></p><p><h3>v0.0.8 <small>March 25, 2014</small></h3><div class=\"container\"><ul><li>Added <a href=\"#/Examples/Services\">Services Examples</a> to help developers write services.</li><li>Refactored config.json service-generation functionality to act more like views/components.</li><li>Added arbitrarily-deep subroutes with <a href=\"#/ParameterPassing//\">Parameter Passing</a>. Additionally, extended examples.</li></ul></div></p><p><h3>v0.0.7 <small>March 21, 2014</small></h3><div class=\"container\"><ul><li>Rebuilt <a href=\"#/ParameterPassing//\">Parameter Passing</a> functionality with examples</li><li>Created this Release Notes page</li><li>Config.json: <a href=\"#/Documentation\">Restructured and simplified</a>. Added assumptions about file names and naming conventions to automate loading files, which greatly reduces config.json complexity. Added support for multiple root-folders, specified on a view-by-view basis. Updated config.js examples and documentation.</li></ul></div></p><p><h3>v0.0.6 <small>March 20, 2014</small></h3><div class=\"container\"><ul><li>Refactored framework to separate Model, Modelbuilder, Actions, and Controller. See <a href=\"#/Examples/Simple\">Simple Page Documentation</a>.</li><li>Reworked route-generation to allow for view to have a url of \'/\'</li><li>In config.json, renamed \'regions\' to \'subroutes\'</li></ul></div></p><p><h3>v0.0.5 <small>March 14, 2014</small></h3><div class=\"container\"><ul><li>Changed \'FrameworkPOST\' service to \'FrameworkAJAX\'</li><li>Removed \'Session\' service</li><li>Removed two \'Routing\' service methods</li></ul></div></p><p><h3>v0.0.4 <small>March 7, 2014</small></h3><div class=\"container\"><ul><li>Updated framework to pull RequireJS text-loading plugin dependency from bower_components folder</li></ul></div></p><p><h3>v0.0.3 <small>March 7, 2014</small></h3></p><p><h3>v0.0.2 <small>March 6, 2014</small></h3></p><p><h3>v0.0.1 <small>March 5, 2014</small></h3><div class=\"container\"><ul><li>First release using Bower</li></ul></div></p></div>';
+var AboutTemplate = '<div class=\"container\"><h2>About SlimUI</h2><p>SlimUI was created to help developers build web-applications faster.<br>AngularJS is powerful, but complex, so SlimUI abstracts away much of the complexity of building AngularJS applications.<br>See the <a href=\"#/Examples\">Examples</a> for information on how to build functionality into your SlimUI web app.</p></div><div class=\"container\"><h2>Release Notes</h2><p><h3>v0.0.23 <span class=\"label label-info\">Stable</span> <small>August 28, 2014</small></h3><div class=\"container\"><ul><li>Removed Underscore.js dependency in lieu of <a href=\"https://docs.angularjs.org/api/ng/function/angular.bind\">angular.bind()</a></li><li>Updated Sample Application examples, including Promises and AJAX documentation.</li></ul></div></p><p><h3>v0.0.22 <small>August 13, 2014</small></h3><div class=\"container\"><ul><li>Added Router method \'getStateParameters()\' which returns the current state parameters.</li></ul></div></p><p><h3>v0.0.21 <small>August 4, 2014</small></h3><div class=\"container\"><ul><li>Updated FrameworkAJAX service to return the $http promise to the caller.</li><li>Fixed gulp-build and deployed releaseA/SlimUIStandalone.js</li></ul></div></p><p><h3>v0.0.20 <span class=\"label label-danger\">Broken Build! Update to v0.0.21</span> <small>August 4, 2014</small></h3><div class=\"container\"><ul><li>Added support for Angular Promises ($q). See the example at <a href=\"#/Examples/Promises\">Examples: Promises</a></li></ul></div></p><p><h3>v0.0.19 <small>July 29, 2014</small></h3><div class=\"container\"><ul><li>Removed dynamic-rendering of HTML</li><li>Removed the ability to pass data directly to components</li><li>Added Gulp-Preprocessor directives to shrink the compiled SlimUI.min.js and SlimUIStandalone.min.js</li></ul></div></p><p><h3>v0.0.18 <small>July 25, 2014</small></h3><div class=\"container\"><ul><li>Refactored Gulp file, fixing build issues and removing config-file path-checking. Need to update docs, still.</li></ul></div></p><p><h3>v0.0.17 <small>July 25, 2014</small></h3><div class=\"container\"><ul><li>Added ngTouch to now swipe events are accessible with the ng-swipe-* attribute in your HTML templates</li></ul></div></p><p><h3>v0.0.16 <small>June 12, 2014</small></h3><div class=\"container\"><ul><li>Fixed bug in URL route-creation. Now config.json views MUST include \'url\' to be routable.</li></ul></div></p><p><h3>v0.0.15 <small>May 15, 2014</small></h3><div class=\"container\"><ul><li>Updated Services Example with how to fetch JSON asynchronously using a Service, built on top of SlimUI\'s \'FrameworkAJAX\'</li></ul></div></p><p><h3>v0.0.14 <small>May 8, 2014</small></h3><div class=\"container\"><ul><li>Created new Gulp-task to build a \'Standalone\' version of the SlimUI framework. See included sample_application.html for how to use this.</li></ul></div></p><p><h3>v0.0.13 <small>April 24, 2014</small></h3><div class=\"container\"><ul><li>Removed RequireJS script-loading due to work done with Gulp. Now the framework assumes that all scripts are loaded in-memory before application is initialized. Look in the gulpfile.js and \'Setup\' section for more information about how to build the application.</li></ul></div></p><p><h3>v0.0.12 <small>April 8, 2014</small></h3><div class=\"container\"><ul><li>Bug Fix: Setting ControllerCommunication channel to value [false] would not notify channel-listeners</li><li>Updated Documentation for ngSantitize</li><li>Setup Information added</li><li>Documentation for Services updated</li></ul></div></p><p><h3>v0.0.11 <small>April 7, 2014</small></h3><div class=\"container\"><ul><li>Added ngSanitize to allow for rendering of HTML in a template</li></ul></div></p><p><h3>v0.0.10 <small>April 4, 2014</small></h3><div class=\"container\"><ul><li>Added ability to pass parameters to HTML elements</li><li>Fixed bug when defaultView requires parameters</li></ul></div></p><p><h3>v0.0.9 <small>March 27, 2014</small></h3><div class=\"container\"><ul><li>Fixed parameter-passing bug. Now passing parameters using Router.goTo(\"state\", {\'parameterName\': value}) works correctly.</li><li>Improved config-file validation and error-checking to give more helpful advice.</li></ul></div></p><p><h3>v0.0.8 <small>March 25, 2014</small></h3><div class=\"container\"><ul><li>Added <a href=\"#/Examples/Services\">Services Examples</a> to help developers write services.</li><li>Refactored config.json service-generation functionality to act more like views/components.</li><li>Added arbitrarily-deep subroutes with <a href=\"#/ParameterPassing//\">Parameter Passing</a>. Additionally, extended examples.</li></ul></div></p><p><h3>v0.0.7 <small>March 21, 2014</small></h3><div class=\"container\"><ul><li>Rebuilt <a href=\"#/ParameterPassing//\">Parameter Passing</a> functionality with examples</li><li>Created this Release Notes page</li><li>Config.json: <a href=\"#/Documentation\">Restructured and simplified</a>. Added assumptions about file names and naming conventions to automate loading files, which greatly reduces config.json complexity. Added support for multiple root-folders, specified on a view-by-view basis. Updated config.js examples and documentation.</li></ul></div></p><p><h3>v0.0.6 <small>March 20, 2014</small></h3><div class=\"container\"><ul><li>Refactored framework to separate Model, Modelbuilder, Actions, and Controller. See <a href=\"#/Examples/Simple\">Simple Page Documentation</a>.</li><li>Reworked route-generation to allow for view to have a url of \'/\'</li><li>In config.json, renamed \'regions\' to \'subroutes\'</li></ul></div></p><p><h3>v0.0.5 <small>March 14, 2014</small></h3><div class=\"container\"><ul><li>Changed \'FrameworkPOST\' service to \'FrameworkAJAX\'</li><li>Removed \'Session\' service</li><li>Removed two \'Routing\' service methods</li></ul></div></p><p><h3>v0.0.4 <small>March 7, 2014</small></h3><div class=\"container\"><ul><li>Updated framework to pull RequireJS text-loading plugin dependency from bower_components folder</li></ul></div></p><p><h3>v0.0.3 <small>March 7, 2014</small></h3></p><p><h3>v0.0.2 <small>March 6, 2014</small></h3></p><p><h3>v0.0.1 <small>March 5, 2014</small></h3><div class=\"container\"><ul><li>First release using Bower</li></ul></div></p></div>';
 var DocumentationTemplate = '<div class=\"\"><div class=\"row-fluid title \" id=\"title\"><h2 class=\"voice-brand span12\">Documentation</h2></div><div ng-repeat=\"section in Model.docs\"><h3>{{section.title}}</h3><div class=\"row-fluid container\"><accordion class=\"span12\"><accordion-group ng-repeat=\"lesson in section.subSections\"><accordion-heading>{{lesson.title}}</accordion-heading><div ng-repeat=\"step in lesson.steps\"><div ng-if=\"step.content\"><p>{{step.content}}</p></div><div ng-if=\"step.code\"><pre>{{step.code}}</pre></div></div></accordion-group></accordion></div></div></div>';
 var ExamplesTemplate = '<div class=\"row-fluid\"><div class=\"title row-fluid\" id=\"title\"><h2 class=\"voice-brand\">Examples</h2></div><div class=\"row-fluid\"><div class=\"col-md-8 container\" ui-view=\"\" autoscroll=\"false\">Please choose an option from the menu. If you\'re new to the SlimUI framework start with a simple example <a href=\"#/Examples/Simple\">here</a>.</div><div class=\"col-md-4 container\" examplesmenu=\"\"></div></div></div>';
 var HeaderTemplate = '<nav class=\"navbar navbar-default navbar-static-top\" role=\"navigation\"><div class=\"container\"><h1>SlimUI Framework - Samples and Documentation</h1><center><div class=\"row\"><div class=\"col-md-2\"><a href=\"#About\">About SlimUI</a></div><div class=\"col-md-2\"><a href=\"#Documentation\">Documentation</a></div><div class=\"col-md-2\"><a href=\"#Examples\">Examples</a></div></div></center></div></nav>';
 var ControllerCommunicationsTemplate = '<h3 class=\"voice-brand\">Controller Communication</h3>The SlimUI Framework provides a service that lets controllers communicate on a shared channel. Include the ControllerCommunication service as a parameter in your controller to begin using it:<pre>\r\nvar FunctionName = function(Context, ControllerCommunication){\r\n</pre>The ControllerCommunication service has four methods available:<pre>\r\nControllerCommunication.registerCallback(channel, callback);\r\nControllerCommunication.notifyObservers(channel);\r\nControllerCommunication.get(channel);\r\nControllerCommunication.set(channel, data);\r\n</pre><p>get(channel) retrieves the data associated with a particular \'channel\'.</p><p>set(channel, data) sets the data on a particular channel and then calls notifyObservers() to alert all listeners to the changed data.</p><p>registerCallback(channel, callback) associates a function in your controller with a ControllerCommunication \'channel\'. When the data associated with that channel changes, this callback function will be invoked.</p><p>notifyObservers(channel) notifies all listeners on a given \'channel\' that the data has changed. Calling ControllerCommunication.set() calls this automatically.</p><hr><p>Example:<br><div class=\"btn btn-primary\" ng-click=\"actions.changeSharedData()\">Set New Number</div></p><p><div controllercommunicationlistener=\"\"></div></p><p></p>';
 var ExamplesMenuTemplate = '<h3 class=\"voice-brand\">Menu</h3><ul><li><a href=\"#/Examples/Simple\">Simple Page</a></li><li><a href=\"#/Examples/Routing/\">Routing</a></li><li><a href=\"#/Examples/ControllerCommunications\">Controller Communication</a></li><li><a href=\"#/Examples/AJAX\">AJAX</a></li><li><a href=\"#/ParameterPassing//\">Parameter Passing</a></li><li><a href=\"#/Examples/Services\">Services</a></li><li><a href=\"#/Examples/HTMLRendering\">HTMLRendering</a></li><li><a href=\"#/Examples/Promises\">Promises</a></li></ul>';
-var HTMLRenderingTemplate = '<h3 class=\"voice-brand\">HTML Rendering</h3>This feature has been removed as of v0.0.19 in an effort to shrink the size of the SlimUI framework.';
 var AJAXTemplate = '<h3 class=\"voice-brand\">AJAX with the SlimUI Framework</h3><p>The SlimUI framework includes a service called FrameworkAJAX which can be used to make AJAX requests to REST services.<br></p><pre>\r\nvar successCallback = function(response){\r\n    // Save the response to your model\r\n    // Modelbuilder({data: response.data});\r\n};\r\n			\r\nvar errorCallback = function(){\r\n    console.log(\'Error fetching data in FetchJSONService\');	\r\n};\r\n\r\nvar request = {\r\n    url: url,\r\n    method: \'GET\',  // Optionally \'POST\'\r\n    data: {} // Not required for GET, but required for \'POST\'\r\n};\r\n\r\nFrameworkAJAX.sendRequest( request, successCallback, errorCallback);\r\n</pre>Please look at \\sample_application\\Examples\\Services\\Services\\FetchJSONService.js for details.';
+var HTMLRenderingTemplate = '<h3 class=\"voice-brand\">HTML Rendering</h3>This feature has been removed as of v0.0.19 in an effort to shrink the size of the SlimUI framework.';
 var ParameterPassingTemplate = '<div class=\"row-fluid\"><div class=\"title row-fluid\" id=\"title\"><h2 class=\"voice-brand\">Examples</h2></div><div class=\"row-fluid\"><div class=\"col-md-8 container\"><p><div class=\"alert alert-info\">Notice the URL for this page! This page is not a subroute of Examples; it is its own top-level route.</div></p><h3 class=\"voice-brand\">Parameter Passing</h3><p>This page received the following URL parameters:<div ng-repeat=\"(key, value) in Model.parameters\">{{key}}: <b>{{value}}</b></div></p><hr><h3 class=\"voice-brand\">Demo 1: Pass Simple Parameters</h3><div class=\"container\"><p><a href=\"#/ParameterPassing/parameter1/parameter2\">Click to send parameters to this page</a></p></div><hr><h3 class=\"voice-brand\">Demo 2: Navigate to Subroute</h3><div class=\"well well-lg\" ui-view=\"\" autoscroll=\"false\"><p><a href=\"#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute//\">Click to navigate to subroute (no subroute parameters)</a></p></div></div><div class=\"col-md-4\" examplesmenu=\"\"></div></div><div class=\"row-fluid\"><div class=\"col-md-12 container\"><hr><h3 class=\"voice-brand\">Parameter Passing</h3><p>URL Parameter-passing can be used to select a particular item and drill down into its details.</p><p>To pass paramters to a view, you must add a list of parameters to the view in your config.json file:<pre>\r\n\"ParameterPassing\": {\r\n	\"url\": \"ParameterPassing\",\r\n	\"model\": \"ParameterPassingModel\",\r\n	\"modelbuilder\": \"ParameterPassingModelbuilder\",\r\n	\"controller\": \"ParameterPassingController\",\r\n	\"parameters\": [\r\n		\"parameterExampleId\",\r\n		\"parameterExampleId2\"\r\n	],\r\n	\"subroutes\": [\r\n		\"ParameterPassingSubroute\"	\r\n	]\r\n}\r\n				</pre><pre>\r\n\"ParameterPassingSubroute\": {\r\n	\"model\": \"ParameterPassingSubrouteModel\",\r\n	\"modelbuilder\": \"ParameterPassingSubrouteModelbuilder\",\r\n	\"controller\": \"ParameterPassingSubrouteController\",\r\n	\"parameters\": [\r\n		\"subrouteParameterExampleId\",\r\n		\"subrouteParameterExampleId2\"\r\n	]\r\n}\r\n				</pre></p><p>To receive parameters, include them in your controller and pass them to your modelbuilder:<pre>\r\nvar ParameterPassingController = function( Context, Modelbuilder, StateParameters ){\r\n	Context.Model = Modelbuilder( StateParameters );\r\n};\r\n				</pre><pre>\r\nvar ParameterPassingModelbuilder = function(Model){\r\n	return function( parameters ){\r\n		\r\n		if( parameters ){\r\n			Model.parameters = parameters;\r\n		}\r\n		\r\n		return Model;\r\n	};\r\n};\r\n				</pre></p><br><br></div></div></div>';
 var ParameterPassingInnerSubrouteTemplate = '<h4 class=\"voice-brand\">ParameterPassingInnerSubroute</h4><p><a href=\"#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4/ParameterPassingInnerSubroute/parameter5/parameter6\">Click to add subroute parameters</a></p>';
 var ParameterPassingSubrouteTemplate = '<h3 class=\"voice-brand\">ParameterPassingSubroute</h3><p><a href=\"#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4\">Click to add subroute parameters</a></p><div class=\"well well-lg\" ui-view=\"\" autoscroll=\"false\"><a href=\"#/ParameterPassing/parameter1/parameter2/ParameterPassingSubroute/parameter3/parameter4/ParameterPassingInnerSubroute//\">Load the inner-most subroute (no parameters)</a></div>';

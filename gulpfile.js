@@ -53,7 +53,7 @@ gulp.task('SlimUImin', function() {
         .pipe(concat('SlimUI.js'))
         .pipe(gulp.dest('release'))
         .pipe(rename('SlimUI.min.js'))
-        .pipe(uglify())
+        .pipe(uglify({output: { ascii_only: true}}))
         .pipe(gulp.dest('release'));
 });
 
@@ -66,7 +66,7 @@ gulp.task('SlimUIStandalone', ['SlimUI'], function() {
 gulp.task('SlimUIStandaloneMin', ['SlimUImin'], function() {
     return gulp.src(StandaloneMinFiles)
         .pipe(concat('SlimUIStandalone.min.js'))
-        .pipe(uglify())
+        .pipe(uglify({output: { ascii_only: true}}))
         .pipe(gulp.dest('release'));
 });
 

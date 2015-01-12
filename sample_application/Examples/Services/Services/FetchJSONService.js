@@ -51,7 +51,7 @@ var FetchJSONService = function(FrameworkAJAX){
 			};
 			
 			// See FrameworkAJAX-documentation for more information
-			FrameworkAJAX.sendRequest( request, _.bind(callback, this), errorCallback);
+			FrameworkAJAX.sendRequest( request, angular.bind(this,callback), errorCallback);
 		},
 		
 		// Called by fetch() when the call to FrameworkAJAX completes

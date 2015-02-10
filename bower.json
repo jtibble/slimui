@@ -10,7 +10,7 @@
     "John Tibble"
   ],
   "dependencies": {
-    "angular": ">=#1.2.14",
+    "angular": "#>=1.2.14",
     "angular-ui-router": "~0.2.10",
     "angular-bootstrap": "~0.11.0",
     "angular-touch": "*"

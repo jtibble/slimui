@@ -1,6 +1,6 @@
 {
   "name": "SlimUI",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "John Tible <john@jtibble.com>",
   "description": "This NPM Package contains the dependencies for the Gulp-build for the SlimUI framework. See the README for more information.",
   "contributors": [

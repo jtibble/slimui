@@ -13,7 +13,6 @@ var insert = require('gulp-insert');
 var htmlJsStr  = require('js-string-escape'); 
 var tap = require('gulp-tap');
 var es = require('event-stream');
-var preprocess = require('gulp-preprocess');
 
 // Set directory for sample application file-loading
 var filesPath = 'sample_application/';
@@ -43,17 +42,13 @@ gulp.task('clean', function(){
 // Build the Framework
 gulp.task('SlimUI', function() {
     return gulp.src('src/*.js')
-        .pipe(preprocess( {context: {DEBUG: true}}))
         .pipe(concat('SlimUI.js'))
         .pipe(gulp.dest('release'));
 });
-gulp.task('SlimUImin', function() {
-    return gulp.src('src/*.js')
-        .pipe(preprocess( {context: {RELEASE: true}}))
-        .pipe(concat('SlimUI.js'))
-        .pipe(gulp.dest('release'))
-        .pipe(rename('SlimUI.min.js'))
+gulp.task('SlimUImin', ['SlimUI'], function() {
+    return gulp.src('release/SlimUI.js')
         .pipe(uglify({output: { ascii_only: true}}))
+        .pipe(rename('SlimUI.min.js'))
         .pipe(gulp.dest('release'));
 });
 
@@ -122,4 +117,8 @@ gulp.task('SampleApplication', ['SampleApplicationParts'], function(){
 });
 
 // Provide a default task that builds everything
-gulp.task('default', ['lint', 'clean', 'SlimUI', 'SlimUImin', 'SlimUIStandalone', 'SlimUIStandaloneMin', 'SampleApplication']);
+gulp.task('default', ['lint', 'clean', 'SlimUIStandalone', 'SlimUIStandaloneMin', 'SampleApplication']);
+
+gulp.task('watch', ['default'], function(){
+    gulp.watch(['src/**', 'sample_application/**'], ['default']);
+});

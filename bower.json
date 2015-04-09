@@ -1,6 +1,6 @@
 {
   "name": "slimui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Slim UI framework",
   "main": "slim.js",
   "keywords": [

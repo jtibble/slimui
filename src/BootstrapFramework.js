@@ -25,9 +25,7 @@ bootstrapModule.provider('bootstrapper', function () {
 							deferred.resolve();
 						})
 						.error(function () {
-                            // @ifdef DEBUG
 							console.log('Could not initialize application, configuration could not be loaded.');
-                            // @endif
 							deferred.reject();
 						});
 					

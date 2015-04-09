@@ -29454,6 +29454,8 @@ var validateConfigFileStructure = function( config ){
 	
 	return configIsValid;	
 };
+
+
 /** 
  * Configure the framework
  */
@@ -29698,7 +29700,7 @@ framework.run( function(){
 				}
 				
 				// Inject context, state parameters, modelbuilder, and actions into controller
-				try{          
+				try{        
 					
 					var controllerInjections = {
 						Context: templateScope,
@@ -29719,7 +29721,7 @@ framework.run( function(){
 					
 				} catch(e){
 					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Likely cause: Actions or Modelbuilder is trying to use a service that was not injected. Check Actions and Modelbuilder injections. Exception: \n\t' + e.message);	
-				}                    
+				}          
 				
 				// Render template, and bind/compile controller to it
 				element.html( window[templateName] );
@@ -29788,6 +29790,7 @@ framework.run( function(){
 
         if( !window[serviceName] ){
             console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
+
             continue;
         }
 

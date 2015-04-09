@@ -8,7 +8,6 @@ var framework = angular.module('Framework', ['ui.router',
 * Validate config file integrity
 */
 
-// @ifdef DEBUG
 var validateConfigFileStructure = function( config ){
 	
 	var directiveIsValidHelper = function( name, directive ){
@@ -91,7 +90,6 @@ var validateConfigFileStructure = function( config ){
 	
 	return configIsValid;	
 };
-// @endif
 
 
 /** 
@@ -115,11 +113,9 @@ framework.config( ['$stateProvider',
 		return this;
 	};
 	
-    // @ifdef DEBUG
 	if( !validateConfigFileStructure( applicationConfig )){
 		console.log('SlimUI ERROR: config.json file is invalid');	
 	}
-    // @endif
 	
 	// Given a view, its name, and (optional) parent, create all the routes for it
 	var makeStateFromView = function(name, view, parentName){
@@ -148,9 +144,7 @@ framework.config( ['$stateProvider',
 			} else if( viewName ){
 				return viewName;	
 			} else {
-                // @ifdef DEBUG
 				console.log('Error: Can\'t create router state from view name and/or parent view name');
-                // @endif
 				return;
 			}
 		};
@@ -202,9 +196,7 @@ framework.config( ['$stateProvider',
 	RouterProvider.setHomeRoute( defaultURL );
 	
 	$urlRouterProvider.otherwise( function($injector, $location){
-        // @ifdef DEBUG
 		console.log('Invalid location \'' + $location.$$url + '\', going to default route \'' + defaultURL + '\'');
-        // @endif
 		return defaultURL;
 	});
 	
@@ -240,7 +232,6 @@ framework.run( function(){
 				var controllerName = componentName + 'Controller';
 
 				
-// @ifdef DEBUG
                 var jsLoadingError = false;
                 
 				// Check that the files loaded correctly
@@ -309,7 +300,6 @@ framework.run( function(){
 				if( paths.actions ){ checkInjections( actionsName ); }
 				if( paths.controller ){ checkInjections( controllerName ); }
 
-// @endif
 				var injectedModelbuilder;
 				var injectedActions;
 				var injectedController;
@@ -322,9 +312,7 @@ framework.run( function(){
 						};
 						injectedModelbuilder = $controller( window[modelbuilderName], additionalModelbuilderInjections );
 					} catch(e){
-                        // @ifdef DEBUG
 						console.log('Error: Could not inject model into modelbuilder \'' + modelbuilderName + '\'. Exception: \n\t' + e.message);
-                        // @endif
                         
 					}
 				}
@@ -343,16 +331,12 @@ framework.run( function(){
 						
 						injectedActions = $controller( window[actionsName] , actionsInjections);	
 					} catch(e){
-                        // @ifdef DEBUG
 						console.log('Error: Could not inject context or modelbuilder into actions \'' + actionsName + '\'. Exception: \n\t' + e.message);
-                        // @endif
 					}
 				}
 				
 				// Inject context, state parameters, modelbuilder, and actions into controller
-                // @ifdef DEBUG
-				try{          
-                // @endif
+				try{        
 					
 					var controllerInjections = {
 						Context: templateScope,
@@ -371,11 +355,9 @@ framework.run( function(){
 					
 					injectedController = $controller( window[controllerName], controllerInjections );
 					
-                // @ifdef DEBUG
 				} catch(e){
 					console.log('Error: Could not inject dependencies into controller \'' + controllerName + '\'. Likely cause: Actions or Modelbuilder is trying to use a service that was not injected. Check Actions and Modelbuilder injections. Exception: \n\t' + e.message);	
-				}                    
-                // @endif
+				}          
 				
 				// Render template, and bind/compile controller to it
 				element.html( window[templateName] );
@@ -443,9 +425,7 @@ framework.run( function(){
     for( var serviceName in this.applicationConfig.services ){
 
         if( !window[serviceName] ){
-            // @ifdef DEBUG
             console.log('Error: \'' + serviceName + '\' service was specified in config.json but has not been loaded. Check that it exists in your compiled application.');
-            // @endif
 
             continue;
         }

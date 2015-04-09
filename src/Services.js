@@ -5,12 +5,10 @@ var framework = angular.module('Framework.Services', []);
  * @name Router
  */
 framework.provider('Router', function(){
-	// @ifdef DEBUG
 	var strings = {
 		notRouting: 'Router is not navigating to the same route',
 		routingHome: 'Router is going to default screen '
 	};
-    // @endif
 	
 	var stateParameters = {};
 	
@@ -24,16 +22,12 @@ framework.provider('Router', function(){
 					if( $state.current.name !== state || parameters){
 						$state.go( state, parameters );
 					} else {
-                        // @ifdef DEBUG
 						console.log( strings.notRouting );
-                        // @endif	
 					}
 					
 				},
 				goToHome: function(){
-                    // @ifdef DEBUG
 					console.log( strings.routingHome + homeRoute);
-                    // @endif
 					$state.go( homeRoute );
 				},
                 getStateParameters: function(){
@@ -79,9 +73,7 @@ framework.provider('ControllerCommunication', function(){
 						return models[channel];	
 					}
 					
-                    // @ifdef DEBUG
 					console.log('ControllerCommunication Error: no channel \'' + channel + '\' existing to return data');
-                    // @endif
 					return false;
 				},
 				set: function(channel, data){
@@ -109,9 +101,7 @@ framework.provider('FrameworkAJAX', function(){
 					
 					if( !request.method || !request.url || !request.data ){
                         
-                        // @ifdef DEBUG
 						console.log('Error making AJAX request: missing method, url, or data.');
-                        // @endif
 						return;
 					}
 					
@@ -136,9 +126,7 @@ framework.provider('Promise', function(){
                     if( this.promisesStorage[ name ] ){
                         return this.promisesStorage[name].promise;
                     } else {
-                        // @ifdef DEBUG
                         console.log('Can\'t return promise: deferred not created correctly');
-                        // @endif
                         return false;
                     }
                 },
@@ -147,9 +135,7 @@ framework.provider('Promise', function(){
                         this.promisesStorage[name].resolve( value );
                         return true;
                     } else {
-                        // @ifdef DEBUG
                         console.log('Can\'t resolve: deferred not created correctly');
-                        // @endif
                         return false;
                     }
                 },
@@ -158,9 +144,7 @@ framework.provider('Promise', function(){
                         this.promisesStorage[name].reject( value );
                         return true;
                     } else {
-                        // @ifdef DEBUG
                         console.log('Can\'t reject: deferred not created correctly');
-                        // @endif
                         return false;
                     }
                 }

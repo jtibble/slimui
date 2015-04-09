@@ -1,0 +1,122 @@
+<h3 class="voice-brand">Validation</h3>
+<p>
+    A simple form with validation can be created like so:
+</p>
+<form novalidate name="staticForm">
+    <div class="row">
+        <div class="col-xs-3">
+            Username:
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="username"
+                   ng-model="Model.username"
+                   ng-pattern="Model.usernameRegex">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+            Password:
+        </div>
+        <div class="col-xs-9">
+            <input type="password"
+                   name="password"
+                   ng-model="Model.password"
+                   ng-pattern="Model.passwordRegex">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="staticForm.username.$error.pattern">
+            Username should be 8-20 letters or numbers
+        </div>
+        <div class="col-xs-12 text-danger"
+             ng-show="staticForm.password.$error.pattern">
+            Password should be 8-20 letters or numbers
+        </div>
+    </div>
+</form>
+
+
+<h3 class="voice-brand">Complex Validation</h3>
+<p>A domain-object form can be created and validated using a schema, like this customer-form below:</p>
+<form novalidate name="schemaForm">
+    <div class="row">
+        <div class="col-xs-3">
+            Customer Name
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="requiredField"
+                   ng-model="Model.requiredProperty"
+                   slimuivalidate="testRequired" >
+        </div>
+        <div class="col-xs-3">
+            Lease Term (months)
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="lengthField"
+                   ng-model="Model.lengthProperty"
+                   slimuivalidate="testLength">
+        </div>
+        <div class="col-xs-3">
+            Min = 100
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="minField"
+                   ng-model="Model.minProperty"
+                   slimuivalidate="testMin">
+        </div>
+        <div class="col-xs-3">
+            Max = 100
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="maxField"
+                   ng-model="Model.maxProperty"
+                   slimuivalidate="testMax">
+        </div>
+        <div class="col-xs-3">
+            Regex = ###-##-####
+        </div>
+        <div class="col-xs-9">
+            <input type="text"
+                   name="regexField"
+                   ng-model="Model.regexProperty"
+                   slimuivalidate="testRegex">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.requiredField.$error.propertyValidation">
+            Required input failed property validation!
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.lengthField.$error.propertyValidation">
+            Length input failed property validation!
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.minField.$error.propertyValidation">
+            Min-Value input failed property validation!
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.maxField.$error.propertyValidation">
+            Max-Value input failed property validation!
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.regexField.$error.propertyValidation">
+            Regex input failed property validation!
+        </div>
+    </div>
+
+</form>

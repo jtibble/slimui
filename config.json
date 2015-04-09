@@ -31,7 +31,8 @@
                     "ControllerCommunications",
                     "Services",
 					"HTMLRendering",
-                    "Promises"
+                    "Promises",
+                    "Validation"
                 ]
             },
             "Simple": {
@@ -72,6 +73,12 @@
                 "actions": true
             },
             "HTMLRendering": {
+            },
+            "Validation": {
+                "model": true,
+                "modelbuilder": true,
+                "controller": true,
+                "actions": true
             },
 			
             "ParameterPassing": {

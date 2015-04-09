@@ -152,3 +152,140 @@ framework.provider('Promise', function(){
         }]
     };
 });
+
+framework.provider('PropertyValidation', function(){
+    
+    validationMappings = {};
+    
+    return {
+        $get: function(){
+            return {
+                validationTypes: {
+                    required: 'Validates that an input has (or does not have) a value set',
+                    length: 'Validates that an input\'s length is a precise number of characters',
+                    min: 'Validates that an input\'s value is greater than a certain value',
+                    max: 'Validates that an input\'s value is less than a certain value',
+                    regex: 'Validates that an input conforms to a particular structure'
+                },
+                getPropertyValidationTypes: function(){
+                    return this.validationTypes;
+                },
+                
+                addPropertyValidation: function(propertyName, validationType, validationValue){
+                    if( this.validationTypes[validationType] === undefined ){
+                        console.log('Cannot add unknown validation type \'' + validationType + '\'');
+                        return false;
+                    }
+                    
+                    if( !validationMappings[propertyName] ){
+                        validationMappings[propertyName] = [];
+                    }
+                    
+                    validationMappings[propertyName].push({validationType: validationType, validationValue: validationValue});
+                },
+                
+                getPropertyValidationRules: function(propertyName){
+                    if( !validationMappings[propertyName] ){
+                        console.log('No property validation rule found for \'' + propertyName + '\'');
+                        return [];
+                    } else {
+                        return validationMappings[propertyName];
+                    }
+                }
+            };
+        }
+    };
+});
+
+framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyValidation){
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function(scope, elm, attrs, ngModel){
+            if (!ngModel) return;
+            ngModel.$validators.propertyValidation = function(modelValue, viewValue){
+                
+                var validationRules = PropertyValidation.getPropertyValidationRules( attrs.slimuivalidate );
+                
+                var test = {
+                    required: function(requiredFlag){
+                        if( !requiredFlag || requiredFlag && viewValue.toString().length > 0 ){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    },
+                    length: function(requiredLength){
+                        if( viewValue.toString().length === requiredLength ){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    },
+                    min: function(requiredMin){
+                        return viewValue >= requiredMin ? true : false;
+                    },
+                    max: function(requiredMax){
+                        return viewValue <= requiredMax ? true : false;
+                    },
+                    regex: function(requiredRegex){
+                        return requiredRegex.test(viewValue);
+                    }
+                };
+                
+                for( var i in validationRules ){
+                    var rule = validationRules[i];
+                    var validationType = rule.validationType;
+                    var validationValue = rule.validationValue;
+                    
+                    var validationSuccess;
+                    
+                    if( !test[validationType] ){
+                        throw 'Cannot validate unknown validation rule type \'' + validationType + '\'!';
+                    }
+                    
+                    validationSuccess = test[validationType](validationValue);
+                    
+                    if( !validationSuccess ){
+                        return false;
+                    }
+                }
+                
+            };
+        }
+    };
+}]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

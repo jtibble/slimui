@@ -661,7 +661,9 @@ framework.provider('PropertyValidation', function(){
                     length: 'Validates that an input\'s length is a precise number of characters',
                     min: 'Validates that an input\'s value is greater than a certain value',
                     max: 'Validates that an input\'s value is less than a certain value',
-                    regex: 'Validates that an input conforms to a particular structure'
+                    regex: 'Validates that an input conforms to a particular structure',
+                    script: 'Validates properties with respect to each other',
+                    type: 'Validates that the property is the correct type (int, string, etc)'
                 },
                 getPropertyValidationTypes: function(){
                     return this.validationTypes;
@@ -693,6 +695,34 @@ framework.provider('PropertyValidation', function(){
     };
 });
 
+framework.provider('SchemaValidation', function(){
+    return {
+        $get: ['$http', 'PropertyValidation', function($http, PropertyValidation){
+            return {
+                loadSchema: function( schemaJSONPath ){
+                    $http.get(schemaJSONPath).success(function(schema){
+                        var schemaName = schema.schemaName;
+                        
+                        for( var propertyName in schema.properties ){
+                            console.log('--------' + propertyName + '--------');
+                            var validationMapping = schema.properties[ propertyName ];
+                            
+                            for( var rule in validationMapping ){
+                                var value = validationMapping[rule];
+                                console.log(rule + ': ' + value);
+                                PropertyValidation.addPropertyValidation(propertyName, rule, value);
+                            }
+                        }
+                        
+                    }).error( function(){
+                        console.error('Cannot fetch schema \'' + schemaJSONPath + '\''); 
+                    });
+                }
+            };
+        }]
+    };
+});
+
 framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyValidation){
     return {
         require: 'ngModel',
@@ -701,7 +731,8 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
             if (!ngModel) return;
             ngModel.$validators.propertyValidation = function(modelValue, viewValue){
                 
-                var validationRules = PropertyValidation.getPropertyValidationRules( attrs.slimuivalidate );
+                var propertyName = attrs.slimuivalidate;
+                var validationRules = PropertyValidation.getPropertyValidationRules( propertyName );
                 
                 var test = {
                     required: function(requiredFlag){
@@ -725,7 +756,44 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                         return viewValue <= requiredMax ? true : false;
                     },
                     regex: function(requiredRegex){
+                        if( typeof(requiredRegex) === 'string'){
+                            requiredRegex = new RegExp(requiredRegex);   
+                        }
                         return requiredRegex.test(viewValue);
+                    },
+                    script: function(script){
+                        console.error('no script-validation in-place yet');
+                    },
+                    type: function(requiredType){
+                    
+                        switch(requiredType){
+                            case 'date':
+                                var nanDate = isNaN( new Date(viewValue) );
+                                var invalidDate = (new Date(viewValue)) === 'Invalid Date';
+                                
+                                return (nanDate || invalidDate) ? false : true;
+                            case 'number':
+                                return !isNaN( Number.parseFloat(viewValue) );
+                            case 'int': 
+                                var isValidNumber = !isNaN(Number.parseInt(viewValue));
+                                var isInt = Number.parseInt(viewValue) === Number.parseFloat(viewValue);
+                                return isValidNumber && isInt;
+                            case 'string': 
+                                return typeof(viewValue) === 'string';
+                            default:
+                                console.log('could not check type of value');
+                                return false;
+                        }
+                        /*if(requiredType === 'date'){
+                            
+                        } else if( requiredType == 'number'){
+                            if( typeof(viewValue) == requiredType){
+                                return true;
+                            } else {
+                                return false;   
+                            }
+                        } else if( requir*/
+                        
                     }
                 };
                 
@@ -741,8 +809,10 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                     }
                     
                     validationSuccess = test[validationType](validationValue);
+                    ngModel.$setValidity(validationType, validationSuccess);
                     
                     if( !validationSuccess ){
+                        
                         return false;
                     }
                 }
@@ -751,12 +821,6 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
         }
     };
 }]);
-
-
-
-
-
-
 
 
 

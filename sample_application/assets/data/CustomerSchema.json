@@ -1,0 +1,44 @@
+{
+    "schemaName": "Customer",
+    "properties": {
+        "name": {
+            "required": true,
+            "type": "string"
+        },
+        "address": {
+            "required": true,
+            "type": "string"
+        },
+        "address2": {
+            "required": false,
+            "type": "string"
+        },
+        "city": {
+            "required": true,
+            "type": "string"
+        },
+        "state": {
+            "required": true,
+            "type": "string",
+            "regex": "^\\s\\s$"
+        },
+        "zip": {
+            "required": true,
+            "regex": "^\\d\\d\\d\\d\\d(-\\d\\d\\d\\d)?$"
+        },
+        "birthDate": {
+            "required": true,
+            "type": "date",
+            "script": "((new Date).getFullYear() - this.birthdayYear.getFullYear() - 1) >= 18"
+        },
+        "socialSecurityNumber": {
+            "required": true,
+            "regex": "^\\d\\d\\d-\\d\\d-\\d\\d\\d\\d$"
+        },
+        "yearsDriving": {
+            "required": false,
+            "type": "int",
+            "min": 0
+        }
+    }
+}

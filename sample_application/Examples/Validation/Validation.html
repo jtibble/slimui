@@ -1,6 +1,6 @@
 <h3 class="voice-brand">Validation</h3>
 <p>
-    A simple form with validation can be created like so:
+    A simple form with static validation can be created like so:
 </p>
 <form novalidate name="staticForm">
     <div class="row">
@@ -47,75 +47,179 @@
         </div>
         <div class="col-xs-9">
             <input type="text"
-                   name="requiredField"
-                   ng-model="Model.requiredProperty"
-                   slimuivalidate="testRequired" >
+                   class="form-control"
+                   name="customerName"
+                   ng-model="Model.name"
+                   slimuivalidate="name" >
         </div>
+    </div>
+    <div class="row">
         <div class="col-xs-3">
-            Lease Term (months)
+            Customer Address
         </div>
         <div class="col-xs-9">
             <input type="text"
-                   name="lengthField"
-                   ng-model="Model.lengthProperty"
-                   slimuivalidate="testLength">
+                   class="form-control"
+                   name="customerAddress"
+                   ng-model="Model.address"
+                   slimuivalidate="address" >
         </div>
+    </div>
+    <div class="row">
         <div class="col-xs-3">
-            Min = 100
         </div>
         <div class="col-xs-9">
             <input type="text"
-                   name="minField"
-                   ng-model="Model.minProperty"
-                   slimuivalidate="testMin">
+                   class="form-control"
+                   name="customerAddress2"
+                   ng-model="Model.address2"
+                   slimuivalidate="address2" >
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+            Customer City/State/Zip
+        </div>
+        <div class="col-xs-4">
+            <input type="text"
+                   class="form-control"
+                   name="customerCity"
+                   ng-model="Model.city"
+                   slimuivalidate="city" >
+        </div>
+        <div class="col-xs-2">
+            <input type="text"
+                   class="form-control"
+                   name="customerState"
+                   ng-model="Model.state"
+                   slimuivalidate="state" >
         </div>
         <div class="col-xs-3">
-            Max = 100
+            <input type="text"
+                   class="form-control"
+                   class="form-control"
+                   name="customerZip"
+                   placeholder="##### or #####-####"
+                   ng-model="Model.zip"
+                   slimuivalidate="zip" >
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+            Customer SSN
         </div>
         <div class="col-xs-9">
             <input type="text"
-                   name="maxField"
-                   ng-model="Model.maxProperty"
-                   slimuivalidate="testMax">
+                   class="form-control"
+                   name="customerSSN"
+                   placeholder="###-##-####"
+                   ng-model="Model.socialSecurityNumber"
+                   slimuivalidate="socialSecurityNumber" >
         </div>
+    </div>
+    <div class="row">
         <div class="col-xs-3">
-            Regex = ###-##-####
+            Customer Date of Birth
         </div>
         <div class="col-xs-9">
-            <input type="text"
-                   name="regexField"
-                   ng-model="Model.regexProperty"
-                   slimuivalidate="testRegex">
+            <div class="input-group">
+                <input type="text" 
+                       name="customerBirthDate" 
+                       class="form-control" 
+                       datepicker-popup="MMM dd, yyyy" 
+                       ng-model="Model.birthDate" 
+                       is-open="Model.calendarPopupVisible"
+                       datepicker-options="Model.dateOptions" 
+                       close-text="Close" 
+                       show-weeks="false" 
+                       placeholder="Jan 1, 1989"
+                       slimuivalidate="birthDate">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="Actions.openCalendar($event)">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">
+            Years Driving
+        </div>
+        <div class="col-xs-9">
+            <input type="number"
+                   class="form-control"
+                   name="customerDrivingYears"
+                   ng-model="Model.yearsDriving"
+                   slimuivalidate="yearsDriving" >
+        </div>
+    </div>
+    
+    <!-- Error-reporting -->
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerName.$error.required">
+            Customer Name is required
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 text-danger"
-             ng-show="schemaForm.requiredField.$error.propertyValidation">
-            Required input failed property validation!
+             ng-show="schemaForm.customerAddress.$error.required">
+            Customer Address is required
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 text-danger"
-             ng-show="schemaForm.lengthField.$error.propertyValidation">
-            Length input failed property validation!
+             ng-show="schemaForm.customerCity.$error.required">
+            Customer City is required
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 text-danger"
-             ng-show="schemaForm.minField.$error.propertyValidation">
-            Min-Value input failed property validation!
+             ng-show="schemaForm.customerState.$error.required">
+            Customer State is required
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 text-danger"
-             ng-show="schemaForm.maxField.$error.propertyValidation">
-            Max-Value input failed property validation!
+             ng-show="schemaForm.customerZip.$error.required">
+            Customer Zip is required
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 text-danger"
-             ng-show="schemaForm.regexField.$error.propertyValidation">
-            Regex input failed property validation!
+             ng-show="schemaForm.customerZip.$error.regex">
+            Customer Zip must be formatted correctly (##### or #####-####)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerSSN.$error.regex">
+            Customer SSN must be formatted correctly (###-##-####)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerBirthDate.$error.script">
+            Customer must be 18 years old
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerDrivingYears.$error.type">
+            Customer years-driven must be an integer
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerDrivingYears.$error.number">
+            Customer years-driven must be a number
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-danger"
+             ng-show="schemaForm.customerDrivingYears.$error.min">
+            Customer years-driven cannot be negative
         </div>
     </div>
 

@@ -88,11 +88,12 @@
                    slimuivalidate="city" >
         </div>
         <div class="col-xs-2">
-            <input type="text"
-                   class="form-control"
-                   name="customerState"
-                   ng-model="Model.state"
-                   slimuivalidate="state" >
+            <select class="form-control"
+                    name="customerState"
+                    ng-model="Model.state"
+                    ng-options="state.stateId for state in Model.states track by state.stateId"
+                    slimuivalidate="state">
+            </select>
         </div>
         <div class="col-xs-3">
             <input type="text"

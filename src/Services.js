@@ -188,7 +188,6 @@ framework.provider('PropertyValidation', function(){
                 
                 getPropertyValidationRules: function(propertyName){
                     if( !validationMappings[propertyName] ){
-                        console.log('No property validation rule found for \'' + propertyName + '\'');
                         return [];
                     } else {
                         return validationMappings[propertyName];
@@ -208,12 +207,10 @@ framework.provider('SchemaValidation', function(){
                         var schemaName = schema.schemaName;
                         
                         for( var propertyName in schema.properties ){
-                            console.log('--------' + propertyName + '--------');
                             var validationMapping = schema.properties[ propertyName ];
                             
                             for( var rule in validationMapping ){
                                 var value = validationMapping[rule];
-                                console.log(rule + ': ' + value);
                                 PropertyValidation.addPropertyValidation(propertyName, rule, value);
                             }
                         }
@@ -288,15 +285,6 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                                 console.log('could not check type of value');
                                 return false;
                         }
-                        /*if(requiredType === 'date'){
-                            
-                        } else if( requiredType == 'number'){
-                            if( typeof(viewValue) == requiredType){
-                                return true;
-                            } else {
-                                return false;   
-                            }
-                        } else if( requir*/
                         
                     }
                 };

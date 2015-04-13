@@ -36091,7 +36091,17 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                         return requiredRegex.test(viewValue);
                     },
                     script: function(script){
-                        console.error('no script-validation in-place yet');
+                        script = 'window.validationScript = function(){ return ' + script + '; }';
+                        
+                        var validationStatus;
+                        try{
+                            eval(script);
+                            validationStatus = angular.bind( viewValue, window.validationScript)();
+                        } catch( e ){
+                            console.error('failed to evaluate script or check validation status'); 
+                        }
+                        
+                        return validationStatus;
                     },
                     type: function(requiredType){
                     

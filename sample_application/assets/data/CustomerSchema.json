@@ -29,7 +29,7 @@
         "birthDate": {
             "required": true,
             "type": "date",
-            "script": "((new Date).getFullYear() - this.birthdayYear.getFullYear() - 1) >= 18"
+            "script": "((new Date).getFullYear() - this.getFullYear() - 1) >= 18"
         },
         "socialSecurityNumber": {
             "required": true,

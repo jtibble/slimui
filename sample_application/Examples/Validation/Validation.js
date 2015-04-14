@@ -11,6 +11,8 @@ var ValidationModel = function(){
         passwordRegex: /^[a-zA-Z0-9]{8,20}$/,
         calendarPopupVisible: false,
         
+        
+        /* (example) Customer Domain Object */
         name: 'John Tibble',
         address: '1 Village Center Drive',
         address2: 'Building 50-2-033',

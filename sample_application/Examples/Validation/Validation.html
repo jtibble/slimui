@@ -39,7 +39,8 @@
 
 
 <h3 class="voice-brand">Complex Validation</h3>
-<p>A domain-object form can be created and validated using a schema, like this customer-form below:</p>
+<p>A domain-object form can be created and validated using a schema, like this customer-form below.</p>
+
 <form novalidate name="schemaForm">
     <div class="row">
         <div class="col-xs-3">
@@ -225,3 +226,64 @@
     </div>
 
 </form>
+<hr>
+<p>
+Example customer schema:
+    <pre>
+{
+    "schemaName": "Customer",
+    "properties": {
+        "name": {
+            "required": true,
+            "type": "string"
+        },
+        "address": {
+            "required": true,
+            "type": "string"
+        },
+        "address2": {
+            "required": false,
+            "type": "string"
+        },
+        "city": {
+            "required": true,
+            "type": "string"
+        },
+        "state": {
+            "required": true,
+            "type": "string",
+            "regex": "^\\s\\s$"
+        },
+        "zip": {
+            "required": true,
+            "regex": "^\\d\\d\\d\\d\\d(-\\d\\d\\d\\d)?$"
+        },
+        "birthDate": {
+            "required": true,
+            "type": "date",
+            "script": "((new Date).getFullYear() - this.getFullYear() - 1) >= 18"
+        },
+        "socialSecurityNumber": {
+            "required": true,
+            "regex": "^\\d\\d\\d-\\d\\d-\\d\\d\\d\\d$"
+        },
+        "yearsDriving": {
+            "required": false,
+            "type": "int",
+            "min": 0
+        }
+    }
+}
+    
+    </pre>
+
+loaded by SlimUI like so:
+<pre>
+var ValidationController = function(Context, Actions, Modelbuilder, SchemaValidation){
+    Context.Actions = Actions;
+    Context.Model = new Modelbuilder();
+    
+    SchemaValidation.loadSchema('sample_application/assets/data/CustomerSchema.json');
+};
+</pre>
+</p>

@@ -268,7 +268,7 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                         var validationStatus;
                         try{
                             eval(script);
-                            validationStatus = angular.bind( viewValue, window.validationScript)();
+                            validationStatus = angular.bind(viewValue, window.validationScript)();
                         } catch( e ){
                             console.error('failed to evaluate script or check validation status'); 
                         }
@@ -299,26 +299,27 @@ framework.directive('slimuivalidate', ['PropertyValidation', function(PropertyVa
                     }
                 };
                 
+                var isValid = true;
+                
                 for( var i in validationRules ){
                     var rule = validationRules[i];
                     var validationType = rule.validationType;
                     var validationValue = rule.validationValue;
                     
-                    var validationSuccess;
+                    var validationTest;
                     
                     if( !test[validationType] ){
                         throw 'Cannot validate unknown validation rule type \'' + validationType + '\'!';
                     }
                     
-                    validationSuccess = test[validationType](validationValue);
-                    ngModel.$setValidity(validationType, validationSuccess);
+                    validationTest = test[validationType](validationValue);
+                    ngModel.$setValidity(validationType, validationTest);
                     
-                    if( !validationSuccess ){
-                        
-                        return false;
-                    }
+                    // Every rule has to pass for the field to be valid in the end
+                    isValid = isValid && validationTest;
                 }
                 
+                return isValid;
             };
         }
     };

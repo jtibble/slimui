@@ -29,7 +29,8 @@
         "birthDate": {
             "required": true,
             "type": "date",
-            "script": "((new Date).getFullYear() - this.getFullYear() - 1) >= 18"
+            "script": "((new Date).getFullYear() - (new Date(this)).getFullYear() - 1) >= 18",
+            "regex": "^\\w\\w\\w\\s\\d\\d?,\\s\\d\\d\\d\\d$"
         },
         "socialSecurityNumber": {
             "required": true,

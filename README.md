@@ -2,7 +2,7 @@
 
 Thank you for trying out the SlimUI framework. See it running live here:
 
-https://github.sw.ge.com/pages/jtibble/SlimUI/sample-application.html
+http://jtibble.github.io/slimui/sample-application.html#/About
 
 
 Some of the project goals:
